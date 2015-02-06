@@ -9,7 +9,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Dashboard - Ace Admin</title>
+		<title>Zion</title>
 
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -53,7 +53,7 @@
 		<![endif]-->
 	</head>
 
-	<body>
+	<body ng-app="indexApp">
 		<div class="navbar navbar-default" id="navbar">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -64,7 +64,7 @@
 					<a href="#" class="navbar-brand">
 						<small>
 							<i class="icon-leaf"></i>
-							Ace Admin
+							Zion
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -320,6 +320,8 @@
 				</div><!-- /.navbar-header -->
 			</div><!-- /.container -->
 		</div>
+
+		
 
 		<div class="main-container" id="main-container">
 			<script type="text/javascript">
@@ -663,6 +665,36 @@
 								</li>
 							</ul>
 						</li>
+
+						<!--hcy test -->
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-file-alt"></i>
+
+								<span class="menu-text">
+									Sale Pages
+									<span class="badge badge-primary ">5</span>
+								</span>
+
+								<b class="arrow icon-angle-down"></b>
+							</a>
+
+							<ul class="submenu">
+								<li>
+									<a href="#/page1">
+										<i class="icon-double-angle-right"></i>
+										Page1(yes)
+									</a>
+								</li>
+								<li>
+									<a href="#/page2">
+										<i class="icon-double-angle-right"></i>
+										Page2(no)
+									</a>
+								</li>
+							</ul>
+						</li>		
+						<!--end of hcy test -->		
 					</ul><!-- /.nav-list -->
 
 					<div class="sidebar-collapse" id="sidebar-collapse">
@@ -699,6 +731,7 @@
 					</div>
 
 					<div class="page-content">
+						<div ng-view></div>
 						<div class="page-header">
 							<h1>
 								Dashboard
@@ -2146,5 +2179,14 @@
 			
 			})
 		</script>
+
+		<script src="scripts/vendors/angular.js"></script>
+		<script src="scripts/vendors/angular-route.js"></script>
+		<script src="scripts/index.js"></script>
+		<!--
+		<script src="scripts/services.js"></script>
+		<script src="scripts/controllers.js"></script>
+		-->
+		</body>
 	</body>
 </html>
