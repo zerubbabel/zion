@@ -1,5 +1,23 @@
+function auth($q, $location) {
+    var result;
+    $.ajax({
+        url: "access_auth.php",
+        async:false,
+        data:{'location':$location.path()},
+        success: function(data){
+        result= jQuery.parseJSON(data);
+        }
+    });
+    if (result&&result.status){
+        }
+    else{
+        $location.path('/');
+        $location.replace();  
+        return $q.reject();
+    }
+}
 
-angular.module('indexApp', ['ngRoute'])
+var indexApp=angular.module('indexApp', ['ngRoute'])
   .config(function($routeProvider) {
 
     $routeProvider.when('/page1', {
@@ -9,22 +27,16 @@ angular.module('indexApp', ['ngRoute'])
     .when('/page2', {
       templateUrl: 'views/page2.html',
       resolve: {
-        auth: ['$q', '$location', 
-        function($q, $location) {
-          
-          $.post('ajax/auth.php', function(data) {
-            var result=data;
-             if (result&&result.status){
-              alert(result);
-            }else{
-              //$location.path('/');
-              //$location.replace();  
-              return $q.reject();
-            }
-          });
-        }]
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/sale/sale_order', {
+      templateUrl: 'views/sale/sale_order.html',
+      resolve: {
+        async: ['$q', '$location', auth]
       }
     });
+
     $routeProvider.otherwise({
       redirectTo: '/'
     });

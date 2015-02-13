@@ -375,7 +375,39 @@
 								<span class="menu-text"> Dashboard </span>
 							</a>
 						</li>
+						<?php
+							include('leftside.php');
+						?>
+						<!--hcy test -->
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-file-alt"></i>
 
+								<span class="menu-text">
+									Sale Pages1	
+									<span class="badge badge-primary ">5</span>
+								</span>
+
+								<b class="arrow icon-angle-down"></b>
+							</a>
+
+							<ul class="submenu">
+								<li>
+									<a href="#/page1">
+										<i class="icon-double-angle-right"></i>
+										Page1(yes)
+									</a>
+								</li>
+								<li>
+									<a href="#/page2">
+										<i class="icon-double-angle-right"></i>
+										Page2(no)
+									</a>
+								</li>
+							</ul>
+						</li>		
+						<!--end of hcy test -->	
+							
 						<li>
 							<a href="typography.html">
 								<i class="icon-text-width"></i>
@@ -402,8 +434,7 @@
 								<li>
 									<a href="buttons.html">
 										<i class="icon-double-angle-right"></i>
-										Buttons &amp; Icons
-									</a>
+										Buttons &amp; Icons41										</a>
 								</li>
 
 								<li>
@@ -666,35 +697,7 @@
 							</ul>
 						</li>
 
-						<!--hcy test -->
-						<li>
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-file-alt"></i>
-
-								<span class="menu-text">
-									Sale Pages
-									<span class="badge badge-primary ">5</span>
-								</span>
-
-								<b class="arrow icon-angle-down"></b>
-							</a>
-
-							<ul class="submenu">
-								<li>
-									<a href="#/page1">
-										<i class="icon-double-angle-right"></i>
-										Page1(yes)
-									</a>
-								</li>
-								<li>
-									<a href="#/page2">
-										<i class="icon-double-angle-right"></i>
-										Page2(no)
-									</a>
-								</li>
-							</ul>
-						</li>		
-						<!--end of hcy test -->		
+							
 					</ul><!-- /.nav-list -->
 
 					<div class="sidebar-collapse" id="sidebar-collapse">
