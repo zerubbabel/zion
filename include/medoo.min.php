@@ -1,5 +1,6 @@
 <?php
 /*! Medoo 0.9.6 - Copyright 2014, Angel Lai - MIT license - http://medoo.in */
+
 class medoo {
 	//protected $database_type = 'mysql';
 
@@ -14,6 +15,8 @@ class medoo {
 	
 	protected $database_type = 'sqlite'; //数据库的配置类型 
 	//SQLite数据库的路径 可选参数，可在实例化时初始它　
+	//protected $db_path = dirname(__FILE__).'\zion.db';
+
 	protected $database_file = '../zion.db'; 
 
 	// Optional

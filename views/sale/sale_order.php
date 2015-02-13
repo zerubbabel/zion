@@ -1,4 +1,13 @@
+<?php
+	echo 'hello order!';
+	require_once '../../config.php';
+	require_once '../../include/medoo.min.php';
+	
+	$database = new medoo($db_path);
+	$data=$database->select('sale_orders','*');
+	
 
+?>
 <h1>sale order</h1>
 <div class="row">
 	<div class="col-xs-12">

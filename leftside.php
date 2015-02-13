@@ -3,9 +3,10 @@
 	require_once 'config.php';
 	require_once 'include/medoo.min.php';
 	 
-	$database = new medoo($DB_NAME);
+	$database = new medoo($db_path);
 	
-	$pages = $database->select("pages", "*",["ORDER"=>'module_id']);
+	$pages = $database->select("pages",["[>]modules"=>"module_id"],
+		 "*",["ORDER"=>'module_id']);
 	if (count($pages)==0){
 		die();
 	}
@@ -24,7 +25,7 @@
 				echo '<i class="icon-'.$pages[$i]['icon'].'"></i>';
 			};*/	
 			echo '<span class="menu-text">
-				'.$pages[$i]['module_id'].'										
+				'.$pages[$i]['module_name'].'										
 			</span>
 			<b class="arrow icon-angle-down"></b>';																
 			echo '</a>';

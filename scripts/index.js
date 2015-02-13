@@ -20,18 +20,9 @@ function auth($q, $location) {
 var indexApp=angular.module('indexApp', ['ngRoute'])
   .config(function($routeProvider) {
 
-    $routeProvider.when('/page1', {
-      templateUrl: 'views/page1.html',
-      //controller: 'pagr1Ctrl'
-    })
-    .when('/page2', {
-      templateUrl: 'views/page2.html',
-      resolve: {
-        async: ['$q', '$location', auth]
-      }
-    })
+    $routeProvider
     .when('/views/sale/sale_order', {
-      templateUrl: 'views/sale/sale_order.html',
+      templateUrl: 'views/sale/sale_order.php',
       resolve: {
         async: ['$q', '$location', auth]
       }

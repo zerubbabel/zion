@@ -2,7 +2,7 @@
 	require_once 'config.php';
 	require_once 'include/medoo.min.php';
 	 
-	$database = new medoo($DB_NAME);
+	$database = new medoo($db_path);//($DB_NAME);
 
 	$location=$_GET['location'];
 	$url=substr($location,6);
