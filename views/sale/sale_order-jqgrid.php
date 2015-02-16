@@ -22,17 +22,17 @@
 		<!-- PAGE CONTENT ENDS -->
 	</div><!-- /.col -->
 </div><!-- /.row -->
+
 <!-- page specific plugin scripts -->
 
-<script src="assets/js/data-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-en.js"></script>
-
 
 <!-- inline scripts related to this page -->
 
 <script type="text/javascript">
-	/*var grid_data = 
+	var grid_data = 
 	[ 
 		{id:"1",name:"Desktop Computer",note:"note",stock:"Yes",ship:"FedEx", sdate:"2007-12-03"},
 		{id:"2",name:"Laptop",note:"Long text ",stock:"Yes",ship:"InTime",sdate:"2007-12-03"},
@@ -58,19 +58,11 @@
 		{id:"22",name:"LCD Monitor",note:"note3",stock:"Yes",ship:"TNT",sdate:"2007-12-03"},
 		{id:"23",name:"Speakers",note:"note",stock:"No",ship:"ARAMEX",sdate:"2007-12-03"}
 	];	
-	*/
-	var grid_data=[];
+	
 	jQuery(function($) {
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
-		$.ajax({
-	        url: "ajax/get_data.php",
-	        async:false,
-	        success: function(data){
-	        	grid_data=jQuery.parseJSON(data);
-	        }
-	    });
-
+	
 		jQuery(grid_selector).jqGrid({
 			//direction: "rtl",
 			
@@ -349,4 +341,4 @@
 	
 	
 	});
-</script>
+</script>			

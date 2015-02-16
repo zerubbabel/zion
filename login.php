@@ -11,7 +11,7 @@ $error_msg = "";
 //如果用户未登录，即未设置$_SESSION['user_id']时，执行以下代码
 if(!isset($_SESSION['user_id'])){
     if(isset($_POST['submit'])){//用户提交登录表单时执行如下代码
-		$db = new medoo($DB_NAME);
+		$db = new medoo($db_path);
 		if (!$db){
 			die('database connect error!');
 		}
