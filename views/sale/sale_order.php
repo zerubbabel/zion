@@ -1,8 +1,5 @@
 ﻿<div class="row">
-	<div class="col-xs-12">
-		<!-- PAGE CONTENT BEGINS -->
-
-		<div class="alert alert-info">
+	<div class="alert alert-info">
 			<i class="icon-hand-right"></i>
 
 			Please note that demo server is not configured to save the changes, therefore you may get an error message.
@@ -10,13 +7,17 @@
 				<i class="icon-remove"></i>
 			</button>
 		</div>
-
+	<div class="col-xs-6">
+		<!-- PAGE CONTENT BEGINS -->
 		<table id="grid-table"></table>
 
 		<div id="grid-pager"></div>
-
 		<!-- PAGE CONTENT ENDS -->
 	</div><!-- /.col -->
+	<div class="col-xs-6" id="div_dtl">
+		<table id="list_d"></table>
+		<div id="pager_d"></div>
+	</div>
 </div><!-- /.row -->
 <!-- page specific plugin scripts -->
 

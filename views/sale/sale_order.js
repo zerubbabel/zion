@@ -1,5 +1,31 @@
-﻿
-var grid_data=[];
+﻿var grid_data=[];
+var detail_data=[];
+function get_custs(){
+	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
+	//动态生成select内容
+	var str="";
+	$.ajax({
+		type:"get",
+		async:false,
+		url:"ajax/get_custs.php",
+		success:function(data){
+			if (data != null) {
+	        var jsonobj=eval(data);
+	        
+	        var length=jsonobj.length;
+	        for(var i=0;i<length;i++){  
+	            if(i!=length-1){
+	            	str+=jsonobj[i].id+":"+jsonobj[i].cust_name+";";
+	            }else{
+	              	str+=jsonobj[i].id+":"+jsonobj[i].cust_name;
+	            }
+	         }   
+
+	        }
+		}
+	});	
+	return str;	
+}
 jQuery(function($) {
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
@@ -17,7 +43,7 @@ jQuery(function($) {
 		data: grid_data,
 		datatype: "local",
 		height: 250,
-		colNames:[' ', 'ID','createday','cust_id','cust_name', 'op_id'],
+		colNames:[' ','订单日期','客户', '操作人员'],
 		colModel:[
 			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -28,11 +54,10 @@ jQuery(function($) {
 					//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
 				}
 			},
-			{name:'id',index:'id', width:60, sorttype:"int", editable: true},
-			{name:'createday',index:'createday',width:90, editable:true, sorttype:"date",unformat: pickDate},
-			{name:'cust_id',index:'cust_id', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},		
-			{name:'cust_name',index:'cust_name', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},		
-			{name:'op_id',index:'op_id', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}} 
+			
+			{name:'createday',index:'createday',width:90, editable:false, sorttype:"date",unformat: pickDate},	
+			{name:'cust_name',index:'cust_name', width:90,editable: true,edittype:'select',editoptions:{value:get_custs()}},		
+			{name:'user_name',index:'user_name', width:90, sortable:true,editable: false} 
 		], 
 
 		viewrecords : true,
@@ -42,10 +67,37 @@ jQuery(function($) {
 		altRows: true,
 		//toppager: true,
 		
-		multiselect: true,
+		multiselect: false,
 		//multikey: "ctrlKey",
         multiboxonly: true,
-
+        onSelectRow:function(ids){
+        	if(ids==null){
+        		/*ids=0;
+        		if(jQuery("#list_d").jqGrid('getGridParam','record')>0){
+        			jQuery('#list_d').jqGrid('setGridParam',{url:"subgrid.php?q=1&id="+ids,page:1});
+        			jQuery("#list_d").jqGrid('setCaption','sale order detail:'+ids)
+        			.trigger('reloadGrid');
+        		}
+        		else{
+        			jQuery('#list_d').jqGrid('setGridParam',{url:"subgrid.php?q=1&id="+ids,page:1});
+        			jQuery("#list_d").jqGrid('setCaption','sale order detail:'+ids)
+        			.trigger('reloadGrid');	
+        		}*/
+        	}
+        	else{
+        		$.ajax({
+        			type: "POST",
+			        url: "ajax/sale_order_dtl.php",
+			        async:false,
+			        data:{'id':ids},
+			        success: function(data){
+			        	detail_data=jQuery.parseJSON(data);
+			        	reloadDetail(detail_data);
+			        	//jQuery('#list_d').jqGrid().trigger('reloadGrid');	
+			        }
+			    });
+        	}
+        },
 		loadComplete : function() {
 			var table = this;
 			setTimeout(function(){
@@ -59,7 +111,6 @@ jQuery(function($) {
 
 		editurl: "views/sale/save.php",//nothing is saved
 		caption: "jqGrid with inline editing",
-
 
 		autowidth: true
 
@@ -116,6 +167,8 @@ jQuery(function($) {
 			//new record form
 			closeAfterAdd: true,
 			recreateForm: true,
+			//reloadAfterSubmit:false,
+			processData:"操作中...",
 			viewPagerButtons: false,
 			beforeShowForm : function(e) {
 				var form = $(e[0]);
@@ -124,6 +177,7 @@ jQuery(function($) {
 			},
 			afterSubmit:function(result){						
 				if (result&&jQuery.parseJSON(result.responseText).status) {
+					jQuery(grid_selector).jqGrid().trigger('reloadGrid');
 					return true;					
 				}
 				else{alert("操作失败！"); return false;} 
@@ -294,5 +348,48 @@ jQuery(function($) {
 
 	//var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
 
+	loadDetail();
+	
 
 });
+function reloadDetail(detail_data){
+	$("#list_d").jqGrid("setGridParam", { postData: detail_data }).trigger("reloadGrid");
+}
+function loadDetail(detail_data){
+	
+	//$('#list_d').empty();
+	//$('#pager_d').empty();
+	jQuery("#list_d").jqGrid({
+		data: detail_data,
+		datatype: "local",
+		height: 250,
+		colNames:[' ','产品', '数量'],
+		colModel:[
+			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,
+					
+					//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+					//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+				}
+			},
+						
+			//{name:'name',index:'name', width:90,editable: true,edittype:'select',editoptions:{value:get_products()}},		
+			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+		], 
+
+		viewrecords : true,
+		rowNum:10,
+		rowList:[10,20,30],
+		pager : 'pager_d',
+		sortname:'item',
+		viewrecords:true,
+		sortorder:'asc',
+		//multiselect:true,
+		caption:'detail:',		
+	})
+	.navGrid('#pager_d',{add:false,edit:false,del:false})
+	.trigger('reloadGrid');
+}
