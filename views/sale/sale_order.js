@@ -70,21 +70,22 @@ jQuery(function($) {
 		multiselect: false,
 		//multikey: "ctrlKey",
         multiboxonly: true,
-        onSelectRow:function(ids){
-        	if(ids==null){
-        		/*ids=0;
+        onSelectRow:function(id){
+        	if(id==null){
+        		id=0;
         		if(jQuery("#list_d").jqGrid('getGridParam','record')>0){
-        			jQuery('#list_d').jqGrid('setGridParam',{url:"subgrid.php?q=1&id="+ids,page:1});
-        			jQuery("#list_d").jqGrid('setCaption','sale order detail:'+ids)
+        			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1});
+        			jQuery("#list_d").jqGrid('setCaption','sale order detail:'+id)
         			.trigger('reloadGrid');
         		}
-        		else{
-        			jQuery('#list_d').jqGrid('setGridParam',{url:"subgrid.php?q=1&id="+ids,page:1});
-        			jQuery("#list_d").jqGrid('setCaption','sale order detail:'+ids)
-        			.trigger('reloadGrid');	
-        		}*/
         	}
-        	else{
+    		else{
+    			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1});
+    			jQuery("#list_d").jqGrid('setCaption','sale order detail:'+id)
+    			.trigger('reloadGrid');	
+    		}
+        	
+        	/*else{
         		$.ajax({
         			type: "POST",
 			        url: "ajax/sale_order_dtl.php",
@@ -96,7 +97,7 @@ jQuery(function($) {
 			        	//jQuery('#list_d').jqGrid().trigger('reloadGrid');	
 			        }
 			    });
-        	}
+        	}*/
         },
 		loadComplete : function() {
 			var table = this;
@@ -352,29 +353,21 @@ jQuery(function($) {
 	
 
 });
-function reloadDetail(detail_data){
-	$("#list_d").jqGrid("setGridParam", { postData: detail_data }).trigger("reloadGrid");
-}
-function loadDetail(detail_data){
-	
-	//$('#list_d').empty();
-	//$('#pager_d').empty();
+function loadDetail(id){
+
 	jQuery("#list_d").jqGrid({
-		data: detail_data,
-		datatype: "local",
+		url:'views/sale/sale_order_data.php?q=del&id='+id,
+		//data: detail_data,
+		datatype: "json",
 		height: 250,
 		colNames:[' ','产品', '数量'],
 		colModel:[
 			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
 				formatoptions:{ 
-					keys:true,
-					
-					//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-					//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+					keys:true,					
 				}
-			},
-						
+			},					
 			//{name:'name',index:'name', width:90,editable: true,edittype:'select',editoptions:{value:get_products()}},		
 			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
