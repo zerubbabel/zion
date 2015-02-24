@@ -27,6 +27,24 @@ function get_custs(){
 	return str;	
 }
 jQuery(function($) {
+	
+	$(".chosen-select").chosen(); 
+	//chosen plugin inside a modal will have a zero width because the select element is originally hidden
+	//and its width cannot be determined.
+	//so we set the width after modal is show
+	$('#modal-table').on('shown.bs.modal', function () {
+		$(this).find('.chosen-container').each(function(){
+			$(this).find('a:first-child').css('width' , '210px');
+			$(this).find('.chosen-drop').css('width' , '210px');
+			$(this).find('.chosen-search input').css('width' , '200px');
+		});
+	});
+	
+	$('#modal-btn').click(function(){		
+		$('#modal-table').modal({show:true});
+		loadModalDetail();
+	});
+	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
 	$.ajax({
@@ -84,20 +102,6 @@ jQuery(function($) {
     			jQuery("#list_d").jqGrid('setCaption','sale order detail:'+id)
     			.trigger('reloadGrid');	
     		}
-        	
-        	/*else{
-        		$.ajax({
-        			type: "POST",
-			        url: "ajax/sale_order_dtl.php",
-			        async:false,
-			        data:{'id':ids},
-			        success: function(data){
-			        	detail_data=jQuery.parseJSON(data);
-			        	reloadDetail(detail_data);
-			        	//jQuery('#list_d').jqGrid().trigger('reloadGrid');	
-			        }
-			    });
-        	}*/
         },
 		loadComplete : function() {
 			var table = this;
@@ -113,7 +117,8 @@ jQuery(function($) {
 		editurl: "views/sale/save.php",//nothing is saved
 		caption: "jqGrid with inline editing",
 
-		autowidth: true
+		autowidth: true,
+
 
 	});
 
@@ -172,9 +177,11 @@ jQuery(function($) {
 			processData:"操作中...",
 			viewPagerButtons: false,
 			beforeShowForm : function(e) {
-				var form = $(e[0]);
+				/*var form = $(e[0]);
 				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-				style_edit_form(form);
+				style_edit_form(form);*/
+				return false;
+
 			},
 			afterSubmit:function(result){						
 				if (result&&jQuery.parseJSON(result.responseText).status) {
@@ -381,8 +388,50 @@ function loadDetail(id){
 		viewrecords:true,
 		sortorder:'asc',
 		//multiselect:true,
-		caption:'detail:',		
+		caption:'detail:',	
+		autowidth: true,
+		
 	})
-	.navGrid('#pager_d',{add:false,edit:false,del:false})
+	.navGrid('#pager_d',{add:false,edit:false,del:false,search: false,			
+			refresh: false,			
+			view: false})
 	.trigger('reloadGrid');
+}
+
+function loadModalDetail(){
+
+	jQuery("#modal_dtl").jqGrid({
+		//url:'views/sale/sale_order_data.php?q=del&id='+id,
+		//data: detail_data,
+		datatype: "json",
+		height: 100,
+		colNames:[' ','产品', '数量'],
+		colModel:[
+			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,					
+				}
+			},					
+			//{name:'name',index:'name', width:90,editable: true,edittype:'select',editoptions:{value:get_products()}},		
+			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+		], 
+
+		viewrecords : true,
+		rowNum:10,
+		rowList:[10,20,30],
+		pager : 'modal_pager_dtl',
+		sortname:'item',
+		viewrecords:true,
+		sortorder:'asc',
+		//multiselect:true,
+		caption:'detail:',	
+		autowidth: true,
+		
+	})
+	.navGrid('#modal_pager_dtl',
+		{add:true,addicon : 'icon-plus-sign purple',edit:false,del:false,search: false,			
+			refresh: false,			
+			view: false});
 }

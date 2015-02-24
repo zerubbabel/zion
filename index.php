@@ -26,6 +26,7 @@
 		<!-- page specific plugin styles -->
 
 		<link rel="stylesheet" href="assets/css/jquery-ui-1.10.3.full.min.css" />
+		<link rel="stylesheet" href="assets/css/chosen.css" />
 		<link rel="stylesheet" href="assets/css/datepicker.css" />
 		<link rel="stylesheet" href="assets/css/ui.jqgrid.css" />
 		
@@ -445,6 +446,7 @@
 
 		<script src="scripts/vendors/angular.js"></script>
 		<script src="scripts/vendors/angular-route.js"></script>
+		<script src="scripts/general.js"></script>
 		<script src="scripts/index.js"></script>
 		<!--
 		<script src="scripts/services.js"></script>
