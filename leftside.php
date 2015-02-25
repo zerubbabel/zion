@@ -1,19 +1,19 @@
 <?php
 	// leftside
-	require_once 'config.php';
+	/*require_once 'config.php';
 	require_once 'include/medoo.min.php';
 	 
 	$database = new medoo($db_path);
 	
 	$pages = $database->select("pages",["[>]modules"=>"module_id"],
-		 "*",["ORDER"=>'module_id']);
+		 "*",["ORDER"=>'module_id']);*/
+	
+	$pages=Page::getPages();
 	if (count($pages)==0){
 		die();
 	}
-	//var_dump($pages);
-	//echo '<li>';
-	for($i=0;$i<count($pages);$i++){
-		
+	
+	for($i=0;$i<count($pages);$i++){		
 		if (($i==0) or ($pages[$i]['module_id']<>$pages[$i-1]['module_id'])){
 			if ($i<>0){
 				echo '</ul>';								
@@ -21,9 +21,6 @@
 			};
 			echo '<li>';
 			echo '<a href="#" class="dropdown-toggle">';
-			/*if ($pages[$i]['icon']<>''){
-				echo '<i class="icon-'.$pages[$i]['icon'].'"></i>';
-			};*/	
 			echo '<span class="menu-text">
 				'.$pages[$i]['module_name'].'										
 			</span>

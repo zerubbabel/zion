@@ -1,4 +1,5 @@
 <?php
+	require ('./include/init.inc.php');
 	session_start();
 	if(!isset($_SESSION['user_id'])){
 		$home_url = 'login.php';
