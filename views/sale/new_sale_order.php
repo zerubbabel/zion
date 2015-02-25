@@ -3,30 +3,16 @@
 	<div class="col-xs-12">
 		<form class="form-horizontal" role="form">			
 			<div class="form-group">
-				<div class="col-sm-3">
+				<div class="col-sm-6">
 					<button id='add_btn' class="btn icon-plus">添加产品</button>
 					<button id='save_btn' class="btn icon-save">保存</button>
 				</div>
-				<label for="form-field-select-3" class="col-sm-3 control-label no-padding-right">客户</label>
-				<select ng-model="selected" ng-options="m.productName for m in model">
-				    <option value="">-- 请选择 --</option>
-				</select>
-				<div class="col-sm-3">
-					<input type="text" id="cust" placeholder="客户描述" />
-				</div>
-
 				<div class="col-sm-6">
-					<select class="chosen-select" id="form-field-select-3" data-placeholder="Choose a Country...">
-						<option value="">&nbsp;</option>
-						<option value="AL">Alabama</option>
-						<option value="AK">Alaska</option>
-						<option value="AZ">Arizona</option>
-						<option value="AR">Arkansas</option>
-						<option value="CA">California</option>											
-					</select>
-				</div>
-				
+					<label for="cust" class="control-label no-padding-right">客户</label>
+					<?php //include '../../ajax/select_cust.php' ?>
+				</div>			
 			</div>	
+
 			
 			<div class="modal-body ">
 				<div class="col-xs-12">
