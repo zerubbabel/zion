@@ -1,24 +1,12 @@
 <?php
-	require_once 'config.php';
-	require_once 'include/medoo.min.php';
-	 
-	$database = new medoo($db_path);//($DB_NAME);
+	require ('./include/init.inc.php');
 
 	$location=$_GET['location'];
 	$url=substr($location,6);
-	session_start();
-	$user=$_SESSION['user_id'];
-	$datas = $database->select("access", [
-		"[>]users"=>["group_id"=>"group"],
-		"[>]pages"=>["page_id"=>"id"],
-		],
-		"*",
-		["AND"=>[
-		"pages.url"=>$url,
-		"users.user_id"=>$user
-		]]);
-	//var_dump($datas);
-	//var_dump($database->error());
+	
+	$user_id=$_SESSION['user_info']['user_id'];
+	
+	$datas=User::getAccess($user_id,$url);
 
 	if (count($datas)>0){
 		$json = array ('status'=>true);

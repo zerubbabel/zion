@@ -9,8 +9,6 @@
 			<button id='modal-btn'>MODEL</button>
 	</div>
 
-
-
 	<div class="col-xs-6">
 		<!-- PAGE CONTENT BEGINS -->
 		<table id="grid-table"></table>

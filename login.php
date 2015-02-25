@@ -1,33 +1,20 @@
 ﻿<?php
-require_once 'config.php';
-require_once 'include/medoo.min.php';
-//插入连接数据库的相关信息
-//require_once 'connectvars.php';
-
-//开启一个会话
-session_start();
-
+require ('./include/init.inc.php');
 $error_msg = "";
-//如果用户未登录，即未设置$_SESSION['user_id']时，执行以下代码
-if(!isset($_SESSION['user_id'])){
+if(!isset($_SESSION['user_info'])){
     if(isset($_POST['submit'])){//用户提交登录表单时执行如下代码
-		$db = new medoo($db_path);
-		if (!$db){
-			die('database connect error!');
-		}
-		$result = $db->select("users", "*",["AND"=>["password"=>$_POST['password'],"user_name"=>$_POST['username']]]);
-        if(count($result)>0){		
-			$_SESSION['user_id']=$result[0]['user_id'];
-			$_SESSION['username']=$result[0]['user_name'];
-			$home_url = 'index.php';
-			header('Location: '.$home_url);            
+		$user_info=User::checkPassword ( $_POST['username'], $_POST['password'] );
+		var_dump($user_info);
+        if($user_info){	        	
+        	User::loginDoSomething($user_info['user_id']);	
+			Common::jumpUrl ( 'index.php' );
+			   
         }else{
             $error_msg = 'Sorry, you must enter a valid username and password to log in.';
         }
     }
 }else{//如果用户已经登录，则直接跳转到已经登录页面
-    $home_url = 'index.php';
-    header('Location: '.$home_url);
+	Common::jumpUrl ( 'index.php' );	
 }
 ?>
 
