@@ -1,6 +1,6 @@
 ﻿<div class="row">
-	<div class="col-xs-12">
-		<button id='btn_test'>TEST</button>
+	<div class="col-xs-12" id="toolbar">
+		
 	</div>
 	<div class="col-xs-6">
 		<!-- PAGE CONTENT BEGINS -->
@@ -11,7 +11,7 @@
 	</div><!-- /.col -->
 	<div class="col-xs-6" id="div_dtl">
 		<table id="list_d"></table>
-		<div id="pager_d"></div>
+		<!--<div id="pager_d"></div>-->
 	</div>
 </div><!-- /.row -->
 

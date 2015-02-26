@@ -1,9 +1,9 @@
-//执行insert,delete,update
+﻿//执行insert,delete,update
 function exeSql(optype,table,cols,datas){
 	var ans;
 	$.ajax({
 		type:'post',
-		url:'ajax/exe.php',
+		url:'ajax/exe.php',		
 		async:false,
 		data:{'cols':cols,'table':table,'data':datas,'type':optype},
 		success:function(data){
@@ -19,6 +19,29 @@ function exeSql(optype,table,cols,datas){
 	});
 	return ans;
 }
+
+function getJsonData(para){
+	var ans;
+	$.ajax({
+		type:'get',
+		dataType: 'json',//important
+		url:'ajax/sale_data.php',
+		async:false,
+		data:{'para':para},
+		success:function(data){
+			if(data!=null){		
+				ans=data;
+				return data;
+			}	
+		},
+		error:function(){
+			ans=false;
+			return false;
+		}
+	});
+	return ans;
+}
+/*
 function get_custs(){
 	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
 	//动态生成select内容
@@ -69,3 +92,4 @@ function get_products(){
 	});	
 	return str;	
 }
+*/

@@ -7,20 +7,20 @@
 	echo json_encode(exe($type,$table,$cols,$data));
 
 	
-function exe($type,$table,$cols,$data){	
-	switch ($type) {
-		case 'insertMst':	
-			$id = Db::insertMst($table,$cols,$data);
-			return $id;					
-			break;
-		case 'insertDtl':						
-			$id = Db::insertDtl($table,$cols,$data);
-			return $id;	
-			break;
+	function exe($type,$table,$cols,$data){	
+		switch ($type) {
+			case 'insertMst':	
+				$id = Db::insertMst($table,$cols,$data);
+				return $id;					
+				break;
+			case 'insertDtl':						
+				$id = Db::insertDtl($table,$cols,$data);
+				return $id;	
+				break;
 
-		default:
-			# code...
-			break;
-	}	
-}		
+			default:
+				# code...
+				break;
+		}	
+	}		
 ?>
