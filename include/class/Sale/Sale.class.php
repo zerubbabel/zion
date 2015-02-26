@@ -7,7 +7,8 @@ class Sale extends Base {
 		$cols="sale_order_mst.id,cust_id,createday,op_id,cust_name,user_name";
 		$sql="select $cols from sale_order_mst 
 			left join customers on sale_order_mst.cust_id=customers.id 
-			left join users on sale_order_mst.op_id=users.user_id";
+			left join users on sale_order_mst.op_id=users.user_id 
+			order by createday desc";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;

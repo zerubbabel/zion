@@ -12,7 +12,7 @@ class Db extends Base {
 		for ($i=0;$i<count($cols);$i++){
 			$d[$cols[$i]]=$data[$i];
 		}		
-		$createday=date('Y-n-j G:i:s');		
+		$createday=date('Y-m-d H:i:s');		
 		$op_id=$_SESSION['user_info']['user_id'];
 		$d['createday']=$createday;
 		$d['op_id']=$op_id;
