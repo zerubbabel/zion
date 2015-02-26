@@ -1,10 +1,53 @@
 ﻿var grid_data=[];
 var detail_data=[];
+function get_custs(){
+	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
+	//动态生成select内容
+	var str="";
+	$.ajax({
+		type:"get",
+		async:false,
+		url:"ajax/get_custs.php",
+		success:function(data){
+			if (data != null) {
+	        var jsonobj=eval(data);
+	        
+	        var length=jsonobj.length;
+	        for(var i=0;i<length;i++){  
+	            if(i!=length-1){
+	            	str+=jsonobj[i].id+":"+jsonobj[i].cust_name+";";
+	            }else{
+	              	str+=jsonobj[i].id+":"+jsonobj[i].cust_name;
+	            }
+	         }   
+
+	        }
+		}
+	});	
+	return str;	
+}
 jQuery(function($) {
 	setTitle();
 	$('#btn_test').click(function(){
+
 		window.location.href="index.php#/views/sale/sale_out";
 	} )
+	$(".chosen-select").chosen(); 
+	//chosen plugin inside a modal will have a zero width because the select element is originally hidden
+	//and its width cannot be determined.
+	//so we set the width after modal is show
+	$('#modal-table').on('shown.bs.modal', function () {
+		$(this).find('.chosen-container').each(function(){
+			$(this).find('a:first-child').css('width' , '210px');
+			$(this).find('.chosen-drop').css('width' , '210px');
+			$(this).find('.chosen-search input').css('width' , '200px');
+		});
+	});
+	
+	$('#modal-btn').click(function(){		
+		$('#modal-table').modal({show:true});
+		loadModalDetail();
+	});
 	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
@@ -17,14 +60,26 @@ jQuery(function($) {
     });
 	
 	jQuery(grid_selector).jqGrid({
+		//direction: "rtl",
+		
 		data: grid_data,
 		datatype: "local",
 		height: 250,
-		colNames:['订单日期','客户', '操作人员'],
+		colNames:[' ','订单日期','客户', '操作人员'],
 		colModel:[
-			{name:'createday',index:'createday',width:90, editable:false},	
-			{name:'cust_name',index:'cust_name', width:90,editable: false},		
-			{name:'user_name',index:'user_name', width:90, editable: false} 
+			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,
+					
+					delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+					//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+				}
+			},
+			
+			{name:'createday',index:'createday',width:90, editable:false, sorttype:"date",unformat: pickDate},	
+			{name:'cust_name',index:'cust_name', width:90,editable: true,edittype:'select',editoptions:{value:get_custs()}},		
+			{name:'user_name',index:'user_name', width:90, sortable:true,editable: false} 
 		], 
 
 		viewrecords : true,
@@ -32,8 +87,10 @@ jQuery(function($) {
 		rowList:[10,20,30],
 		pager : pager_selector,
 		altRows: true,
+		//toppager: true,
 		
 		multiselect: false,
+		//multikey: "ctrlKey",
         multiboxonly: true,
         onSelectRow:function(id){
         	if(id==null){
@@ -54,16 +111,20 @@ jQuery(function($) {
 		loadComplete : function() {
 			var table = this;
 			setTimeout(function(){
-				styleCheckbox(table);				
+				styleCheckbox(table);
+				
 				updateActionIcons(table);
 				updatePagerIcons(table);
 				enableTooltips(table);
 			}, 0);
 		},
 
-		//editurl: "views/sale/save.php",//nothing is saved
+		editurl: "views/sale/save.php",//nothing is saved
 		caption: "销售订单列表",
+
 		autowidth: true,
+
+
 	});
 
 	//enable search/filter toolbar
@@ -297,15 +358,29 @@ jQuery(function($) {
 		$('.navtable .ui-pg-button').tooltip({container:'body'});
 		$(table).find('.ui-pg-div').tooltip({container:'body'});
 	}
-	loadDetail();	
+
+	//var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
+
+	loadDetail();
+	
+
 });
 function loadDetail(id){
+
 	jQuery("#list_d").jqGrid({
 		url:'views/sale/sale_order_data.php?q=del&id='+id,
+		//data: detail_data,
 		datatype: "json",
 		height: 250,
-		colNames:['产品', '数量'],
+		colNames:[' ','产品', '数量'],
 		colModel:[
+			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,					
+				}
+			},					
+			//{name:'name',index:'name', width:90,editable: true,edittype:'select',editoptions:{value:get_products()}},		
 			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
 		], 
@@ -317,11 +392,51 @@ function loadDetail(id){
 		sortname:'item',
 		viewrecords:true,
 		sortorder:'asc',
+		//multiselect:true,
 		caption:'销售订单明细',	
-		autowidth: true,		
+		autowidth: true,
+		
 	})
 	.navGrid('#pager_d',{add:false,edit:false,del:false,search: false,			
 			refresh: false,			
 			view: false})
 	.trigger('reloadGrid');
+}
+
+function loadModalDetail(){
+
+	jQuery("#modal_dtl").jqGrid({
+		//url:'views/sale/sale_order_data.php?q=del&id='+id,
+		//data: detail_data,
+		datatype: "json",
+		height: 100,
+		colNames:[' ','产品', '数量'],
+		colModel:[
+			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,					
+				}
+			},					
+			//{name:'name',index:'name', width:90,editable: true,edittype:'select',editoptions:{value:get_products()}},		
+			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+		], 
+
+		viewrecords : true,
+		rowNum:10,
+		rowList:[10,20,30],
+		pager : 'modal_pager_dtl',
+		sortname:'item',
+		viewrecords:true,
+		sortorder:'asc',
+		//multiselect:true,
+		caption:'销售订单明细',	
+		autowidth: true,
+		
+	})
+	.navGrid('#modal_pager_dtl',
+		{add:true,addicon : 'icon-plus-sign purple',edit:false,del:false,search: false,			
+			refresh: false,			
+			view: false});
 }

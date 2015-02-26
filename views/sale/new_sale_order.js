@@ -2,6 +2,7 @@ var products=[];
 var lastsel;
 var maxid=0;
 jQuery(function($) {
+	setTitle();
 	//客户
 	loadCust();
 
@@ -53,7 +54,7 @@ function newSaleOrderDtl(mst_id){
 			return false;
 		}
 	}
-	//window.location.href="index.php#/views/sale/sale_order";
+	window.location.href="index.php#/views/sale/sale_order";
 	return true;
 }
 

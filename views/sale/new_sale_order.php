@@ -1,32 +1,15 @@
 ﻿<div class="row">
-
 	<div class="col-xs-12">
-		<form class="form-horizontal" role="form">			
-			<div class="form-group">
-				<div class="col-sm-6">
-					<button id='add_btn' class="btn icon-plus">添加产品</button>
-					<button id='save_btn' class="btn icon-save">保存</button>
-				</div>
-				<div class="col-sm-6">
-					<label for="cust" class="control-label no-padding-right">客户:</label>
-					<select id='cust'>
-						<!--<option value=0>--请选择--</option>-->
-					</select>			
-				</div>			
-			</div>	
-			
-			<div class="modal-body ">
-				<div class="col-xs-12">
-					<table id="grid_dtl" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-					</table>
-					<!--<div id="pager_dtl"></div>-->
-				<div>
-			</div>
-			
-		</form>	
-	</div><!-- /.col -->
-
-</div><!-- /.row -->
+		<label for="cust" class="control-label no-padding-right">客户:</label>
+		<select id='cust'>
+			<!--<option value=0>--请选择--</option>-->
+		</select>	
+		<button id='add_btn' class="btn btn-success icon-plus">添加产品</button>
+		<button id='save_btn' class="btn btn-success icon-save">保存</button>
+		<table id="grid_dtl" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+		</table>													
+	</div>						
+</div>	
 
 <!--modal of products-->
 <div id="modal_products" class="modal fade" tabindex="-1">
@@ -70,10 +53,11 @@
 <!--<script src="assets/js/jqModal.min.js"></script>-->
 <!--
 <script src="assets/js/jquery.dataTables.min.js"></script>
-<script src="assets/js/jquery.dataTables.bootstrap.js"></script>-->
-<script src="assets/js/chosen.jquery.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
 <script src="assets/js/data-time/bootstrap-datepicker.min.js"></script>
 <script src="assets/js/data-time/bootstrap-datepicker.zh-CN.js"></script>
+-->
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 <script src="views/sale/new_sale_order.js"></script>
