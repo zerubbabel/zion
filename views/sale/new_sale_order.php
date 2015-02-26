@@ -8,11 +8,12 @@
 					<button id='save_btn' class="btn icon-save">保存</button>
 				</div>
 				<div class="col-sm-6">
-					<label for="cust" class="control-label no-padding-right">客户</label>
-					<?php //include '../../ajax/select_cust.php' ?>
+					<label for="cust" class="control-label no-padding-right">客户:</label>
+					<select id='cust'>
+						<!--<option value=0>--请选择--</option>-->
+					</select>			
 				</div>			
 			</div>	
-
 			
 			<div class="modal-body ">
 				<div class="col-xs-12">

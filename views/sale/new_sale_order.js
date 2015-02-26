@@ -3,12 +3,7 @@ var lastsel;
 var maxid=0;
 jQuery(function($) {
 	//客户
-	$(".chosen-select").chosen(); 
-	$(this).find('.chosen-container').each(function(){
-		$(this).find('a:first-child').css('width' , '210px');
-		$(this).find('.chosen-drop').css('width' , '210px');
-		$(this).find('.chosen-search input').css('width' , '200px');
-	});
+	loadCust();
 
 	//明细
 	loadDetail();
@@ -17,27 +12,48 @@ jQuery(function($) {
 	$('#add_btn').click(function(){
 		$('#modal_products').modal({show:true});
 		loadModalProducts();
-		
-		//jQuery("#grid_dtl").jqGrid('editGridRow',"new",{height:280,reloadAfterSubmit:false}); 
 	});
 
+	//产品过滤
 	$('#product_filter').keyup(function(){
 		doFilter(this.value);
 	})
 
 	//保存
 	$('#save_btn').click(function(){
-		if(newSaleOrderMst()){
-			newSaleOrderDtl();
+		var mst_id=newSaleOrderMst();	
+		if(mst_id>0){	
+			//alert(mst_id);		
+			newSaleOrderDtl(mst_id);
 		}
 	});
 });
 
 function newSaleOrderMst(){
-	return true;
+	var cust_id=$('#cust').val();
+	var datas=[];
+	datas.push(cust_id);
+	var cols=['cust_id'];
+	var table='sale_order_mst';	
+	return exeSql('insertMst',table,cols,datas);
 }
 
-function newSaleOrderDtl(){
+function newSaleOrderDtl(mst_id){
+	var optype='insertDtl';
+	var table='sale_order_dtl';
+	var cols=['mst_id','product_id','qty'];
+	var trs=$("#grid_dtl tr");
+	for (var i=1;i<trs.length;i++){
+		var datas=[mst_id];
+		var product_id=trs[i].id;
+		var qty=$('#'+product_id+'_qty').val();
+		datas.push(product_id);
+		datas.push(qty);
+		if (!(exeSql(optype,table,cols,datas)>0)){
+			return false;
+		}
+	}
+	//window.location.href="index.php#/views/sale/sale_order";
 	return true;
 }
 
@@ -105,7 +121,6 @@ function add_new(){
 
 }
 
-
 function loadModalProducts(){
 	jQuery("#modal_tbl_products").jqGrid({
 		url:'ajax/get_products.php',
@@ -136,8 +151,7 @@ function loadModalProducts(){
 					if (su){
 						$('#grid_dtl').jqGrid('editRow',newid);
 					}
-				}
-				
+				}				
 			}
 		},	
 	});
@@ -168,4 +182,21 @@ function delProduct(e){
 		}
 		i++;
 	})
+}
+
+function loadCust(){
+	$.ajax({
+		type:"get",
+		url:"ajax/get_custs.php",
+		success:function(data){
+			if (data != null) {
+		        var jsonobj=eval(data);		        
+		        var length=jsonobj.length;
+		        var selector=$('#cust');
+		        for(var i=0;i<length;i++){  		       
+		        	selector.append("<option value='"+jsonobj[i].id+"' >"+jsonobj[i].cust_name+"</option>");
+		        }
+		    }
+		}
+	});
 }

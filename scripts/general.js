@@ -1,3 +1,24 @@
+//执行insert,delete,update
+function exeSql(optype,table,cols,datas){
+	var ans;
+	$.ajax({
+		type:'post',
+		url:'ajax/exe.php',
+		async:false,
+		data:{'cols':cols,'table':table,'data':datas,'type':optype},
+		success:function(data){
+			if(data!=null){			
+				ans=eval(data);
+				return eval(data);
+			}	
+		},
+		error:function(){
+			ans=-1;
+			return -1;
+		}
+	});
+	return ans;
+}
 function get_custs(){
 	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
 	//动态生成select内容
