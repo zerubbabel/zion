@@ -11,6 +11,10 @@
 			$data = Sale::getSaleOrderDtlById($para['id']);
 			echo json_encode($data);
 			break;
+		case 'saleOutAllBySaleOrderId':
+			$data = Sale::getSaleOutAllBySaleOrderId($para['id']);
+			echo json_encode($data);
+			break;	
 		default:
 			# code...
 			break;

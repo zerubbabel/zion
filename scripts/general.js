@@ -19,7 +19,7 @@ function exeSql(optype,table,cols,datas){
 	});
 	return ans;
 }
-
+//获得json数据
 function getJsonData(para){
 	var ans;
 	$.ajax({
@@ -40,6 +40,26 @@ function getJsonData(para){
 		}
 	});
 	return ans;
+}
+//验证显示错误信息及取消错误信息显示
+function unShowError(ele){	
+	var error_id='error_'+ele.attr('id');
+	ele.insertAfter('#'+error_id);
+	$('#'+error_id).remove();
+}
+function showError(ele,msg){
+	var error_id='error_'+ele.attr('id');
+	var msg_id='msg_'+ele.attr('id');
+	if ($('#'+error_id).length==0){
+		var html='<div class="form-group has-error" id="'+error_id+'">'+
+			'<span class="block input-icon "></span>'+
+			'<div class="help-block inline" id="'+msg_id+'">'+msg+'</div>'+
+			'</div>';
+		ele.wrap(html);
+	}
+	else{
+		$("#"+msg_id).text(msg);
+	}
 }
 /*
 function get_custs(){

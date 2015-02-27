@@ -36,8 +36,23 @@ class Sale extends Base {
 		
 		$sql="select product_id,product_name,qty from sale_order_dtl 
 			left join products on sale_order_dtl.product_id=products.id 
-			where sale_order_dtl.mst_id=".$id;
-		//var_dump($sql);	
+			where sale_order_dtl.mst_id=".$id." order by product_id";
+		
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function getSaleOutAllBySaleOrderId($id) {
+		$db=self::__instance();
+		
+		$sql="select product_id,product_name,sum(qty) as out_qty from sale_out_dtl 
+			left join products on sale_out_dtl.product_id=products.id 
+			where sale_out_dtl.sale_order_mst_id=$id 
+			GROUP BY sale_out_dtl.product_id 
+			order by product_id";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;

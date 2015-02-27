@@ -435,6 +435,9 @@
 		<script src="assets/js/jquery.slimscroll.min.js"></script>
 		<script src="assets/js/jquery.easy-pie-chart.min.js"></script>
 		<script src="assets/js/jquery.sparkline.min.js"></script>
+		<script src="assets/js/jquery.validate.min.js"></script>	
+		<!--<script src="assets/js/jquery.metadata.js"></script>-->
+		<script src="assets/js/messages_zh.min.js"></script>
 		<script src="assets/js/flot/jquery.flot.min.js"></script>
 		<script src="assets/js/flot/jquery.flot.pie.min.js"></script>
 		<script src="assets/js/flot/jquery.flot.resize.min.js"></script>
