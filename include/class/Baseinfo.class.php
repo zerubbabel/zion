@@ -21,4 +21,14 @@ class Baseinfo extends Base {
 		}
 		return array ();
 	}
+
+	public static function getLoc() {
+		$db=self::__instance();
+		$sql="select id,name from locations";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
 }

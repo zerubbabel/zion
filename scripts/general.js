@@ -61,6 +61,17 @@ function showError(ele,msg){
 		$("#"+msg_id).text(msg);
 	}
 }
+
+function loadLoc(selector){
+	var para={'method':'getLoc'};
+	var data=getJsonData(para);
+	var jsonobj=eval(data);		        
+    var length=jsonobj.length;		      
+    for(var i=0;i<length;i++){  		       
+    	selector.append("<option value='"+jsonobj[i].id+"' >"+jsonobj[i].name+"</option>");
+    }
+}
+
 /*
 function get_custs(){
 	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";

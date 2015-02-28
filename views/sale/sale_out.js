@@ -1,8 +1,9 @@
 var mst_data;
 var dtl_data;
 $(document).ready(function(){
+
 	setTitle();
-	
+	loadLoc($('#loc'));
 	if(select_obj['sale_order_id']){
 		loadSaleMst(select_obj['sale_order_id']);		
 		loadSaleDtl(select_obj['sale_order_id']);
@@ -11,7 +12,6 @@ $(document).ready(function(){
 		toTabSelect();	
 	}
 	
-
 	$("#btn_select").click(function(){
 		window.location.href="index.php#/views/sale/sale_order";
 	});
@@ -25,6 +25,7 @@ function saveSaleOut(){
 	var mst_id=newSaleOutMst(select_obj['sale_order_id']);	
 	if(mst_id>0){			
 		newSaleOutDtl(mst_id,select_obj['sale_order_id']);
+		//window.location.href="index.php#/views/sale/sale_out_list";
 	}
 }
 //出库数量验证
@@ -49,7 +50,9 @@ function checkQty(){
 function newSaleOutMst(sale_order_id){
 	var datas=[];
 	datas.push(sale_order_id);
-	var cols=['sale_order_mst_id'];
+	var loc_id=$('#loc').val();
+	datas.push(loc_id);
+	var cols=['sale_order_mst_id','loc_id'];
 	var table='sale_out_mst';	
 	return exeSql('insertMst',table,cols,datas);
 }
@@ -70,7 +73,6 @@ function newSaleOutDtl(mst_id,order_id){
 			return false;
 		}
 	}
-	//window.location.href="index.php#/views/sale/sale_order";
 	return true;
 }
 
@@ -120,7 +122,7 @@ function loadSaleDtl(id){
 	var validate_rule={};
 	$.each(dtl_data,function(){
 		$('#tbl_dtl').jqGrid('editRow',this.product_id);	
-		//验证
+		//验证规则
 		var input_id=this.product_id+"_out_qty";
 		var ele=$("#"+input_id);
 		var width=ele.width();
@@ -128,15 +130,12 @@ function loadSaleDtl(id){
 		ele.attr('name',input_id);
 		var v_class={required:true,digits:true,range:[0,parseInt(this.qty)]};
 		validate_rule[input_id]=v_class;
-		ele.addClass(v_class);
 	});
 	//验证,submit
 	 $("#frm").validate({
 	 	rules:validate_rule,
         submitHandler:function(form){
         	saveSaleOut();
-            //alert("submitted");          
-            //form.submit();
         }    
     });
 }

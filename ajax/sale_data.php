@@ -15,6 +15,10 @@
 			$data = Sale::getSaleOutAllBySaleOrderId($para['id']);
 			echo json_encode($data);
 			break;	
+		case 'getLoc':
+			$data = Baseinfo::getLoc();
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;
