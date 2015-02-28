@@ -31,4 +31,14 @@ class Baseinfo extends Base {
 		}
 		return array ();
 	}
+
+	public static function getProductById($id) {
+		$db=self::__instance();
+		$sql="select * from products where id=$id";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list[0];
+		}
+		return array ();
+	}
 }

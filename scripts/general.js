@@ -41,6 +41,29 @@ function getJsonData(para){
 	});
 	return ans;
 }
+//执行操作并返回json数据
+function exeJson(para){
+	var ans;
+	$.ajax({
+		type:'post',
+		dataType: 'json',//important
+		url:'ajax/exe_json.php',
+		async:false,
+		data:{'para':para},
+		success:function(data){		
+			if(data!=null){		
+				ans=data;
+				return data;
+			}	
+		},
+		error:function(){
+			ans=false;
+			return false;
+		}
+	});
+	return ans;
+}
+
 //验证显示错误信息及取消错误信息显示
 function unShowError(ele){	
 	var error_id='error_'+ele.attr('id');

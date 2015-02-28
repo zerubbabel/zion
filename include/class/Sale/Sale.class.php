@@ -60,4 +60,107 @@ class Sale extends Base {
 		return array ();
 	}
 
+	public static function insertSaleOutMst($mst_data) {
+		$db=self::__instance();		
+		$createday=date('Y-m-d H:i:s');		
+		$op_id=$_SESSION['user_info']['user_id'];
+		$data=array('sale_order_mst_id'=>$mst_data['sale_order_mst_id'],
+			'loc_id'=>$mst_data['loc_id'],
+			'createday'=>$createday,
+			'op_id'=>$op_id);
+		$ans=array();
+		$id=$db->insert('sale_out_mst',$data);
+		if($id){
+			$ans['status']=true;
+			$ans['id']=$id;			
+		}else{			
+			$ans['status']=false;
+			$ans['error_msg']=$db->error()[2].'sale out mst fail!';
+		}
+		return $ans;
+	}
+
+	public static function insertSaleOutDtl($dtl_data,$mst_id,$loc_id) {
+		//明细表有一条成功status就为true全失败为false
+		$ans=array();
+		$status=false;
+		$db=self::__instance();
+		for($i=0;$i<count($dtl_data);$i++){
+			$data=array('product_id'=>$dtl_data[$i]['product_id'],
+				'qty'=>$dtl_data[$i]['qty'],
+				'mst_id'=>$mst_id);
+			$id=$db->insert('sale_out_dtl',$data);
+			if($id){
+				$status=true;
+				Stock::updateStock($dtl_data[$i]['product_id'],$dtl_data[$i]['qty'],$loc_id);
+			}else{
+				$ans['msg']=$db->error();
+			}
+
+		}
+		$ans['status']=$status;
+		return $ans;
+	}
+
+	public static function deleteSaleOutMst($mst_id) {
+		$db=self::__instance();
+		$where=array('id'=>$mst_id);
+		$id=$db->delete('sale_out_mst',$where);
+		if($id){
+			return array('status' =>true);
+		}else{
+			return array('status' =>false,'msg'=>$db->error());
+		}
+	}
+
+
+	public static function updateSaleOrderStatus($mst_id) {
+		//todo
+		$db=self::__instance();
+		$where=array('id'=>$mst_id);
+		$id=$db->delete('sale_out_mst',$where);
+
+		if($id){
+			return array('status' =>true);
+		}else{
+			return array('status' =>false,'msg'=>$db->error());
+		}
+	}
+
+	public static function insertSaleOutOrder($mst_data,$dtl_data) {
+		$db=self::__instance();
+		$result=Stock::checkStock($dtl_data,$mst_data['loc_id']);//检查库存情况
+		$ans=array();
+		if ($result['status']){
+			$result=Sale::insertSaleOutMst($mst_data);//插入主表
+			if($result['status']){
+				$mst_id=$result['id'];
+				$result=Sale::insertSaleOutDtl($dtl_data,$mst_id,$mst_data['loc_id']);//插入明细表并更新库存
+				if($result['status']){//明细表有一条成功status就为true
+					Sale::updateSaleOrderStatus($mst_id);//判断并更新销售单状态为完成
+				}else{
+					Sale::deleteSaleOutMst($mst_id);//删除主表
+					$ans['status']=false;
+					$ans['error_msg']='操作失败！';
+				}
+			}
+			else{
+				$ans['error_msg']=$result['error_msg'];
+				$ans['status']=false;
+			}
+		}
+		else{//库存不足
+			$ans['error_msg']='';
+			for ($i=0;$i<count($result['error_indexs']);$i++){
+				$product_id=$dtl_data[$result['error_indexs'][$i]]['product_id'];			
+				$product_name=Baseinfo::getProductById($product_id)['product_name'];		
+				$ans['error_msg'].=$product_name.',';
+			}
+			$ans['error_msg'].='库存不足！';
+			$ans['status']=false;
+		}
+		return $ans;
+	}
+
+
 }

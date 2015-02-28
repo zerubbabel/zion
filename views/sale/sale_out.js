@@ -21,12 +21,30 @@ $(document).ready(function(){
 	
 })
 function saveSaleOut(){
+	var para={'method':'insertSaleOutOrder'};
+	var mst_data={'sale_order_mst_id':select_obj['sale_order_id'],'loc_id':$('#loc').val()};
+	para['mst_data']=mst_data;
+	var dtl_data={};
+	var trs=$("#tbl_dtl tr");
+	for (var i=1;i<trs.length;i++){
+		//debugger
+		dtl_data[i-1]={};		
+		dtl_data[i-1]['product_id']=trs[i].id;
+		var qty=$('#'+trs[i].id+'_out_qty').val();
+		dtl_data[i-1]['qty']=qty;
+		dtl_data[i-1]['sale_order_mst_id']=select_obj['sale_order_id'];
+	}
+	para['dtl_data']=dtl_data;
+	var result=exeJson(para);
+	
+	/*
 	//库存变动待操作,订单销售完成处理
 	var mst_id=newSaleOutMst(select_obj['sale_order_id']);	
 	if(mst_id>0){			
 		newSaleOutDtl(mst_id,select_obj['sale_order_id']);
 		//window.location.href="index.php#/views/sale/sale_out_list";
 	}
+	*/
 }
 //出库数量验证
 function checkQty(){
