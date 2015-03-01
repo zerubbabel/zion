@@ -36,6 +36,7 @@
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
 		<link rel="stylesheet" href="assets/css/custom.css" />
+		<link rel="stylesheet" href="assets/css/jquery.gritter.css" />
 		<!--[if lte IE 8]>
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
@@ -415,6 +416,10 @@
 			</a>
 		</div><!-- /.main-container -->
 
+		<!-- loading -->
+		<div id="fullbg"></div>
+		<img width="50" id="loading" alt="" src="assets/svg-loaders/tail-spin.svg">
+
 		<!-- basic scripts -->
 
 		<script src="../jquery2.0.3/jquery-2.0.3.min.js"></script>
@@ -441,6 +446,7 @@
 		<script src="assets/js/flot/jquery.flot.min.js"></script>
 		<script src="assets/js/flot/jquery.flot.pie.min.js"></script>
 		<script src="assets/js/flot/jquery.flot.resize.min.js"></script>
+		<script src="assets/js/jquery.gritter.min.js"></script>
 
 		<!-- ace scripts -->
 

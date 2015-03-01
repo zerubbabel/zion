@@ -35,15 +35,17 @@ function getJsonData(para){
 			}	
 		},
 		error:function(){
-			ans=false;
+			ans=false;			
 			return false;
 		}
-	});
+	});	
+	closeLoading();
 	return ans;
 }
 //执行操作并返回json数据
 function exeJson(para){
 	var ans;
+	showLoading();
 	$.ajax({
 		type:'post',
 		dataType: 'json',//important
@@ -53,14 +55,17 @@ function exeJson(para){
 		success:function(data){		
 			if(data!=null){		
 				ans=data;
+				closeLoading();
 				return data;
 			}	
 		},
 		error:function(){
 			ans=false;
+			closeLoading();
 			return false;
 		}
 	});
+	closeLoading();
 	return ans;
 }
 
@@ -93,6 +98,24 @@ function loadLoc(selector){
     for(var i=0;i<length;i++){  		       
     	selector.append("<option value='"+jsonobj[i].id+"' >"+jsonobj[i].name+"</option>");
     }
+}
+
+//显示jQuery 遮罩层
+function showLoading() {
+	//debugger
+    var bh = $("body").height();
+    var bw = $("body").width();
+    $("#fullbg").css({
+        height:bh,
+        width:bw,
+        display:"block"
+    });
+	
+    $("#loading").show();
+}
+//关闭灰色 jQuery 遮罩
+function closeLoading() {
+    $("#fullbg,#loading").hide();
 }
 
 /*

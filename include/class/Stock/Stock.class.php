@@ -31,7 +31,7 @@ class Stock extends Base {
 		return $ans;
 	}
 
-	public static function updateStockd($product_id,$qty,$loc_id) {
+	public static function updateStock($product_id,$qty,$loc_id) {
 		$db=self::__instance();
 		$data=array('qty[+]'=>$qty);
 		$where=array('product_id'=>$product_id,'loc_id'=>$loc_id);
@@ -39,7 +39,7 @@ class Stock extends Base {
 		if($id){
 			return array('status'=>true);
 		}else{
-			return array('status'=false,'msg'=>$db->error());
+			return array('status'=>false,'msg'=>$db->error());
 		}
 		
 	}

@@ -75,7 +75,7 @@ class Sale extends Base {
 			$ans['id']=$id;			
 		}else{			
 			$ans['status']=false;
-			$ans['error_msg']=$db->error()[2].'sale out mst fail!';
+			$ans['msg']=$db->error()[2].'sale out mst fail!';
 		}
 		return $ans;
 	}
@@ -116,15 +116,7 @@ class Sale extends Base {
 
 	public static function updateSaleOrderStatus($mst_id) {
 		//todo
-		$db=self::__instance();
-		$where=array('id'=>$mst_id);
-		$id=$db->delete('sale_out_mst',$where);
 
-		if($id){
-			return array('status' =>true);
-		}else{
-			return array('status' =>false,'msg'=>$db->error());
-		}
 	}
 
 	public static function insertSaleOutOrder($mst_data,$dtl_data) {
@@ -138,25 +130,27 @@ class Sale extends Base {
 				$result=Sale::insertSaleOutDtl($dtl_data,$mst_id,$mst_data['loc_id']);//插入明细表并更新库存
 				if($result['status']){//明细表有一条成功status就为true
 					Sale::updateSaleOrderStatus($mst_id);//判断并更新销售单状态为完成
+					$ans['status']=true;
+					$ans['msg']='操作成功！';
 				}else{
 					Sale::deleteSaleOutMst($mst_id);//删除主表
 					$ans['status']=false;
-					$ans['error_msg']='操作失败！';
+					$ans['msg']='操作失败！';
 				}
 			}
 			else{
-				$ans['error_msg']=$result['error_msg'];
+				$ans['msg']=$result['msg'];
 				$ans['status']=false;
 			}
 		}
 		else{//库存不足
-			$ans['error_msg']='';
+			$ans['msg']='';
 			for ($i=0;$i<count($result['error_indexs']);$i++){
 				$product_id=$dtl_data[$result['error_indexs'][$i]]['product_id'];			
 				$product_name=Baseinfo::getProductById($product_id)['product_name'];		
 				$ans['error_msg'].=$product_name.',';
 			}
-			$ans['error_msg'].='库存不足！';
+			$ans['msg'].='库存不足！';
 			$ans['status']=false;
 		}
 		return $ans;

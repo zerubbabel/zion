@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../jquery2.0.3/jquery-2.0.3.min.js"></script>
+<link rel="stylesheet" href="c.css" />
+
+</head>
+<body>
+<div id="main"><a onclick="showBg();" href="#">点击这里看 jQuery 遮罩层效果.</a></div>
+<div id="fullbg"></div>
+<img width="50" id="dialog" alt="" src="svg-loaders/tail-spin.svg">
+<script type="text/javascript">
+//显示灰色 jQuery 遮罩层
+function showBg() {
+    var bh = $("body").height();
+    var bw = $("body").width();
+    $("#fullbg").css({
+        height:bh,
+        width:bw,
+        display:"block"
+    });
+	
+    $("#dialog").show();
+}
+//关闭灰色 jQuery 遮罩
+function closeBg() {
+    $("#fullbg,#dialog").hide();
+}
+</script>
+</body>
+</html>

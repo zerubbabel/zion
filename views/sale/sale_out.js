@@ -36,7 +36,20 @@ function saveSaleOut(){
 	}
 	para['dtl_data']=dtl_data;
 	var result=exeJson(para);
-	
+	var $path_assets = "assets";
+	var class_name;
+	if(result['status']){
+		class_name='gritter-success';
+	}else{
+		class_name='gritter-error';
+	}
+	$.gritter.add({
+		title: '提醒:',
+		text: result['msg'],
+		image: $path_assets+'/avatars/avatar1.png',
+		class_name: class_name
+	});
+
 	/*
 	//库存变动待操作,订单销售完成处理
 	var mst_id=newSaleOutMst(select_obj['sale_order_id']);	
