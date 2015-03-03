@@ -2,9 +2,9 @@
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Baseinfo extends Base {
 	//列表 
-	public static function getCusts() {
+	public static function getCust() {
 		$db=self::__instance();
-		$sql="select * from customers";
+		$sql="select id,cust_name as name from customers";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;

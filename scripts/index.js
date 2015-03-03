@@ -67,6 +67,18 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
       resolve: {
         async: ['$q', '$location', auth]
       }
+    })
+    .when('/views/work/work_draw_list', {
+      templateUrl: 'views/work/work_draw_list.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/outsource/os_order', {
+      templateUrl: 'views/outsource/os_order.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
     });
     $routeProvider.otherwise({      
       redirectTo: '/'

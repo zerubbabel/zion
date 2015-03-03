@@ -34,12 +34,10 @@ function saveSaleOut(){
 	var dtl_data={};
 	var trs=$("#tbl_dtl tr");
 	for (var i=1;i<trs.length;i++){
-		//debugger
 		dtl_data[i-1]={};		
 		dtl_data[i-1]['product_id']=trs[i].id;
 		var qty=$('#'+trs[i].id+'_out_qty').val();
-		dtl_data[i-1]['qty']=qty;
-		//dtl_data[i-1]['sale_order_mst_id']=select_obj['sale_order_id'];
+		dtl_data[i-1]['qty']=qty;		
 	}
 	para['dtl_data']=dtl_data;
 	var result=exeJson(para);
@@ -101,15 +99,6 @@ function loadSaleDtl(id){
 		var loc_id=$('#loc').val();					
 		var v_class={required:true,digits:true,range:[0,parseInt(this.qty)]};
 		addValidate(input_id,v_class);	
-		/*
-		//验证规则
-		var input_id=this.product_id+"_out_qty";
-		var ele=$("#"+input_id);
-		var width=ele.width();
-		ele.width(Math.round(width/2));
-		ele.attr('name',input_id);
-		var v_class={required:true,digits:true,range:[0,parseInt(this.qty)]};
-		validate_rule[input_id]=v_class;*/
 	});	
 }
 

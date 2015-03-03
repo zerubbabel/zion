@@ -85,6 +85,16 @@ function loadLoc(selector){
     }    
 }
 
+function loadCust(selector){
+	var para={'method':'getCust'};
+	var data=getJsonData(para);
+	var jsonobj=eval(data);		        
+    var length=jsonobj.length;		      
+    for(var i=0;i<length;i++){  		       
+    	selector.append("<option value='"+jsonobj[i].id+"' >"+jsonobj[i].name+"</option>");
+    }    
+}
+
 //显示jQuery 遮罩层
 function showLoading() {
 	//debugger

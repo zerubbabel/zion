@@ -19,6 +19,10 @@
 			$data = Baseinfo::getLoc();
 			echo json_encode($data);
 			break;	
+		case 'getCust':
+			$data = Baseinfo::getCust();
+			echo json_encode($data);
+			break;	
 		default:
 			# code...
 			break;

@@ -1,18 +1,27 @@
 var products=[];
 var lastsel;
-var maxid=0;
 jQuery(function($) {
 	setTitle();
 	//客户
-	loadCust();
+	loadCust($('#cust'));
 
 	//明细
 	loadDetail();
 	
+	//验证
+	$("#frm").validate({
+		submitHandler:function(form){			
+			var mst_id=newSaleOrderMst();	
+			if(mst_id>0){			
+				newSaleOrderDtl(mst_id);
+			}
+		}
+	})
 	//新增产品
 	$('#add_btn').click(function(){
 		$('#modal_products').modal({show:true});
 		loadModalProducts();
+		return false;
 	});
 
 	//产品过滤
@@ -22,11 +31,7 @@ jQuery(function($) {
 
 	//保存
 	$('#save_btn').click(function(){
-		var mst_id=newSaleOrderMst();	
-		if(mst_id>0){	
-			//alert(mst_id);		
-			newSaleOrderDtl(mst_id);
-		}
+		
 	});
 });
 
@@ -85,43 +90,6 @@ function loadDetail(){
 	});
 }
 
-function add_new(){
-    $("#addBtn").bind("click", function() {  
-            $("#jqGridId").jqGrid('addRow',{  
-                rowID : "new_row",  
-                initdata : {},  
-                position :"first",  
-                useDefValues : true,  
-                useFormatter : true,  
-                addRowParams : {extraparam:{  
-                      
-                }}  
-            });  
-            //当前新增id进入可编辑状态  
-            $('#jqGridId').jqGrid('editRow','new_row',{  
-                keys : true,        //这里按[enter]保存  
-                url: s2web.appURL + "jq/save.action",  
-                mtype : "POST",  
-                restoreAfterError: true,  
-                extraparam: {  
-                },  
-                oneditfunc: function(rowid){  
-                    console.log(rowid);  
-                },  
-                succesfunc: function(response){  
-                    alert("save success");  
-                    return true;  
-                },  
-                errorfunc: function(rowid, res){  
-                    console.log(rowid);  
-                    console.log(res);  
-                }  
-            });  
-          
-    });   
-
-}
-
 function loadModalProducts(){
 	jQuery("#modal_tbl_products").jqGrid({
 		url:'ajax/get_products.php',
@@ -142,15 +110,20 @@ function loadModalProducts(){
 						flag=true;
 						return false;
 					}
-				})
-				
+				})				
 				if (!flag){					
-					products.push(datarow);
-					maxid++;
-					var newid=maxid;//$("#grid_dtl").getGridParam("reccount")+1;					
+					products.push(datarow);					
+					var newid=id;
 					var su=$('#grid_dtl').addRowData(newid, datarow, "last");						
 					if (su){
 						$('#grid_dtl').jqGrid('editRow',newid);
+						var input_id=id+"_qty";
+						var ele=$("#"+input_id);
+						var width=ele.width();
+						var td_width=ele.parent().width();
+						ele.width(Math.round(td_width/2));						
+						var v_class={required:true,digits:true};
+						addValidate(input_id,v_class);	
 					}
 				}				
 			}
@@ -185,6 +158,7 @@ function delProduct(e){
 	})
 }
 
+/*
 function loadCust(){
 	$.ajax({
 		type:"get",
@@ -200,4 +174,4 @@ function loadCust(){
 		    }
 		}
 	});
-}
+}*/

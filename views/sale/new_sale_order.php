@@ -1,16 +1,17 @@
-﻿<div class="row">
+﻿<form id="frm">
+<div class="row">
 	<div class="col-xs-12">
 		<label for="cust" class="control-label no-padding-right">客户:</label>
 		<select id='cust'>
 			<!--<option value=0>--请选择--</option>-->
 		</select>	
 		<button id='add_btn' class="btn btn-success icon-plus">添加产品</button>
-		<button id='save_btn' class="btn btn-success icon-save">保存</button>
+		<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
 		<table id="grid_dtl" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
 		</table>													
 	</div>						
 </div>	
-
+</form>
 <!--modal of products-->
 <div id="modal_products" class="modal fade" tabindex="-1">
 	<div class="modal-dialog">
