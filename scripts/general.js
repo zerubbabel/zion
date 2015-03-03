@@ -1,6 +1,7 @@
 ﻿//执行insert,delete,update
 function exeSql(optype,table,cols,datas){
 	var ans;
+	showLoading();
 	$.ajax({
 		type:'post',
 		url:'ajax/exe.php',		
@@ -9,11 +10,13 @@ function exeSql(optype,table,cols,datas){
 		success:function(data){
 			if(data!=null){			
 				ans=eval(data);
+				closeLoading();
 				return eval(data);
 			}	
 		},
 		error:function(){
 			ans=-1;
+			closeLoading();
 			return -1;
 		}
 	});
@@ -22,6 +25,7 @@ function exeSql(optype,table,cols,datas){
 //获得json数据
 function getJsonData(para){
 	var ans;
+	showLoading();
 	$.ajax({
 		type:'get',
 		dataType: 'json',//important
@@ -31,11 +35,13 @@ function getJsonData(para){
 		success:function(data){
 			if(data!=null){		
 				ans=data;
+				closeLoading()
 				return data;
 			}	
 		},
 		error:function(){
-			ans=false;			
+			ans=false;		
+			closeLoading();	
 			return false;
 		}
 	});	
@@ -69,27 +75,6 @@ function exeJson(para){
 	return ans;
 }
 
-//验证显示错误信息及取消错误信息显示
-function unShowError(ele){	
-	var error_id='error_'+ele.attr('id');
-	ele.insertAfter('#'+error_id);
-	$('#'+error_id).remove();
-}
-function showError(ele,msg){
-	var error_id='error_'+ele.attr('id');
-	var msg_id='msg_'+ele.attr('id');
-	if ($('#'+error_id).length==0){
-		var html='<div class="form-group has-error" id="'+error_id+'">'+
-			'<span class="block input-icon "></span>'+
-			'<div class="help-block inline" id="'+msg_id+'">'+msg+'</div>'+
-			'</div>';
-		ele.wrap(html);
-	}
-	else{
-		$("#"+msg_id).text(msg);
-	}
-}
-
 function loadLoc(selector){
 	var para={'method':'getLoc'};
 	var data=getJsonData(para);
@@ -97,7 +82,7 @@ function loadLoc(selector){
     var length=jsonobj.length;		      
     for(var i=0;i<length;i++){  		       
     	selector.append("<option value='"+jsonobj[i].id+"' >"+jsonobj[i].name+"</option>");
-    }
+    }    
 }
 
 //显示jQuery 遮罩层
@@ -113,60 +98,69 @@ function showLoading() {
 	
     $("#loading").show();
 }
-//关闭灰色 jQuery 遮罩
+//关闭jQuery 遮罩
 function closeLoading() {
     $("#fullbg,#loading").hide();
 }
 
-/*
-function get_custs(){
-	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
-	//动态生成select内容
-	var str="";
-	$.ajax({
-		type:"get",
-		async:false,
-		url:"ajax/get_custs.php",
-		success:function(data){
-			if (data != null) {
-	        var jsonobj=eval(data);	        
-	        var length=jsonobj.length;
-	        for(var i=0;i<length;i++){  
-	            if(i!=length-1){
-	            	str+=jsonobj[i].id+":"+jsonobj[i].cust_name+";";
-	            }else{
-	              	str+=jsonobj[i].id+":"+jsonobj[i].cust_name;
-	            }
-	         }   
+//jqgrid
+//replace icons with FontAwesome icons like above
+function updatePagerIcons(table) {
+	var replacement = 
+	{
+		'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
+		'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
+		'ui-icon-seek-next' : 'icon-angle-right bigger-140',
+		'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
+	};
+	$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+		var icon = $(this);
+		var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+		
+		if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+	})
+}	
 
-	        }
-		}
-	});	
-	return str;	
+function enableTooltips(table) {
+	$('.navtable .ui-pg-button').tooltip({container:'body'});
+	$(table).find('.ui-pg-div').tooltip({container:'body'});
 }
 
-function get_products(){
-	var str="";
-	$.ajax({
-		type:"get",
-		async:false,
-		url:"ajax/get_products.php",
-		success:function(data){
-			if (data != null) {
-	        var jsonobj=eval(data);
-	        
-	        var length=jsonobj.length;
-	        for(var i=0;i<length;i++){  
-	            if(i!=length-1){
-	            	str+=jsonobj[i].id+":"+jsonobj[i].name+";";
-	            }else{
-	              	str+=jsonobj[i].id+":"+jsonobj[i].name;
-	            }
-	         }   
-
-	        }
+//计算订单剩余数量
+function calRealData(order_data,out_data){
+	for (var i =0; i<order_data.length; i++) {
+		var product_id=order_data[i]['product_id'];
+		var order_qty=parseInt(order_data[i]['qty']);
+		for(var j=0;j<out_data.length;j++){
+			var id=out_data[j]['product_id'];
+			var out_qty=parseInt(out_data[j]['qty']);
+			if (product_id==id){
+				order_data[i]['qty']=order_qty-out_qty;
+			}
 		}
-	});	
-	return str;	
+	}
+	return order_data;
 }
-*/
+
+function showMsg(result){
+	var $path_assets = "assets";
+	var class_name;
+	if(result['status']){
+		class_name='gritter-success';
+	}else{
+		class_name='gritter-error';
+	}
+	$.gritter.add({
+		title: '提醒:',
+		text: result['msg'],
+		image: $path_assets+'/avatars/avatar1.png',
+		class_name: class_name
+	});
+}
+
+function addValidate(input_id,v_class){
+	//验证规则											
+	var ele=$("#"+input_id);	
+	ele.attr('name',input_id);				
+	ele.rules("add",v_class);
+}

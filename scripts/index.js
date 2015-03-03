@@ -44,6 +44,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/sale/sale_out_list', {
+      templateUrl: 'views/sale/sale_out_list.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/sale/sale_order_maintain', {
       templateUrl: 'views/sale/sale_order_maintain.php',
       resolve: {
@@ -52,6 +58,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
     })
     .when('/views/sale/new_sale_order', {
       templateUrl: 'views/sale/new_sale_order.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/work/work_draw', {
+      templateUrl: 'views/work/work_draw.php',
       resolve: {
         async: ['$q', '$location', auth]
       }

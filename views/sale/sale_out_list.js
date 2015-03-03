@@ -1,51 +1,42 @@
 ﻿var grid_data=[];
-var detail_data=[];
+var dtl_data=[];
 jQuery(function($) {
 	setTitle();
 	hideToolbar();
 	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
-	$.ajax({
-        url: "ajax/get_data.php",
-        async:false,
-        success: function(data){
-        	grid_data=jQuery.parseJSON(data);
-        }
-    });
+	var para={'method':'getSaleOutList'};
+	grid_data=exeJson(para);
 	
 	jQuery(grid_selector).jqGrid({
 		data: grid_data,
 		datatype: "local",
 		height: 400,
-		colNames:['订单日期','客户', '操作人员'],
+		colNames:['销售订单号','出库仓库','出库日期','客户', '操作人员'],
 		colModel:[
-			{name:'createday',index:'createday',width:90, editable:false},	
+			{name:'sale_order_mst_id',index:'sale_order_mst_id',width:90, editable:false},	
+			{name:'createday',index:'createday',width:90, editable:false},
+			{name:'loc_name',index:'loc_name',width:90, editable:false},
 			{name:'cust_name',index:'cust_name', width:90,editable: false},		
 			{name:'user_name',index:'user_name', width:90, editable: false} 
 		], 
-
-		viewrecords : true,
 		rowNum:10,
 		rowList:[10,20,30],
 		pager : pager_selector,
-		altRows: true,		
-		multiselect: false,
-        multiboxonly: true,
-        onSelectRow:function(id){
+        onSelectRow:function(id){            
         	if(id==null){
-        		id=0;
-        		if(jQuery("#list_d").jqGrid('getGridParam','record')>0){
-        			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1});
-        			jQuery("#list_d").jqGrid('setCaption','销售订单明细:'+id)
-        			.trigger('reloadGrid');
-        		}
-        	}
-    		else{
+        		var para={};          		
+        		$("#list_d").jqGrid('setGridParam',{url:'ajax/exe_json.php',postData:{'para':para},})
+        		.trigger('reloadGrid');
+        	}else{        	
     			select_obj['sale_order_id']=id;
     			showToolbar();
-    			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1});
-    			jQuery("#list_d").jqGrid('setCaption','销售订单明细:'+id)
+    			var para={'method':'getSaleOutDtlById','id':id};
+    			
+    			dtl_data=getJsonData(para); 
+    					    	
+    			$("#list_d").jqGrid('setGridParam',{url:'ajax/exe_json.php',postData:{'para':para},})
     			.trigger('reloadGrid');	
     		}
         },
@@ -57,16 +48,18 @@ jQuery(function($) {
 			}, 0);
 		},
 
-		caption: "销售订单列表",
+		caption: "销售出库单列表",
 		autowidth: true,
 	});
 	loadDetail();	
 });
-function loadDetail(id){
+function loadDetail(para){
 	jQuery("#list_d").jqGrid({
-		url:'views/sale/sale_order_data.php?q=del&id='+id,
+		url:'ajax/exe_json.php',
+		mtype:'post',
 		datatype: "json",
-		height: 350,
+		postData:{'para':para},
+		height: 250,
 		colNames:['产品', '数量'],
 		colModel:[
 			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
@@ -80,14 +73,14 @@ function loadDetail(id){
 		sortname:'item',
 		viewrecords:true,
 		sortorder:'asc',
-		caption:'销售订单明细',	
+		caption:'销售出库单明细',	
 		autowidth: true,		
 	});
 }
 
 function showToolbar(){
 	if($("#toolbar").children().length==0){
-		addBtnSaleOut();
+		//addBtnSaleOutBack();
 	}	
 	$("#toolbar").show();
 	
@@ -96,10 +89,11 @@ function showToolbar(){
 function hideToolbar(){
 	$("#toolbar").hide();
 }
-function addBtnSaleOut(){
-	var html='<button class="btn btn-success icon-check" id="btn_sale_out">生成销售出库</button>';
+//todo
+function addBtnSaleOutBack(){
+	var html='<button class="btn btn-success icon-check" id="btn_sale_out_back">生成销售出库退货单</button>';
 	$("#toolbar").append(html);
-	$("#btn_sale_out").click(function(){
-		window.location.href="index.php#/views/sale/sale_out";
+	$("#btn_sale_out_back").click(function(){
+		window.location.href="index.php#/views/sale/sale_out_back";
 	})
 }

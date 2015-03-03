@@ -16,6 +16,37 @@ class Sale extends Base {
 		return array ();
 	}
 
+	public static function getSaleOutList() {
+		$db=self::__instance();
+		
+		$sql="select a.id,a.createday,c.user_name,d.cust_name,
+			e.name as loc_name,a.sale_order_mst_id from sale_out_mst a
+			LEFT JOIN sale_order_mst b on a.sale_order_mst_id=b.id
+			left JOIN users c on a.op_id=c.user_id
+			LEFT JOIN customers d on d.id=b.cust_id
+			LEFT JOIN locations e on e.id=a.loc_id 
+			order by a.createday desc";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function getSaleOutDtlById($id) {
+		$db=self::__instance();
+		
+		$sql="select b.id,qty,b.product_name from sale_out_dtl a
+			LEFT JOIN products b on a.product_id=b.id
+			where mst_id=$id
+			ORDER BY b.id";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
 	public static function getSaleOrderMstById($id) {
 		$db=self::__instance();
 		$cols="sale_order_mst.id,cust_id,createday,op_id,cust_name,user_name";
@@ -48,11 +79,11 @@ class Sale extends Base {
 	public static function getSaleOutAllBySaleOrderId($id) {
 		$db=self::__instance();
 		
-		$sql="select product_id,product_name,sum(qty) as out_qty from sale_out_dtl 
-			left join products on sale_out_dtl.product_id=products.id 
-			where sale_out_dtl.sale_order_mst_id=$id 
-			GROUP BY sale_out_dtl.product_id 
-			order by product_id";
+		$sql="select a.product_id,sum(qty) as qty from sale_out_dtl a 
+			LEFT JOIN sale_out_mst b on a.mst_id=b.id		
+			where b.sale_order_mst_id=$id 
+			GROUP BY product_id 
+			order by a.product_id";	
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -148,7 +179,7 @@ class Sale extends Base {
 			for ($i=0;$i<count($result['error_indexs']);$i++){
 				$product_id=$dtl_data[$result['error_indexs'][$i]]['product_id'];			
 				$product_name=Baseinfo::getProductById($product_id)['product_name'];		
-				$ans['error_msg'].=$product_name.',';
+				$ans['msg'].=$product_name.',';
 			}
 			$ans['msg'].='库存不足！';
 			$ans['status']=false;

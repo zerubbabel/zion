@@ -16,4 +16,9 @@ define ( 'COMPANY_NAME' ,'锡安卫浴');
 $db_path=APP_ROOT.'/zion.db';
 define ( 'DB_NAME' ,$db_path);
 
+//订单状态
+define ( 'ORDER_COMPLETE' ,0);
+define ( 'ORDER_NORMAL' ,1);
+define ( 'ORDER_APPROVED' ,2);//验证通过
+define ( 'ORDER_DENY' ,3);//验证未通过
 ?>

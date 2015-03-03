@@ -106,4 +106,4 @@
 <script src="assets/js/data-time/bootstrap-datepicker.zh-CN.js"></script>
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
-<script src="views/sale/sale_order.js"></script>
+<script src="views/sale/sale_order_maintain.js"></script>

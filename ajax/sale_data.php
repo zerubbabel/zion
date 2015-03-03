@@ -18,7 +18,7 @@
 		case 'getLoc':
 			$data = Baseinfo::getLoc();
 			echo json_encode($data);
-			break;
+			break;	
 		default:
 			# code...
 			break;
