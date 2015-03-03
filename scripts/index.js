@@ -79,6 +79,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
       resolve: {
         async: ['$q', '$location', auth]
       }
+    })
+    .when('/views/setting/new_password', {
+      templateUrl: 'views/setting/new_password.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
     });
     $routeProvider.otherwise({      
       redirectTo: '/'

@@ -298,9 +298,9 @@
 								</li>
 
 								<li>
-									<a href="#">
+									<a href="#/views/setting/new_password">
 										<i class="icon-user"></i>
-										Profile
+										修改密码
 									</a>
 								</li>
 

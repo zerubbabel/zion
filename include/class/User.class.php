@@ -67,4 +67,41 @@ class User extends Base{
 		}
 		return array ();
 	}
+
+	
+	public static function updatePassword($user_id,$new_password) {
+		$db=self::__instance();
+		$data=array('password'=>$new_password);
+		$where=array('user_id'=>$user_id);
+		$id=$db->update('users',$data,$where);
+		if($id){
+			return array('status'=>true);
+		}else{
+			return array('status'=>false,'msg'=>$db->error());
+		}
+		
+	}
+
+	public static function changePassword($old_password,$new_password) {
+		$db=self::__instance();
+		$user_name=$_SESSION['user_info']['user_name'];
+		$user_id=$_SESSION['user_info']['user_id'];
+		$ans=array();
+		$result=User::checkPassword($user_name,$old_password);
+		if($result){
+			$result=User::updatePassword($user_id,$new_password);
+			if ($result && $result['status']){
+				$ans['status']=true;
+				$ans['msg']='操作成功!';
+			}else{
+				$ans['status']=false;
+				$ans['msg']='修改密码失败!';
+			}
+		}
+		else{
+			$ans['status']=false;
+			$ans['msg']='原密码错误！';	
+		}		
+		return $ans;
+	}
 }

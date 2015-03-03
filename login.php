@@ -4,7 +4,6 @@ $error_msg = "";
 if(!isset($_SESSION['user_info'])){
     if(isset($_POST['submit'])){//用户提交登录表单时执行如下代码
 		$user_info=User::checkPassword ( $_POST['username'], $_POST['password'] );
-		var_dump($user_info);
         if($user_info){	        	
         	User::loginDoSomething($user_info['user_id']);	
 			Common::jumpUrl ( 'index.php' );

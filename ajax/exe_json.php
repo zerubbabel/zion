@@ -30,7 +30,11 @@
 		case 'getSelect':
 			$data = Baseinfo::getSelect($para['table']);
 			echo json_encode($data);
-			break;		
+			break;	
+		case 'changePassword':
+			$data = User::changePassword($para['old_password'],$para['new_password']);
+			echo json_encode($data);
+			break;	
 		default:
 			# code...
 			break;
