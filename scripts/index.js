@@ -74,8 +74,8 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
-    .when('/views/outsource/os_order', {
-      templateUrl: 'views/outsource/os_order.php',
+    .when('/views/outsource/new_os_order', {
+      templateUrl: 'views/outsource/new_os_order.php',
       resolve: {
         async: ['$q', '$location', auth]
       }

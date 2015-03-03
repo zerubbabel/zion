@@ -12,6 +12,17 @@ class Baseinfo extends Base {
 		return array ();
 	}
 
+	//通用select数据
+	public static function getSelect($table) {
+		$db=self::__instance();
+		$cols=array('id','name');
+		$list = $db->select($table,$cols);
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
 	public static function getproducts() {
 		$db=self::__instance();
 		$sql="select id,product_name as name from products";
@@ -41,6 +52,8 @@ class Baseinfo extends Base {
 		}
 		return array ();
 	}
+
+
 	
 	//通用的insert into dtl
 	public static function insertDtl($dtl_data,$mst_table,$mst_id,$loc_id) {
@@ -54,9 +67,11 @@ class Baseinfo extends Base {
 				'mst_id'=>$mst_id,
 				'mst_table'=>$mst_table);
 			$id=$db->insert('dtl',$data);
-			if($id){
+			if($id){				
 				$status=true;
-				Stock::updateStock($dtl_data[$i]['product_id'],$dtl_data[$i]['qty'],$loc_id);
+				if ($loc_id!=null){//$loc_id==null表示无需更新stock
+					Stock::updateStock($dtl_data[$i]['product_id'],$dtl_data[$i]['qty'],$loc_id);
+				}
 			}else{
 				$ans['msg']=$db->error();
 			}
@@ -64,5 +79,17 @@ class Baseinfo extends Base {
 		}
 		$ans['status']=$status;		
 		return $ans;
+	}
+
+	//通用mst deletion
+	public static function deleteMst($mst_id,$table) {
+		$db=self::__instance();
+		$where=array('id'=>$mst_id);
+		$id=$db->delete($table,$where);
+		if($id){
+			return array('status' =>true);
+		}else{
+			return array('status' =>false,'msg'=>$db->error());
+		}
 	}
 }

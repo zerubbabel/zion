@@ -2,8 +2,8 @@ var products=[];
 var lastsel;
 jQuery(function($) {
 	setTitle();
-	//客户
-	loadCust($('#cust'));
+	//外协单位
+	loadSelect($('#os_unit'),'os_units');
 
 	//明细
 	loadDetail();
@@ -11,10 +11,13 @@ jQuery(function($) {
 	//验证
 	$("#frm").validate({
 		submitHandler:function(form){			
-			var mst_id=newSaleOrderMst();	
-			if(mst_id>0){			
-				newSaleOrderDtl(mst_id);
-			}
+			if ($('#grid_dtl tr').length>1){
+        		saveOsOrder();	
+        	}
+        	else{
+        		var result={'status':false,'msg':'请先添加需要外协加工的物品！'};
+        		showMsg(result);
+        	}
 		}
 	})
 	//新增产品
@@ -28,39 +31,27 @@ jQuery(function($) {
 	$('#product_filter').keyup(function(){
 		doFilter(this.value);
 	})
-
-	//保存
-	$('#save_btn').click(function(){
-		
-	});
 });
 
-function newSaleOrderMst(){
-	var cust_id=$('#cust').val();
-	var datas=[];
-	datas.push(cust_id);
-	var cols=['cust_id'];
-	var table='sale_order_mst';	
-	return exeSql('insertMst',table,cols,datas);
-}
-
-function newSaleOrderDtl(mst_id){
-	var optype='insertDtl';
-	var table='sale_order_dtl';
-	var cols=['mst_id','product_id','qty'];
+function saveOsOrder(){
+	var para={'method':'insertOsOrder'};
+	var mst_data={'os_unit':$('#os_unit').val()};
+	para['mst_data']=mst_data;
+	var dtl_data={};
 	var trs=$("#grid_dtl tr");
 	for (var i=1;i<trs.length;i++){
-		var datas=[mst_id];
-		var product_id=trs[i].id;
-		var qty=$('#'+product_id+'_qty').val();
-		datas.push(product_id);
-		datas.push(qty);
-		if (!(exeSql(optype,table,cols,datas)>0)){
-			return false;
-		}
+		dtl_data[i-1]={};		
+		dtl_data[i-1]['product_id']=trs[i].id;
+		var qty=$('#'+trs[i].id+'_qty').val();
+		dtl_data[i-1]['qty']=qty;
 	}
-	window.location.href="index.php#/views/sale/sale_order";
-	return true;
+	para['dtl_data']=dtl_data;
+	var result=exeJson(para);
+	showMsg(result);
+	if(result['status']){
+		//跳转到外协申请单列表
+		window.location.href="index.php#/views/outsource/os_order_list";
+	}
 }
 
 function loadDetail(){
