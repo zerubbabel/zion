@@ -35,6 +35,10 @@
 			$data = User::changePassword($para['old_password'],$para['new_password']);
 			echo json_encode($data);
 			break;	
+		case 'getStocks':
+			$data = Stock::getStocks($para['loc_id']);
+			echo json_encode($data);
+			break;	
 		default:
 			# code...
 			break;

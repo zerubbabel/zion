@@ -12,6 +12,19 @@ class Stock extends Base {
 		return array(0);//无库存返回0
 	}
 	
+	public static function getStocks($loc_id) {
+		$db=self::__instance();
+		$sql="select b.id,b.product_name as name,qty from stocks a
+			LEFT JOIN products b on a.product_id=b.id 
+			where loc_id=$loc_id
+			order by b.id";	
+		$list=$db->query($sql)->fetchAll();
+		if($list){
+			return $list;
+		}
+		return array();
+	}
+
 	public static function checkStock($dtl_data,$loc_id) {
 		$ans=array();
 		$error_indexs=array();

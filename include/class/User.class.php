@@ -104,4 +104,21 @@ class User extends Base{
 		}		
 		return $ans;
 	}
+	public static function haveAccess($page) {
+		$data=explode('/', $page);
+		$k=count($data);
+		$url='';
+		for($i=$k-2;$i<$k;$i++){
+			$url.='/'.$data[$i];
+		}
+		$url=explode('.', $url)[0];
+		$user_id=$_SESSION['user_info']['user_id'];
+		$result=User::getAccess($user_id,$url);
+		if (count($result)>0){
+			return true;//array('status'=>true);
+		}
+		else{
+			return false;//array('status'=>false);
+		}
+	}
 }

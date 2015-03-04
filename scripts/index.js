@@ -21,7 +21,8 @@ function auth($q, $location) {
     if (result&&result.status){
         select_obj['title']=result.page_name;
         }
-    else{        
+    else{      
+        select_obj['title']='';  
         $location.path('/');
         $location.replace();  
         return $q.reject();
@@ -82,6 +83,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
     })
     .when('/views/setting/new_password', {
       templateUrl: 'views/setting/new_password.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/stock/stocks', {
+      templateUrl: 'views/stock/stocks.php',
       resolve: {
         async: ['$q', '$location', auth]
       }
