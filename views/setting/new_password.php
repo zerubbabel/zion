@@ -1,4 +1,11 @@
-﻿<form id="frm">
+﻿<?php
+	require ('../../include/init.inc.php');
+	$result=User::haveAccess($_SERVER['PHP_SELF']);	
+	if(!$result){
+		die();
+	}
+?>
+<form id="frm">
 <div class="row" style="height:40px">
 	<div class="col-xs-5">
 	</div>

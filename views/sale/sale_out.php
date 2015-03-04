@@ -1,4 +1,11 @@
-﻿<div id="tab_select">
+﻿<?php
+	require ('../../include/init.inc.php');
+	$result=User::haveAccess($_SERVER['PHP_SELF']);	
+	if(!$result){
+		die();
+	}
+?>
+<div id="tab_select">
 	<div class="row">
 		<div class="col-xs-12">
 			<button id='btn_select' class="btn btn-success icon-search">选择销售订单</button>

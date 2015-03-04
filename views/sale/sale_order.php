@@ -1,4 +1,11 @@
-﻿<div class="row">
+﻿<?php
+	require ('../../include/init.inc.php');
+	$result=User::haveAccess($_SERVER['PHP_SELF']);	
+	if(!$result){
+		die();
+	}
+?>
+<div class="row">
 	<div class="col-xs-12" id="toolbar">
 		
 	</div>

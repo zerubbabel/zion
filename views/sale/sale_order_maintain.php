@@ -1,4 +1,11 @@
-﻿<div class="row">
+﻿<?php
+	require ('../../include/init.inc.php');
+	$result=User::haveAccess($_SERVER['PHP_SELF']);	
+	if(!$result){
+		die();
+	}
+?>
+<div class="row">
 	<div class="alert alert-info">
 			<i class="icon-hand-right"></i>
 

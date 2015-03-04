@@ -1,4 +1,11 @@
-﻿<form id="frm">
+﻿<?php
+	require ('../../include/init.inc.php');
+	$result=User::haveAccess($_SERVER['PHP_SELF']);	
+	if(!$result){
+		die();
+	}
+?>
+<form id="frm">
 <div class="row">
 	<div class="col-xs-12">
 		<label for="os_unit" class="control-label no-padding-right">外协单位:</label>
