@@ -89,8 +89,7 @@ function showToolbar(){
 	if($("#toolbar").children().length==0){
 		addBtnSaleOut();
 	}	
-	$("#toolbar").show();
-	
+	$("#toolbar").show();	
 }
 
 function hideToolbar(){

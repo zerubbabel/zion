@@ -26,7 +26,7 @@ jQuery(function($) {
 
 	//产品过滤
 	$('#product_filter').keyup(function(){
-		doFilter(this.value);
+		doFilter('modal_tbl_products',this.value);
 	})
 
 	//保存
@@ -128,21 +128,6 @@ function loadModalProducts(){
 				}				
 			}
 		},	
-	});
-}
-
-function doFilter(str){
-	var rows=$('#modal_tbl_products').jqGrid('getRowData');
-	var trs=$('#modal_tbl_products').find('tr');
-	$(rows).each(function(i,v){
-		$(trs[i+1]).hide();
-		$.each(v, function(key, value) { 
-			var pos=value.indexOf(str);
-		  	if (value.indexOf(str)>=0){
-				$(trs[i+1]).show();
-				return false;
-			}
-		});
 	});
 }
 

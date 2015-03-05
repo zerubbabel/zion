@@ -51,6 +51,10 @@
 			$data = Baseinfo::updatePrivilege($para['group_id'],$para['data']);
 			echo json_encode($data);
 			break;
+		case 'getProducts':
+			$data = Baseinfo::getProducts();
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;

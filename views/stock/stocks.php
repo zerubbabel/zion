@@ -7,6 +7,9 @@
 ?>
 <form id="frm">
 <div class="row">
+	<div class="col-xs-12" id="toolbar">
+		
+	</div>
 	<div class="col-xs-12">
 		<label for="loc" class="control-label no-padding-right">仓库:</label>
 		<select id='loc'>

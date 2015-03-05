@@ -78,7 +78,7 @@ class Baseinfo extends Base {
 		return array ();
 	}
 
-	public static function getproducts() {
+	public static function getProducts() {
 		$db=self::__instance();
 		$sql="select id,product_name as name from products";
 		$list = $db->query($sql)->fetchAll();

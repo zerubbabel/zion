@@ -18,6 +18,9 @@
 		doFilter(this.value);
 	})
 
+	//工具栏
+	$("#toolbar").hide();
+	
 });
 
 function loadDetail(loc_id){	
@@ -44,7 +47,7 @@ function loadDetail(loc_id){
 				updatePagerIcons(table);
 				enableTooltips(table);
 			}, 0);
-		},		
+		},	
 	});
 
 }

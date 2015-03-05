@@ -202,3 +202,19 @@ function collapse(ele,id){
 	var new_class_name=str1+new_str;
 	$(ele).attr('class',new_class_name);
 }
+
+
+function doFilter(grid,str){
+	var rows=$('#'+grid).jqGrid('getRowData');
+	var trs=$('#'+grid).find('tr');
+	$(rows).each(function(i,v){
+		$(trs[i+1]).hide();
+		$.each(v, function(key, value) { 
+			var pos=value.indexOf(str);
+		  	if (value.indexOf(str)>=0){
+				$(trs[i+1]).show();
+				return false;
+			}
+		});
+	});
+}
