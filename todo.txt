@@ -1,4 +1,7 @@
-﻿[2015-3-3]
+﻿[2015-3-4]
+php auth
+
+[2015-3-3]
 1.仓库改变时updateValidateRange
 2.添加物品时库存数据如果库存表中无数据则为调整为0
 new_sale_order validate

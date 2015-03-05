@@ -2,15 +2,13 @@
 	setTitle();
 	//仓库
 	loadLoc($('#loc'));
-	var para={'method':'getStocks','loc_id':$("#loc").val()};
-	var products=exeJson(para);
-	loadDetail(products);
+	
+	loadDetail($("#loc").val());
 	//update validate
 	$('#loc').change(function(){
 		var loc_id=$('#loc').val();
-		var para={'method':'getStocks','loc_id':$("#loc").val()};
-		var products=exeJson(para);
-		loadDetail(products);
+		jQuery('#tbl_dtl').jqGrid('setGridParam',{url:"views/stock/get_stocks.php?loc_id="+loc_id,page:1})
+		.trigger('reloadGrid');	
 
 	});	
 	
@@ -22,11 +20,11 @@
 
 });
 
-function loadDetail(products){	
+function loadDetail(loc_id){	
 	var pager_selector='#pager';
 	jQuery("#tbl_dtl").jqGrid({
-		data: products,
-		datatype: "local",
+		url:'views/stock/get_stocks.php?loc_id='+loc_id,
+		datatype: "json",
 		height: 200,
 		colNames:['产品', '数量'],
 		colModel:[					

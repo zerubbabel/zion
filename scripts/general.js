@@ -183,5 +183,22 @@ function addValidate(input_id,v_class){
 	//验证规则											
 	var ele=$("#"+input_id);	
 	ele.attr('name',input_id);				
-	ele.rules("add",v_class);
+	ele.rules("add",v_class);	
+}
+
+function collapse(ele,id){
+	//debugger	
+	var class_name=$(ele).attr('class');
+	var str1=class_name.substring(0,13);
+	var str2=class_name.substring(13);
+	var new_str;
+	if (str2=='up'){
+		new_str='down';
+		$($(id+' .widget-body')[0]).hide()
+	}else{
+		new_str='up';
+		$($(id+' .widget-body')[0]).show()
+	}
+	var new_class_name=str1+new_str;
+	$(ele).attr('class',new_class_name);
 }

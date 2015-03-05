@@ -18,6 +18,7 @@ class Stock extends Base {
 			LEFT JOIN products b on a.product_id=b.id 
 			where loc_id=$loc_id
 			order by b.id";	
+			
 		$list=$db->query($sql)->fetchAll();
 		if($list){
 			return $list;

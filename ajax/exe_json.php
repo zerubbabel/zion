@@ -39,6 +39,18 @@
 			$data = Stock::getStocks($para['loc_id']);
 			echo json_encode($data);
 			break;	
+		case 'insertPurchaseOrder':
+			$data = Purchase::insertPurchaseOrder($para['mst_data'],$para['dtl_data']);
+			echo json_encode($data);
+			break;	
+		case 'getPrivilege':
+			$data = Baseinfo::getPrivilege($para['group_id']);
+			echo json_encode($data);
+			break;
+		case 'updatePrivilege':
+			$data = Baseinfo::updatePrivilege($para['group_id'],$para['data']);
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;

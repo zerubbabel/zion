@@ -2,6 +2,61 @@
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Baseinfo extends Base {
 	//列表 
+	public static function getModules() {
+		$db=self::__instance();
+		$sql="select module_id as id,module_name as name from modules";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function getPagesById($module_id) {
+		$db=self::__instance();
+		$sql="select id,page_name as name from pages  
+			where module_id='$module_id'
+			order by id";
+		
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function getPrivilege($group_id) {
+		$db=self::__instance();
+		$sql="select page_id as id from access  
+			where group_id=$group_id";
+		
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function updatePrivilege($group_id,$data) {
+		$db=self::__instance();
+		$ans=array('status'=>true,'msg'=>'更新成功！');
+		$db->delete('access',array('group_id'=>$group_id));//先删除
+		
+		for($i=0;$i<count($data);$i++){
+			$row=array('group_id'=>$group_id,'page_id'=>$data[$i]);
+			$result=$db->insert('access',$row);			
+			if ($result>0){
+				continue;
+			}else{
+				$ans['status']=false;
+				$ans['msg']='更新失败！';
+				return $ans;
+
+			}
+		}		
+		return $ans;
+	}
+
 	public static function getCust() {
 		$db=self::__instance();
 		$sql="select id,cust_name as name from customers";
