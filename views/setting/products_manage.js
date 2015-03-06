@@ -101,5 +101,3 @@ function editMode(){
 	$("#btn_save").show();
 	$('#min_stock').prop('disabled',false);
 }
-
-

@@ -62,13 +62,14 @@
 					<a href="#" class="navbar-brand">
 						<small>
 							<i class="icon-leaf"></i>
-							Zion
+							<?php echo APP_TITLE;?>
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
 
 				<div class="navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
+						<!-- HCY BOX
 						<li class="grey">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="icon-tasks"></i>
@@ -277,26 +278,20 @@
 								</li>
 							</ul>
 						</li>
+						-->
 
 						<li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 								<img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
 								<span class="user-info">
-									<small>Welcome,</small>
-									Jason
+									<small>欢迎,</small>
+									<?php echo $_SESSION['user_info']['user_name'];?>
 								</span>
 
 								<i class="icon-caret-down"></i>
 							</a>
 
 							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-								<li>
-									<a href="#">
-										<i class="icon-cog"></i>
-										Settings
-									</a>
-								</li>
-
 								<li>
 									<a href="#/views/setting/new_password">
 										<i class="icon-user"></i>
@@ -309,7 +304,7 @@
 								<li>
 									<a href="logout.php">
 										<i class="icon-off"></i>
-										Logout
+										退出
 									</a>
 								</li>
 							</ul>
@@ -392,7 +387,7 @@
 							</li>
 							<li class="active" id="title"></li>
 						</ul><!-- .breadcrumb -->
-
+						<!--
 						<div class="nav-search" id="nav-search">
 							<form class="form-search">
 								<span class="input-icon">
@@ -400,7 +395,8 @@
 									<i class="icon-search nav-search-icon"></i>
 								</span>
 							</form>
-						</div><!-- #nav-search -->
+						</div>-->
+						<!-- #nav-search -->
 					</div>
 
 					<div class="page-content">

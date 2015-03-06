@@ -6,6 +6,7 @@ jQuery(function($) {
 	setTitle();
 	//仓库
 	loadLoc($('#loc'));
+	loadSelect($('#workcenter'),'workcenters');
 	//update validate
 	$('#loc').change(function(){
 		var loc_id=$('#loc').val();
@@ -26,13 +27,13 @@ jQuery(function($) {
 	$("#frm").validate({
         submitHandler:function(form){
         	if ($('#tbl_dtl tr').length>1){
-        		saveWorkDraw();	
+        		saveWorkDraw();	        		
         	}
         	else{
         		var result={'status':false,'msg':'请先添加需要领取的物品！'};
         		showMsg(result);
         	}
-        	
+        	return false;
         }    
     });		
 	//明细
@@ -54,7 +55,7 @@ jQuery(function($) {
 
 function saveWorkDraw(){
 	var para={'method':'insertWorkDrawOrder'};
-	var mst_data={'loc_id':$('#loc').val()};
+	var mst_data={'loc_id':$('#loc').val(),'workcenter_id':$('#workcenter').val()};
 	para['mst_data']=mst_data;
 	var dtl_data={};
 	var trs=$("#tbl_dtl tr");

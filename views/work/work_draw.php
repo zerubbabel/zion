@@ -10,6 +10,9 @@
 	<div class="col-xs-12">
 		<label for="loc" class="control-label no-padding-right">领料仓库:</label>
 		<select id='loc'>
+		</select>
+		领料车间:
+		<select id='workcenter'>
 		</select>	
 		<button id='add_btn' class="btn btn-success icon-plus">添加产品</button>
 		<button id='save_btn' class="btn btn-success icon-save" type='submit'>保存</button>

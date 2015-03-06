@@ -11,6 +11,7 @@ define ( 'APP_BASE_CLASS', APP_BASE . '/class/' );
 define ( 'APP_URL' ,'http://localhost/acezion/zion');
 define ( 'APP_TITLE' ,'锡安卫浴企业管理平台');
 define ( 'COMPANY_NAME' ,'锡安卫浴');
+define ( 'VERSION' ,'1.0');
 
 //数据库设置
 $db_path=APP_ROOT.'/zion.db';

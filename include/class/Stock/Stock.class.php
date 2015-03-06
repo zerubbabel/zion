@@ -14,7 +14,7 @@ class Stock extends Base {
 	
 	public static function getStocks($loc_id) {
 		$db=self::__instance();
-		$sql="select b.id,b.product_name as name,qty from stocks a
+		$sql="select b.id,b.product_name as name,qty,b.min_stock from stocks a
 			LEFT JOIN products b on a.product_id=b.id 
 			where loc_id=$loc_id
 			order by b.id";	

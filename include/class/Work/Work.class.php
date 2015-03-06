@@ -8,6 +8,7 @@ class Work extends Base {
 		$op_id=$_SESSION['user_info']['user_id'];
 		$data=array(
 			'loc_id'=>$mst_data['loc_id'],
+			'workcenter_id'=>$mst_data['workcenter_id'],
 			'createday'=>$createday,
 			'op_id'=>$op_id);
 		$ans=array();
@@ -43,7 +44,7 @@ class Work extends Base {
 			$result=Work::insertWorkDrawMst($mst_data);//插入主表
 			if($result['status']){
 				$mst_id=$result['id'];
-				$result=Baseinfo::insertDtl($dtl_data,'work_out',$mst_id,$mst_data['loc_id']);//插入明细表并更新库存
+				$result=Baseinfo::insertDtl($dtl_data,'work_draw',$mst_id,$mst_data['loc_id']);//插入明细表并更新库存
 				if($result['status']){//明细表有一条成功status就为true					
 					$ans['status']=true;
 					$ans['msg']='操作成功！';

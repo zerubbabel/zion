@@ -29,10 +29,11 @@ function loadDetail(loc_id){
 		url:'views/stock/get_stocks.php?loc_id='+loc_id,
 		datatype: "json",
 		height: 200,
-		colNames:['产品', '数量'],
+		colNames:['产品', '数量','最小库存'],
 		colModel:[					
 			{name:'name',index:'name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+			{name:'qty',index:'qty', width:90, sortable:true,editable: false},
+			{name:'min_stock',index:'min_stock', width:90, sortable:true,editable: false},
 		], 
 		caption:'产品:',
 		rowNum:10,
@@ -41,8 +42,9 @@ function loadDetail(loc_id){
 		altRows: true,	
 		height: 400,	
 		autowidth: true,
-		loadComplete : function() {
+		loadComplete : function() {			
 			var table = this;
+			colorRow($(table));
 			setTimeout(function(){
 				updatePagerIcons(table);
 				enableTooltips(table);
@@ -51,7 +53,17 @@ function loadDetail(loc_id){
 	});
 
 }
-
+function colorRow(table){
+	var trs=table.find('tr');
+	for (var i=1;i<trs.length;i++){
+		var ele=$(trs[i]).find('td');
+		var qty=parseInt(ele[1].title);
+		var min_stock=parseInt(ele[2].title);
+		if (qty<min_stock){
+			$(trs[i]).addClass('danger');
+		}
+	}
+}
 function loadModalProducts(){
 	jQuery("#modal_tbl_products").jqGrid({
 		url:'ajax/get_products.php',

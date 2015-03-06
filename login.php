@@ -21,7 +21,7 @@ if(!isset($_SESSION['user_info'])){
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Login Page - Ace Admin</title>
+		<title><?php echo APP_TITLE;?></title>
 
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -69,10 +69,9 @@ if(!isset($_SESSION['user_info'])){
 							<div class="center">
 								<h1>
 									<i class="icon-leaf green"></i>
-									<span class="red">Ace</span>
-									<span class="white">Application</span>
+									<span class="red"><?php echo APP_TITLE;?></span>									
 								</h1>
-								<h4 class="blue">&copy; Company Name</h4>
+								<h4 class="blue">&copy; <?php echo COMPANY_NAME;?></h4>
 							</div>
 
 							<div class="space-6"></div>
@@ -83,7 +82,7 @@ if(!isset($_SESSION['user_info'])){
 										<div class="widget-main">
 											<h4 class="header blue lighter bigger">
 												<i class="icon-coffee green"></i>
-												Please Enter Your Information
+												请输入您的信息
 											</h4>
 
 											<div class="space-6"></div>
@@ -92,14 +91,14 @@ if(!isset($_SESSION['user_info'])){
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Username" name="username" />
+															<input type="text" class="form-control" placeholder="用户名" name="username" />
 															<i class="icon-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password" name="password" />
+															<input type="password" class="form-control" placeholder="密码" name="password" />
 															<i class="icon-lock"></i>
 														</span>
 													</label>
@@ -109,53 +108,19 @@ if(!isset($_SESSION['user_info'])){
 													<div class="clearfix">
 														<label class="inline">
 															<input type="checkbox" class="ace" />
-															<span class="lbl"> Remember Me</span>
+															<span class="lbl"> 下次自动登录</span>
 														</label>
 
 														<button type="submit" name="submit" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="icon-key"></i>
-															Login
+															登录
 														</button>
 													</div>
 
 													<div class="space-4"></div>
 												</fieldset>
-											</form>
-
-											<div class="social-or-login center">
-												<span class="bigger-110">Or Login Using</span>
-											</div>
-
-											<div class="social-login center">
-												<a class="btn btn-primary">
-													<i class="icon-facebook"></i>
-												</a>
-
-												<a class="btn btn-info">
-													<i class="icon-twitter"></i>
-												</a>
-
-												<a class="btn btn-danger">
-													<i class="icon-google-plus"></i>
-												</a>
-											</div>
-										</div><!-- /widget-main -->
-
-										<div class="toolbar clearfix">
-											<div>
-												<a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
-													<i class="icon-arrow-left"></i>
-													I forgot my password
-												</a>
-											</div>
-
-											<div>
-												<a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
-													I want to register
-													<i class="icon-arrow-right"></i>
-												</a>
-											</div>
-										</div>
+											</form>							
+										</div><!-- /widget-main -->									
 									</div><!-- /widget-body -->
 								</div><!-- /login-box -->
 
