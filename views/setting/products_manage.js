@@ -1,6 +1,4 @@
-﻿var grid_data=[];
-var detail_data=[];
-jQuery(function($) {
+﻿jQuery(function($) {
 	setTitle();
 	
 	//产品过滤
@@ -43,9 +41,6 @@ jQuery(function($) {
 			var ids = jQuery(grid_selector).jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
-				/*
-				be = "<input type='button' value='设置最小库存' class='btn btn-success'"+
-					 "onclick=\"setMin('"+cl+"');\" />";*/
 				se = "<i class='icon-bell-alt orange pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
 					" data-placement='right' onclick=\"setMin('"+cl+"');\" ></i>"; 
 				
@@ -88,13 +83,6 @@ function setMin(id){
         	return false;
         }    
     });
-
-	$('#btn_save').click(function(){
-		/*var para={'method':'updateMinStock','id':id,'min_stock':$('#min_stock').val()};
-		var result=exeJson(para);		
-		viewMode();
-		showMsg(result);*/
-	})
 }
 function updateMinStock(id){
 	var para={'method':'updateMinStock','id':id,'min_stock':$('#min_stock').val()};
