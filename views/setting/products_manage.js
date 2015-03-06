@@ -2,7 +2,6 @@
 var detail_data=[];
 jQuery(function($) {
 	setTitle();
-	hideToolbar();
 	
 	//产品过滤
 	$('#product_filter').keyup(function(){
@@ -69,19 +68,39 @@ function setMin(id){
 		" class='form-control' /><span class='input-group-btn'>"+
 		"<input type='button' class='btn btn-sm' id='btn_edit'  value='修改' />"+
 		"<input type='submit' class='btn btn-success btn-sm' id='btn_save'  value='确定' />"+
-		"</span></div></form>";		
+		"</span></div></form><div id='error_container'></div>";		
 	$('#modal_body').append(html);	
 	$('#min_stock').val(product['min_stock']);
 	viewMode();
 	$('#btn_edit').click(function(){
 		editMode();		
 	})
+	
+	$("#frm").validate({	 	
+		rules:{min_stock:{required:true,digits:true}},
+		errorPlacement: function(error, element) {  
+			var error_container=$('#error_container');
+			error_container.empty();
+		    error.appendTo(error_container);  
+		},
+        submitHandler:function(form){    
+        	updateMinStock(id);
+        	return false;
+        }    
+    });
+
 	$('#btn_save').click(function(){
-		var para={'method':'updateMinStock','id':id,'min_stock':$('#min_stock').val()};
+		/*var para={'method':'updateMinStock','id':id,'min_stock':$('#min_stock').val()};
 		var result=exeJson(para);		
 		viewMode();
-		showMsg(result);
+		showMsg(result);*/
 	})
+}
+function updateMinStock(id){
+	var para={'method':'updateMinStock','id':id,'min_stock':$('#min_stock').val()};
+	var result=exeJson(para);		
+	viewMode();
+	showMsg(result);
 }
 function viewMode(){
 	$('#btn_edit').show();	
