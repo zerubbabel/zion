@@ -116,6 +116,9 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
       resolve: {
         async: ['$q', '$location', auth]
       }
+    })
+    .when('/', {
+      templateUrl: 'views/index.php',
     });
     $routeProvider.otherwise({      
       redirectTo: '/'

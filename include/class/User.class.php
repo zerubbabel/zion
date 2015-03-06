@@ -121,4 +121,31 @@ class User extends Base{
 			return false;//array('status'=>false);
 		}
 	}
+
+	public static function getShortCut() {	
+		$db=self::__instance();	
+		$user_id=$_SESSION['user_info']['user_id'];
+		$where=array('user_id'=>$user_id);
+		$result=$db->select('users','short_cut',$where);
+		$ans=array();
+		if($result){
+			$data=explode(',', $result[0]['short_cut']);
+			for ($i=0;$i<count($data);$i++){
+				$id=$data[$i];
+				$where=array('id'=>$id);
+				$page=$db->select('pages',array('url','page_name'),$where);
+				if($page){
+					$ans[]=array();
+					$ans[$i]['url']=$page[0]['url'];
+					$ans[$i]['page_name']=$page[0]['page_name'];
+				}
+				else{
+					return false;
+				}
+			}
+			return $ans;
+		}else{
+			return false;
+		}
+	}
 }

@@ -2,6 +2,7 @@
 tooltip
 add modal html in index.php
 领料 增加 车间(workcenter)
+快捷菜单
 [2015-3-5]
 权限管理
 产品管理 及最小库存设置（库存预警）
