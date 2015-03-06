@@ -408,7 +408,31 @@
 					</div><!-- /.page-content -->
 				</div><!-- /.main-content -->
 
-				
+
+<!--modal-->
+<div id="modal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header no-padding">
+				<div class="table-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="white">&times;</span>
+					</button>
+					<div id="modal_title"></div> 
+				</div>
+			</div>
+			<div class="modal-body no-padding ">												
+				<div class="modal-body" id="modal_body">
+					
+				</div>				
+			</div>
+			<div class="modal-footer no-margin-top">
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<!-- end of modal-->
+
 			</div><!-- /.main-container-inner -->
 
 			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">

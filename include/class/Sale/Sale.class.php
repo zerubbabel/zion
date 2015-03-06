@@ -178,7 +178,7 @@ class Sale extends Base {
 			$ans['msg']='';
 			for ($i=0;$i<count($result['error_indexs']);$i++){
 				$product_id=$dtl_data[$result['error_indexs'][$i]]['product_id'];			
-				$product_name=Baseinfo::getProductById($product_id)['product_name'];		
+				$product_name=Baseinfo::getProductById($product_id)['name'];		
 				$ans['msg'].=$product_name.',';
 			}
 			$ans['msg'].='库存不足！';

@@ -33,6 +33,9 @@ body {
     width: 200px;
     z-index: 5;
 }
+.pointer{
+	cursor: pointer;
+}
 /*
 #dialog p {
     margin: 0 0 12px;

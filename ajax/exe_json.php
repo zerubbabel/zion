@@ -55,6 +55,14 @@
 			$data = Baseinfo::getProducts();
 			echo json_encode($data);
 			break;
+		case 'getProductById':
+			$data = Baseinfo::getProductById($para['id']);
+			echo json_encode($data);
+			break;
+		case 'updateMinStock':
+			$data = Baseinfo::updateMinStock($para['id'],$para['min_stock']);
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;

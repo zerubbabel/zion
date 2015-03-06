@@ -100,7 +100,7 @@ class Baseinfo extends Base {
 
 	public static function getProductById($id) {
 		$db=self::__instance();
-		$sql="select * from products where id=$id";
+		$sql="select id,product_name as name,min_stock from products where id=$id";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list[0];
@@ -146,5 +146,17 @@ class Baseinfo extends Base {
 		}else{
 			return array('status' =>false,'msg'=>$db->error());
 		}
+	}
+
+	public static function updateMinStock($id,$min_stock) {
+		$db=self::__instance();
+		$ans=array('status'=>false,'msg'=>'更新失败！');
+		$data=array('min_stock'=>$min_stock);
+		$where=array('id'=>$id);
+		$result=$db->update('products',$data,$where);
+		if($result && $result>0){
+			$ans=array('status'=>true,'msg'=>'更新成功！');
+		}
+		return $ans;
 	}
 }
