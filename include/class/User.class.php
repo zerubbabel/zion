@@ -133,11 +133,12 @@ class User extends Base{
 			for ($i=0;$i<count($data);$i++){
 				$id=$data[$i];
 				$where=array('id'=>$id);
-				$page=$db->select('pages',array('url','page_name'),$where);
+				$page=$db->select('pages',array('url','page_name','icon'),$where);
 				if($page){
 					$ans[]=array();
 					$ans[$i]['url']=$page[0]['url'];
 					$ans[$i]['page_name']=$page[0]['page_name'];
+					$ans[$i]['icon']=$page[0]['icon'];
 				}
 				else{
 					return false;

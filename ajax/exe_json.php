@@ -27,6 +27,10 @@
 			$data = Outsource::insertOsOrder($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);
 			break;	
+		case 'insertOsOutOrder':
+			$data = Outsource::insertOsOutOrder($para['mst_data'],$para['dtl_data']);
+			echo json_encode($data);
+			break;	
 		case 'getSelect':
 			$data = Baseinfo::getSelect($para['table']);
 			echo json_encode($data);

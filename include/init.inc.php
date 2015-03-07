@@ -1,5 +1,6 @@
 <?php
 error_reporting( E_ALL );
+date_default_timezone_set('Asia/Shanghai'); 
 require 'config/config.inc.php';
 session_start();
 function AppAutoLoad($classname){

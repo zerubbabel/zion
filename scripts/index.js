@@ -81,6 +81,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/outsource/os_out', {
+      templateUrl: 'views/outsource/os_out.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/setting/new_password', {
       templateUrl: 'views/setting/new_password.php',
       resolve: {
@@ -117,6 +123,7 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+
     .when('/', {
       templateUrl: 'views/index.php',
     });

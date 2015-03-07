@@ -24,7 +24,9 @@
 					?>
 					<div class="infobox infobox-green  ">
 						<div class="infobox-icon">
-							<i class="icon-comments"></i>
+							<?php 
+								echo '<i class="icon-'.$pages[$i]['icon'].'"></i>';
+							?>							
 						</div>
 						<div class="infobox-data">
 							<?php
