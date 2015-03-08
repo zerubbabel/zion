@@ -67,6 +67,14 @@
 			$data = Baseinfo::updateMinStock($para['id'],$para['min_stock']);
 			echo json_encode($data);
 			break;
+		case 'getCustTypes':
+			$data = Sale::getCustTypes();
+			echo json_encode($data);
+			break;
+		case 'getCustomers':
+			$data = Sale::getCustomers();
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;

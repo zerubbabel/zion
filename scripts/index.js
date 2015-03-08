@@ -57,6 +57,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/sale/customers', {
+      templateUrl: 'views/sale/customers.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/sale/new_sale_order', {
       templateUrl: 'views/sale/new_sale_order.php',
       resolve: {

@@ -12,6 +12,22 @@
 		<select id='cust'>
 			<!--<option value=0>--请选择--</option>-->
 		</select>	
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-danger">
+				<input type="radio" value="1">
+				<i class="icon-only icon-align-left">紧急</i>
+			</label>
+			
+			<label class="btn btn-primary active">
+				<input type="radio" value="2">
+				<i class="icon-only icon-align-center">一般</i>
+			</label>
+		
+			<label class="btn ">
+				<input type="radio" value="3">
+				<i class="icon-only icon-align-right">备货</i>
+			</label>
+		</div>
 		<button id='add_btn' class="btn btn-success icon-plus">添加产品</button>
 		<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
 		<table id="grid_dtl" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">

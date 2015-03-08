@@ -2,6 +2,60 @@
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Sale extends Base {
 	//列表 
+	public static function getCustTypes() {		
+		$result=Baseinfo::getSelect('cust_types');
+		if($result){
+			return $result;
+		}
+		return false;
+	}
+
+	public static function getCustomers() {
+		$db=self::__instance();
+		$sql='select a.id,a.cust_name,a.type_id,b.name as type_name from customers a 
+			left join cust_types b on a.type_id=b.id 
+			where a.status=1';
+		$result = $db->query($sql)->fetchAll();
+		if($result){
+			return $result;
+		}
+		return false;
+	}
+
+
+	public static function addCustomer($cust_name,$type_id) {
+		$db=self::__instance();
+		$data=array('cust_name'=>$cust_name,'type_id'=>$type_id);
+		$result = $db->insert('customers',$data);
+		if($result && $result>0){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
+
+	public static function updateCustomer($id,$cust_name,$type_id) {
+		$db=self::__instance();
+		$data=array('cust_name'=>$cust_name,'type_id'=>$type_id);
+		$where=array('id'=>$id);
+		$result = $db->update('customers',$data,$where);
+		if($result && $result>0){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
+	public static function stopCustomer($id) {
+		$db=self::__instance();
+		$data=array('status'=>0);	
+		$where=array('id'=>$id);
+		$result = $db->update('customers',$data,$where);
+		if($result && $result>0){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
 	public static function getAllSaleOrderMst() {
 		$db=self::__instance();
 		$cols="sale_order_mst.id,cust_id,createday,op_id,cust_name,user_name";
