@@ -7,32 +7,32 @@
 ?>
 <form id="frm">
 <div class="row">
-	<div class="col-xs-12">
-		<label for="cust" class="control-label no-padding-right">客户:</label>
+	<div class="col-xs-6">
+		客户:
 		<select id='cust'>
 			<!--<option value=0>--请选择--</option>-->
 		</select>	
-		<div class="btn-group" data-toggle="buttons">
-			<label class="btn btn-danger">
-				<input type="radio" value="1">
-				<i class="icon-only icon-align-left">紧急</i>
-			</label>
-			
-			<label class="btn btn-primary active">
-				<input type="radio" value="2">
-				<i class="icon-only icon-align-center">一般</i>
-			</label>
-		
-			<label class="btn ">
-				<input type="radio" value="3">
-				<i class="icon-only icon-align-right">备货</i>
-			</label>
+		订单重要性：
+		<select id='importance'>
+		</select>
+	</div>	
+	<div class="col-xs-1">
+		交货时间：
+	</div>
+	<div class="col-xs-5">		
+		<div class="input-group input-group-sm">			
+			<input type="text" id="deliveryday" name="deliveryday" class="form-control" placeholder='交货时间' />
+			<span class="input-group-addon">
+				<i class="icon-calendar"></i>
+			</span>
+			<button id='add_btn' class="btn btn-info icon-plus">添加产品</button>
+			<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
 		</div>
-		<button id='add_btn' class="btn btn-success icon-plus">添加产品</button>
-		<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
+	</div>
+	<div class="col-xs-12">
 		<table id="grid_dtl" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-		</table>													
-	</div>						
+		</table>	
+	</div>	
 </div>	
 </form>
 <!--modal of products-->
@@ -49,28 +49,23 @@
 			</div>
 
 			<div class="modal-body no-padding ">												
-				<div class="modal-body ">
+				<div class="modal-body" id="modal_products_body">
 					<div class='row'>
-						<label class="col-sm-3 control-label no-padding-right" for="form-field-1">筛选：</label>
-
-						<div class="col-sm-9">
-							<input type="text" id="product_filter" placeholder="产品描述" class="col-xs-10 col-sm-5" />
-						</div>
+						筛选:<input type="text" id="product_filter" placeholder="产品描述"/>
 					</div>
 					<div class='row'>	
-						<div class="col-sm-12">						
+						<div class="col-xs-12">						
 							<table id="modal_tbl_products" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
 							</table>						
 						</div>
 					</div>	
 				</div>				
 			</div>
-
-			<div class="modal-footer no-margin-top">
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
+			<div class="modal-footer no-margin-top"></div>
+		</div>
+	</div>
 </div>
+
 <!-- end of modal of products-->
 
 <!-- page specific plugin scripts -->
@@ -79,9 +74,10 @@
 <script src="assets/js/jquery.dataTables.min.js"></script>
 <script src="assets/js/jquery.dataTables.bootstrap.js"></script>
 
+
+-->
 <script src="assets/js/data-time/bootstrap-datepicker.min.js"></script>
 <script src="assets/js/data-time/bootstrap-datepicker.zh-CN.js"></script>
--->
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 <script src="views/sale/new_sale_order.js"></script>

@@ -3,14 +3,14 @@ var dtl_data;
 $(document).ready(function(){
 
 	setTitle();
+	
+	loadLoc($('#loc'));
 	//验证,submit
 	 $("#frm").validate({	 	
         submitHandler:function(form){    
         	saveSaleOut();
         }    
     });
-	loadLoc($('#loc'));
-
 	if(select_obj['sale_order_id']){
 		loadSaleMst(select_obj['sale_order_id']);		
 		loadSaleDtl(select_obj['sale_order_id']);
@@ -69,8 +69,9 @@ function loadSaleDtl(id){
 	dtl_data=getJsonData(para);	
 	
 	var para={'method':'saleOutAllBySaleOrderId','id':id};
+
 	var out_data=getJsonData(para);
-		
+	
 	var real_data=calRealData(dtl_data,out_data);//
 
 	$("#tbl_dtl").jqGrid({
@@ -89,8 +90,8 @@ function loadSaleDtl(id){
 	//编辑模式
 	var validate_rule={};
 	$.each(dtl_data,function(){
-		$('#tbl_dtl').jqGrid('editRow',this.product_id);
-		var id=this.product_id;
+		$('#tbl_dtl').jqGrid('editRow',this.id);
+		var id=this.id;
 		var input_id=id+"_out_qty";
 		var ele=$("#"+input_id);
 		var width=ele.width();

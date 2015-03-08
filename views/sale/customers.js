@@ -94,29 +94,14 @@ jQuery(function($) {
 	//navButtons
 	jQuery(grid_selector).jqGrid('navGrid',pager_selector,
 		{ 	//navbar options
-			edit: true,
-			editicon : 'icon-pencil blue',
 			add: true,
 			addicon : 'icon-plus-sign purple',
-			del: true,
-			delicon : 'icon-trash red',
-			search: true,
-			searchicon : 'icon-search orange',
-			refresh: true,
-			refreshicon : 'icon-refresh green',
-			view: true,
-			viewicon : 'icon-zoom-in grey',
-		},
-		{
-			//edit record form
-			//closeAfterEdit: true,
-			recreateForm: true,
-			beforeShowForm : function(e) {
-				var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-				style_edit_form(form);
-			}
-		},
+			edit: false,
+			del:false,
+			search: false,
+			refresh: false,
+			view: false,
+		},		
 		{
 			//new record form
 			closeAfterAdd: true,
@@ -124,66 +109,15 @@ jQuery(function($) {
 			reloadAfterSubmit:true,
 			processData:"操作中...",
 			viewPagerButtons: false,
-			beforeShowForm : function(e) {
-				/*var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-				style_edit_form(form);*/
-				return false;
-
-			},
 			afterSubmit:function(result){						
 				if (result&&jQuery.parseJSON(result.responseText).status) {
 					jQuery(grid_selector).jqGrid().trigger('reloadGrid');
 					return true;					
 				}
-				else{alert("操作失败！"); return false;} 
-				
-			}
-
-		},
-		{
-			//delete record form
-			recreateForm: true,
-			beforeShowForm : function(e) {
-				var form = $(e[0]);
-				if(form.data('styled')) return false;
-				
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-				style_delete_form(form);
-				
-				form.data('styled', true);
-			},
-			onClick : function(e) {
-				alert(1);
-			}
-		},
-		{
-			//search form
-			recreateForm: true,
-			afterShowSearch: function(e){
-				var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-				style_search_form(form);
-			},
-			afterRedraw: function(){
-				style_search_filters($(this));
-			}
-			,
-			multipleSearch: true,
-			/**
-			multipleGroup:true,
-			showQuery: true
-			*/
-		},
-		{
-			//view record form
-			recreateForm: true,
-			beforeShowForm: function(e){
-				var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+				else{alert("操作失败！"); return false;} 			
 			}
 		}
-	)
+	);
 
 
 	

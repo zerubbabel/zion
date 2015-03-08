@@ -6,19 +6,14 @@
 	}
 ?>
 <div class="row">
-	<div class="col-xs-12" id="toolbar">
-		
+	<div class="col-xs-12" id="toolbar">		
 	</div>
-	<div class="col-xs-6">
-		<!-- PAGE CONTENT BEGINS -->
+	<div class="col-xs-8">
 		<table id="grid-table"></table>
-
 		<div id="grid-pager"></div>
-		<!-- PAGE CONTENT ENDS -->
 	</div><!-- /.col -->
-	<div class="col-xs-6" id="div_dtl">
+	<div class="col-xs-4" id="div_dtl">
 		<table id="list_d"></table>
-		<!--<div id="pager_d"></div>-->
 	</div>
 </div><!-- /.row -->
 

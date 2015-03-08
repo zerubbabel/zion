@@ -4,12 +4,22 @@ jQuery(function($) {
 	setTitle();
 	//客户
 	loadCust($('#cust'));
+	loadSelect($('#importance'),'importance');
+
+	$( "#deliveryday" ).datepicker({
+		format: 'yyyy-mm-dd',
+		language: 'zh-CN',
+		todayHighlight: true,
+	});
 
 	//明细
 	loadDetail();
 	
 	//验证
 	$("#frm").validate({
+		rules:{
+			'deliveryday':{required:true,}
+		},
 		submitHandler:function(form){			
 			var mst_id=newSaleOrderMst();	
 			if(mst_id>0){			
@@ -37,9 +47,13 @@ jQuery(function($) {
 
 function newSaleOrderMst(){
 	var cust_id=$('#cust').val();
+	var importance=$('#importance').val();
+	var deliveryday=$('#deliveryday').val();
 	var datas=[];
 	datas.push(cust_id);
-	var cols=['cust_id'];
+	datas.push(importance);
+	datas.push(deliveryday);
+	var cols=['cust_id','importance','deliveryday'];
 	var table='sale_order_mst';	
 	return exeSql('insertMst',table,cols,datas);
 }
@@ -98,8 +112,8 @@ function loadModalProducts(){
 		colModel:[					
 			{name:'id',index:'id'},
 			{name:'name',index:'name'},			
-		], 
-		autowidth: true,	
+		], 	
+		height: 300,
 		onSelectRow: function(id){			
 			if(id && id!==lastsel){
 				//产品添加到明细表中并且该行进入edit模式
@@ -127,7 +141,8 @@ function loadModalProducts(){
 					}
 				}				
 			}
-		},	
+		},
+		autowidth: true,	
 	});
 }
 

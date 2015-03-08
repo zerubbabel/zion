@@ -75,6 +75,10 @@
 			$data = Sale::getCustomers();
 			echo json_encode($data);
 			break;
+		case 'getStatus':
+			$data = Baseinfo::getStatus();
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;

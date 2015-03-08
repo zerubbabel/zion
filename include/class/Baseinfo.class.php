@@ -159,4 +159,12 @@ class Baseinfo extends Base {
 		}
 		return $ans;
 	}
+
+	public static function getStatus() {		
+		$result=Baseinfo::getSelect('order_status');
+		if($result){
+			return $result;
+		}
+		return false;
+	}
 }

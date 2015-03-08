@@ -58,16 +58,19 @@ class Sale extends Base {
 
 	public static function getAllSaleOrderMst() {
 		$db=self::__instance();
-		$cols="sale_order_mst.id,cust_id,createday,op_id,cust_name,user_name";
+		$cols="sale_order_mst.id,cust_id,createday,op_id,cust_name,user_name,
+			deliveryday,importance.name as importance,order_status.name as status";
 		$sql="select $cols from sale_order_mst 
 			left join customers on sale_order_mst.cust_id=customers.id 
 			left join users on sale_order_mst.op_id=users.user_id 
-			order by createday desc";
+			left join importance on sale_order_mst.importance=importance.id 
+			left join order_status on sale_order_mst.status=order_status.id 
+			order by importance.value desc,deliveryday,createday desc";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
 		}
-		return array ();
+		return $db->error();//array ();
 	}
 
 	public static function getSaleOutList() {
@@ -119,7 +122,7 @@ class Sale extends Base {
 	public static function getSaleOrderDtlById($id) {
 		$db=self::__instance();
 		
-		$sql="select product_id,product_name,qty from sale_order_dtl 
+		$sql="select product_id as id,product_name,qty from sale_order_dtl 
 			left join products on sale_order_dtl.product_id=products.id 
 			where sale_order_dtl.mst_id=".$id." order by product_id";
 		
@@ -133,7 +136,7 @@ class Sale extends Base {
 	public static function getSaleOutAllBySaleOrderId($id) {
 		$db=self::__instance();
 		
-		$sql="select a.product_id,sum(qty) as qty from sale_out_dtl a 
+		$sql="select a.product_id as id,sum(qty) as qty from sale_out_dtl a 
 			LEFT JOIN sale_out_mst b on a.mst_id=b.id		
 			where b.sale_order_mst_id=$id 
 			GROUP BY product_id 
@@ -239,6 +242,17 @@ class Sale extends Base {
 			$ans['status']=false;
 		}
 		return $ans;
+	}
+
+	public static function updateSaleOrderById($id,$deliveryday,$status) {
+		$db=self::__instance();
+		$data=array('deliveryday'=>$deliveryday,'status'=>$status);
+		$where=array('id'=>$id);
+		$result = $db->update('sale_order_mst',$data,$where);
+		if($result && $result>0){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
 	}
 
 

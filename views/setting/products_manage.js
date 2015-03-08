@@ -1,6 +1,6 @@
 ﻿jQuery(function($) {
 	setTitle();
-	
+	toProduct();
 	//产品过滤
 	$('#product_filter').keyup(function(){
 		doFilter('grid-table',this.value);
@@ -41,10 +41,11 @@
 			var ids = jQuery(grid_selector).jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
-				se = "<i class='icon-bell-alt orange pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
+				min = "<i class='icon-bell-alt orange pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
 					" data-placement='right' onclick=\"setMin('"+cl+"');\" ></i>"; 
-				
-				jQuery(grid_selector).jqGrid('setRowData',ids[i],{act:se});
+				bom = "<i class='icon-cogs pointer tooltip-warning' data-rel='tooltip' title='物料清单'"+
+					" data-placement='right' onclick=\"setBom('"+cl+"');\" ></i>";
+				jQuery(grid_selector).jqGrid('setRowData',ids[i],{act:min+bom});
 				$('[data-rel=tooltip]').tooltip();
 			}
 		},
@@ -52,6 +53,18 @@
 		autowidth: true,
 	});
 });
+function toBom(){
+	$("#tab_product").hide();
+	$("#tab_bom").show();
+}
+function toProduct(){	
+	$("#tab_bom").hide();
+	$("#tab_product").show();
+}
+function setBom(id){
+	select_obj['product_id']=id;
+	toBom();
+}
 function setMin(id){
 	var para={'method':'getProductById','id':id};
 	var product=exeJson(para);

@@ -150,10 +150,10 @@ function enableTooltips(table) {
 //计算订单剩余数量
 function calRealData(order_data,out_data){
 	for (var i =0; i<order_data.length; i++) {
-		var product_id=order_data[i]['product_id'];
+		var product_id=order_data[i]['id'];
 		var order_qty=parseInt(order_data[i]['qty']);
 		for(var j=0;j<out_data.length;j++){
-			var id=out_data[j]['product_id'];
+			var id=out_data[j]['id'];
 			var out_qty=parseInt(out_data[j]['qty']);
 			if (product_id==id){
 				order_data[i]['qty']=order_qty-out_qty;
@@ -217,4 +217,85 @@ function doFilter(grid,str){
 			}
 		});
 	});
+}
+
+
+function openProducts(){
+	$('#modal_body').empty();//清空				
+	$('#modal_title').text('选择产品');
+
+	var para={'method':'getProducts'};
+	var products=exeJson(para);	
+	var html='<div class="row">'+
+	'<div class="col-xs-12">筛选:'+
+	'<input type="text" id="product_filter" placeholder="产品描述" />'+
+	'</div><div class="col-xs-12">'+					
+	'<table id="modal_tbl_products" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">'+
+	'</table></div></div>';		
+	$('#modal_body').append(html);	
+	$('#product_filter').keyup(function(){
+		doFilter('modal_tbl_products',this.value);
+	})	
+	loadModalProducts(products);
+	$('#modal').modal({show:true});
+}
+
+
+function loadModalProducts(products){
+	jQuery("#modal_tbl_products").jqGrid({
+		data:products,
+		datatype: "local",
+		colNames:['产品代码', '产品名称'],
+		colModel:[					
+			{name:'id',index:'id'},
+			{name:'name',index:'name'},			
+		], 
+		autowidth: true,	
+		onSelectRow: function(id){			
+			if(id && id!==lastsel){
+				//产品添加到明细表中并且该行进入edit模式
+				var flag=false;//产品是否已存在
+				var datarow=$('#modal_tbl_products').getRowData(id);				
+				$.each(products,function(key,value){
+					if(id==this.id){
+						flag=true;
+						return false;
+					}
+				})				
+				if (!flag){					
+					products.push(datarow);					
+					var newid=id;
+					var su=$('#grid_dtl').addRowData(newid, datarow, "last");						
+					if (su){
+						$('#grid_dtl').jqGrid('editRow',newid);
+						var input_id=id+"_qty";
+						var ele=$("#"+input_id);
+						var width=ele.width();
+						var td_width=ele.parent().width();
+						ele.width(Math.round(td_width/2));						
+						var v_class={required:true,digits:true};
+						addValidate(input_id,v_class);	
+					}
+				}				
+			}
+		},	
+	});
+}
+
+function get_status(){
+	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
+	//动态生成select内容
+	var str="";
+	var para={'method':'getStatus'};
+	var data=exeJson(para);
+    var jsonobj=eval(data);    
+    var length=jsonobj.length;
+    for(var i=0;i<length;i++){  
+        if(i!=length-1){
+        	str+=jsonobj[i].id+":"+jsonobj[i].name+";";
+        }else{
+          	str+=jsonobj[i].id+":"+jsonobj[i].name;
+        }
+     }   
+	return str;	
 }

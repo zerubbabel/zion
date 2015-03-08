@@ -51,8 +51,8 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
-    .when('/views/sale/sale_order_maintain', {
-      templateUrl: 'views/sale/sale_order_maintain.php',
+    .when('/views/sale/sale_order_manage', {
+      templateUrl: 'views/sale/sale_order_manage.php',
       resolve: {
         async: ['$q', '$location', auth]
       }
@@ -113,6 +113,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
     })
     .when('/views/setting/privilege', {
       templateUrl: 'views/setting/privilege.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/setting/bom', {
+      templateUrl: 'views/setting/bom.php',
       resolve: {
         async: ['$q', '$location', auth]
       }

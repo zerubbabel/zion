@@ -5,26 +5,19 @@
 		die();
 	}
 ?>
-<div class="row" id="tab_product">
-	<div class="col-xs-6">
-		筛选：<input type="text" id="product_filter"/>
-
-		<!-- PAGE CONTENT BEGINS -->
+<div class="row">
+	<div class="col-xs-12" id="toolbar">		
+	</div>
+	<div class="col-xs-8">
 		<table id="grid-table"></table>
-
 		<div id="grid-pager"></div>
-		<!-- PAGE CONTENT ENDS -->
 	</div><!-- /.col -->
-	<div class="col-xs-6" id="div_dtl">
+	<div class="col-xs-4" id="div_dtl">
 		<table id="list_d"></table>
-		<!--<div id="pager_d"></div>-->
 	</div>
 </div><!-- /.row -->
-<div class="row" id="tab_bom">
-	this is bom
-</div>
 
 <!-- page specific plugin scripts -->
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
-<script src="views/setting/products_manage.js"></script>
+<script src="views/sale/sale_order_manage.js"></script>

@@ -18,8 +18,16 @@ jQuery(function($) {
 		data: grid_data,
 		datatype: "local",
 		height: 400,
-		colNames:['客户', '交货日期','重要性','状态','操作人员'],
-		colModel:[	
+		colNames:['','订单日期','客户', '交货日期','重要性','状态','操作人员'],
+		colModel:[
+			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,
+					delbutton:false,
+				}
+			},
+			{name:'createday',index:'createday',width:90, editable:false},	
 			{name:'cust_name',index:'cust_name', width:90,editable: false},	
 			{name:'deliveryday',index:'deliveryday',width:90, editable:true},	
 			{name:'importance',index:'importance',width:90, editable:false},		
@@ -58,7 +66,7 @@ jQuery(function($) {
 				enableTooltips(table);
 			}, 0);
 		},
-		//editurl:'views/sale/sale_order_edit.php',
+		editurl:'views/sale/sale_order_edit.php',
 		caption: "销售订单列表",
 		autowidth: true,
 	});
