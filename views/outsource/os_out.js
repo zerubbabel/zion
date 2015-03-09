@@ -120,9 +120,10 @@ function loadModalProducts(){
 					}
 				})				
 				if (!flag){					
-					products.push(datarow);					
+					products.push(datarow);							
 					var newid=id;
-					var su=$('#grid_dtl').addRowData(newid, datarow, "last");						
+					var su=$('#grid_dtl').addRowData(newid, datarow, "last");	
+					debugger					
 					if (su){
 						$('#grid_dtl').jqGrid('editRow',newid);
 						var input_id=id+"_qty";

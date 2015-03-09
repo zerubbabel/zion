@@ -1,10 +1,42 @@
-﻿jQuery(function($) {
+﻿var lastsel;
+var products=[];
+var product_id='';
+jQuery(function($) {
 	setTitle();
 	toProduct();
 	//产品过滤
 	$('#product_filter').keyup(function(){
 		doFilter('grid-table',this.value);
 	})
+	$("#btn_back").click(function(){
+		toProduct();
+		return false;
+	})
+	//新增产品
+	$('#add_btn').click(function(){
+		$('#modal_products').modal({show:true});
+		loadModalProducts();
+		return false;
+	});
+
+	//产品过滤
+	$('#modal_product_filter').keyup(function(){
+		doFilter('modal_tbl_products',this.value);
+	})
+
+	//验证
+	$("#sub_frm").validate({
+		submitHandler:function(form){			
+			if ($('#grid_subpart tr').length>1){
+        		saveBom();	
+        	}
+        	else{
+        		var result={'status':false,'msg':'请先添加子件！'};
+        		showMsg(result);
+        	}
+		}
+	})
+
 
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
@@ -63,7 +95,54 @@ function toProduct(){
 }
 function setBom(id){
 	select_obj['product_id']=id;
+	product_id=id;
 	toBom();
+	loadSubpart(id);
+}
+function loadSubpart(id){
+	var para={'method':'getProductById','id':id};
+	var product=exeJson(para);
+	//$("#product_span").text(product['name']);
+	var para={'method':'getSubpart','id':id};
+	var subpart_data=exeJson(para);
+	//products=[];
+	debugger
+	if(subpart_data){		
+		$.each(subpart_data,function(){
+			products.push(this);
+		})
+	}
+	//debugger
+	/*debugger
+	$.each(subpart_data,function(){
+		products.push(this);
+	})	*/
+
+	jQuery("#grid_subpart").jqGrid({
+		data: products,
+		datatype: "local",
+		height: 200,
+		colNames:[' ','产品', '数量','id'],
+		colModel:[
+			{name:'myac',index:'', fixed:true, sortable:false, resize:false,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,		
+					editbutton:false,	
+					delOptions:{onclickSubmit:delProduct},	
+				}
+			},						
+			{name:'name',index:'name', width:90, sortable:true,editable: false},
+			{name:'qty',index:'qty', width:90, sortable:true,editable: true,
+				editrules:{required:true,number:true}
+			},			
+			{name:'id',index:'id', width:90,editable: false,hidden:true},
+		], 
+		caption:product['name']+' 物料清单:',	
+		editurl: 'empty.php',
+		autowidth: true,		
+	});
+
 }
 function setMin(id){
 	var para={'method':'getProductById','id':id};
@@ -113,4 +192,84 @@ function editMode(){
 	$('#btn_edit').hide();
 	$("#btn_save").show();
 	$('#min_stock').prop('disabled',false);
+}
+
+function delProduct(e){
+	var delrow=$('#grid_subpart').jqGrid('getGridParam','selrow');
+	var i=0;
+	$.each(products,function(key,value){		
+		if(delrow==this.id){
+			products.splice(i,1);
+			return false;
+		}
+		i++;
+	})
+}
+
+
+function loadModalProducts(){
+	jQuery("#modal_tbl_products").jqGrid({
+		url:'ajax/get_products.php',
+		datatype: "json",
+		colNames:['产品代码', '产品名称'],
+		colModel:[					
+			{name:'id',index:'id'},
+			{name:'name',index:'name'},			
+		], 
+		autowidth: true,	
+		onSelectRow: function(id){			
+			if(id && id!==lastsel){
+				//产品添加到明细表中并且该行进入edit模式
+				var flag=false;//产品是否已存在
+				var datarow=$('#modal_tbl_products').getRowData(id);				
+				$.each(products,function(key,value){
+					if(id==this.id){
+						flag=true;
+						return false;
+					}
+				})				
+				if (!flag){			
+					products.push(datarow);					
+					var newid=id;
+					//debugger
+					datarow['qty']=0;
+					var su=$('#grid_subpart').addRowData(newid, datarow, "last");	
+									
+					if (su){
+						$('#grid_subpart').jqGrid('editRow',newid);
+						var input_id=id+"_qty";
+						var ele=$("#"+input_id);
+						var width=ele.width();
+						var td_width=ele.parent().width();
+						ele.width(Math.round(td_width/2));	
+						//var loc_id=$('#loc').val();						
+						//var para={'method':'getStockById','loc_id':loc_id,'product_id':id};
+						//var result=exeJson(para);
+						//var stock_qty=result['qty']==null?0:parseInt(result['qty']);					
+						var v_class={required:true,digits:true};
+						addValidate(input_id,v_class);	
+					}
+				}				
+			}
+		},	
+	});
+}
+
+
+function saveBom(){
+	var para={'method':'saveBom','product_id':product_id};
+	var dtl_data={};
+	var trs=$("#grid_subpart tr");
+	for (var i=1;i<trs.length;i++){
+		dtl_data[i-1]={};		
+		dtl_data[i-1]['sub_id']=trs[i].id;
+		var qty=$('#'+trs[i].id+'_qty').val();
+		dtl_data[i-1]['qty']=qty;
+	}
+	para['dtl_data']=dtl_data;
+	var result=exeJson(para);
+	showMsg(result);
+	if(result['status']){
+		toProduct();
+	}
 }

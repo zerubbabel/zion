@@ -79,6 +79,14 @@
 			$data = Baseinfo::getStatus();
 			echo json_encode($data);
 			break;
+		case 'saveBom':
+			$data = Baseinfo::saveBom($para['product_id'],$para['dtl_data']);
+			echo json_encode($data);
+			break;			
+		case 'getSubpart':
+			$data = Baseinfo::getSubpart($para['id']);
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;

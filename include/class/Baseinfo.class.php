@@ -167,4 +167,28 @@ class Baseinfo extends Base {
 		}
 		return false;
 	}
+	public static function saveBom($product_id,$dtl_data) {	
+		$db=self::__instance();
+		$ans=array('status'=>true,'msg'=>'操作成功！');
+		$where=array('product_id'=>$product_id);
+		$db->delete('bom',$where);
+		
+		for($i=0;$i<count($dtl_data);$i++){
+			$data=array('product_id'=>$product_id,'sub_id'=>$dtl_data[$i]['sub_id'],'qty'=>$dtl_data[$i]['qty']);
+			$id=$db->insert('bom',$data);
+			if(!$id){
+				return array('status'=>false,'msg'=>'操作失败！');continue;
+			}
+		}
+		return $ans;
+	}
+
+	public static function getSubpart($id){
+		$db=self::__instance();
+		$sql='select b.id,b.product_name as name,a.qty from bom a
+			LEFT JOIN products b on a.sub_id=b.id 
+			where a.product_id='.$id;
+		$data = $db->query($sql)->fetchAll();
+		return $data;
+	}
 }
