@@ -1,18 +1,23 @@
-var mst_data;
-var dtl_data;
 $(document).ready(function(){
-
 	setTitle();
 	
 	loadSelect($('#supplier'),'suppliers');
+	$( "#deliveryday" ).datepicker({
+		format: 'yyyy-mm-dd',
+		language: 'zh-CN',
+		todayHighlight: true,
+	});
+
 	//验证,submit
 	 $("#frm").validate({	 	
+	 	rules:{
+	 		'deliveryday':{required:true,}
+	 	},
         submitHandler:function(form){    
         	saveSaleOut();
         }    
     });
-	if(select_obj['sale_order_id']){
-		loadSaleMst(select_obj['sale_order_id']);		
+	if(select_obj['sale_order_id']){			
 		loadSaleDtl(select_obj['sale_order_id']);
 		toTabOut();
 	}else{
@@ -58,36 +63,29 @@ function toTabOut(){
 	$("#tab_out").show();
 }
 
-function loadSaleMst(id){
-	var para={'method':'saleMstById','id':id};
-	mst_data=getJsonData(para);
-	$("#cust").text("客户:"+mst_data.cust_name);
-}
 
 function loadSaleDtl(id){
 	var para={'method':'saleDtlById','id':id};
-	dtl_data=getJsonData(para);	
-	
+	dtl_data=getJsonData(para);		
 	var para={'method':'saleOutAllBySaleOrderId','id':id};
-
-	var out_data=getJsonData(para);
-	
+	var out_data=getJsonData(para);	
 	var real_data=calRealData(dtl_data,out_data);//
-
 	$("#tbl_dtl").jqGrid({
 		data: dtl_data,
 		datatype: "local",
 		height: 300,
-		colNames:['产品', '数量','出库数量'],
+		colNames:['产品', '订单剩余数量'],
 		colModel:[
 			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: false},
-			{name:'out_qty',index:'out_qty', width:90, sortable:true,editable: true},
 		], 
-		caption: "产品明细",
+		caption: "销售订单产品明细",
 		autowidth: true,
 	});	
-	//编辑模式
+
+	var sub_data=getSubdata(real_data);
+	loadSubpart(sub_data);
+	/*
 	var validate_rule={};
 	$.each(dtl_data,function(){
 		$('#tbl_dtl').jqGrid('editRow',this.id);
@@ -100,6 +98,79 @@ function loadSaleDtl(id){
 		var loc_id=$('#loc').val();					
 		var v_class={required:true,digits:true,range:[0,parseInt(this.qty)]};
 		addValidate(input_id,v_class);	
-	});	
+	});	*/
 }
+
+function getSubdata(data){
+	var ans=[];
+	var para={'method':'getSubpart'}
+	for(var i=0;i<data.length;i++){
+		var id=data[i]['id'];
+		var qty=parseInt(dtl_data[i]['qty']);
+		para['id']=id;
+		var sub_data=exeJson(para);
+		for (var j=0;j<sub_data.length;j++){
+			var exist=false;
+			for(var k=0;k<ans.length;k++){
+				if (sub_data[j]['id']==ans[k]['id']){
+					exist=true;
+					ans[k]['qty']=parseInt(ans[k]['qty'])+parseInt(sub_data[j]['qty'])*qty;
+					break;
+				}
+			}
+			if(!exist){
+				sub_data[j]['qty']=parseInt(sub_data[j]['qty'])*qty;
+				ans.push(sub_data[j]);
+
+			}
+		}
+	}
+	return ans;
+}
+
+function loadSubpart(data){
+	$("#subpart_dtl").jqGrid({
+		data: data,
+		datatype: "local",
+		height: 300,
+		colNames:['','配件', '标准数量','采购数量'],
+		colModel:[
+			{name:'act',index:'',},
+			{name:'name',index:'name', width:90, sortable:true,editable: false},
+			{name:'qty',index:'qty', width:90, sortable:true,editable: false},
+			{name:'p_qty',index:'p_qty', width:90, sortable:true,editable: true},
+		], 
+		caption: "待采购产品明细  "+"<i class='icon-plus-sign pointer tooltip-warning' data-rel='tooltip' title='添加配件'"+
+					" data-placement='right' onclick=\"addPart();\" ></i>",
+		autowidth: true,
+		gridComplete: function(){
+			$('[data-rel=tooltip]').tooltip();
+			var ids = jQuery('#subpart_dtl').jqGrid('getDataIDs');
+			for(var i=0;i < ids.length;i++){
+				var cl = ids[i];
+				del = "<i class='icon-trash orange pointer ' onclick=\"delRow('"+cl+"');\" ></i>"; 
+				jQuery('#subpart_dtl').jqGrid('setRowData',ids[i],{act:del});
+				//enter edit
+				$('#subpart_dtl').jqGrid('editRow',cl);
+				//debugger
+				var ele=$("#"+cl+"_p_qty");
+				var width=ele.width();
+				var td_width=ele.parent().width();
+				ele.width(Math.round(td_width/2));
+				var input_id=cl+"_p_qty";								
+				var v_class={required:true,digits:true,min:0};
+				addValidate(input_id,v_class);
+			}
+		},
+	});		
+}
+function delRow(id){
+	jQuery("#subpart_dtl").jqGrid('delRowData',id);
+	return false;
+}
+function addPart(){
+	alert(1)
+}
+
+
 

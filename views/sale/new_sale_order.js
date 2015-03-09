@@ -49,11 +49,13 @@ function newSaleOrderMst(){
 	var cust_id=$('#cust').val();
 	var importance=$('#importance').val();
 	var deliveryday=$('#deliveryday').val();
+	var order_no=$('#order_no').val();
 	var datas=[];
 	datas.push(cust_id);
 	datas.push(importance);
 	datas.push(deliveryday);
-	var cols=['cust_id','importance','deliveryday'];
+	datas.push(order_no);
+	var cols=['cust_id','importance','deliveryday','order_no'];
 	var table='sale_order_mst';	
 	return exeSql('insertMst',table,cols,datas);
 }

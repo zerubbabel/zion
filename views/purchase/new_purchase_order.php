@@ -36,12 +36,17 @@
 		</div>
 	</div>	
 	<div class="row">
-		<div class="col-xs-12">	
+		<div class="col-xs-6">	
 			<table id="tbl_dtl"></table>													
-		</div>						
+		</div>	
+		<div class="col-xs-6">	
+			<table id="subpart_dtl"></table>													
+		</div>					
 	</div>	
 </div>
 </form>
+<script src="assets/js/data-time/bootstrap-datepicker.min.js"></script>
+<script src="assets/js/data-time/bootstrap-datepicker.zh-CN.js"></script>
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 <script src="views/purchase/new_purchase_order.js"></script>

@@ -8,6 +8,7 @@
 <form id="frm">
 <div class="row">
 	<div class="col-xs-6">
+		
 		客户:
 		<select id='cust'>
 			<!--<option value=0>--请选择--</option>-->
@@ -15,6 +16,7 @@
 		订单重要性：
 		<select id='importance'>
 		</select>
+		<input type="text" id="order_no" name="order_no" placeholder='订单号' />		
 	</div>	
 	<div class="col-xs-1">
 		交货时间：
@@ -25,6 +27,8 @@
 			<span class="input-group-addon">
 				<i class="icon-calendar"></i>
 			</span>
+			
+		
 			<button id='add_btn' class="btn btn-info icon-plus">添加产品</button>
 			<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
 		</div>
