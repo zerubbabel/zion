@@ -6,13 +6,15 @@ jQuery(function($) {
 	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
-	$.ajax({
+	/*$.ajax({
         url: "ajax/get_data.php",
         async:false,
         success: function(data){
         	grid_data=jQuery.parseJSON(data);
         }
-    });
+    });*/
+	var para={'method':'getPassedSaleOrder'};
+	var grid_data=exeJson(para);
 	
 	jQuery(grid_selector).jqGrid({
 		data: grid_data,
@@ -58,7 +60,6 @@ jQuery(function($) {
 				enableTooltips(table);
 			}, 0);
 		},
-		//editurl:'views/sale/sale_order_edit.php',
 		caption: "销售订单列表",
 		autowidth: true,
 	});

@@ -18,7 +18,7 @@ jQuery(function($) {
 		data: grid_data,
 		datatype: "local",
 		height: 400,
-		colNames:['','订单日期','客户', '交货日期','重要性','状态','操作人员'],
+		colNames:['','客户', '交货日期','重要性','状态','操作人员'],
 		colModel:[
 			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -26,8 +26,7 @@ jQuery(function($) {
 					keys:true,
 					delbutton:false,
 				}
-			},
-			{name:'createday',index:'createday',width:90, editable:false},	
+			},	
 			{name:'cust_name',index:'cust_name', width:90,editable: false},	
 			{name:'deliveryday',index:'deliveryday',width:90, editable:true},	
 			{name:'importance',index:'importance',width:90, editable:false},		
@@ -52,8 +51,8 @@ jQuery(function($) {
         		}
         	}
     		else{
-    			select_obj['sale_order_id']=id;
-    			showToolbar();
+    			//select_obj['sale_order_id']=id;
+    			//showToolbar();
     			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1});
     			jQuery("#list_d").jqGrid('setCaption','销售订单明细:'+id)
     			.trigger('reloadGrid');	

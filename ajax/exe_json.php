@@ -7,6 +7,10 @@
 			$data = Sale::insertSaleOutOrder($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);
 			break;
+		case 'getPassedSaleOrder':
+			$data = Sale::getPassedSaleOrder();
+			echo json_encode($data);
+			break;
 		case 'getSaleOutList':
 			$data = Sale::getSaleOutList();
 			echo json_encode($data);

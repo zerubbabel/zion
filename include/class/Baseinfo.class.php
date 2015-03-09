@@ -168,6 +168,7 @@ class Baseinfo extends Base {
 		return false;
 	}
 	public static function saveBom($product_id,$dtl_data) {	
+		//todo 防止出现父件与子件一样的情况
 		$db=self::__instance();
 		$ans=array('status'=>true,'msg'=>'操作成功！');
 		$where=array('product_id'=>$product_id);

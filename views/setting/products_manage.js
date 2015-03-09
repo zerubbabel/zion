@@ -1,6 +1,6 @@
 ﻿var lastsel;
-var products=[];
-var product_id='';
+//var products=[];
+var product_id;
 jQuery(function($) {
 	setTitle();
 	toProduct();
@@ -23,6 +23,9 @@ jQuery(function($) {
 	$('#modal_product_filter').keyup(function(){
 		doFilter('modal_tbl_products',this.value);
 	})
+
+	loadSubgrid(0);
+	loadRightSubgrid()
 
 	//验证
 	$("#sub_frm").validate({
@@ -59,8 +62,9 @@ jQuery(function($) {
 		altRows: true,		
 		multiselect: false,
         multiboxonly: true,
-        onSelectRow:function(id){
-        	
+        onSelectRow:function(id){        	
+        	jQuery('#right_subpart').jqGrid('setGridParam',{url:"views/setting/bom_data.php?id="+id,page:1})
+			.trigger('reloadGrid');	
         },
         loadComplete : function() {
 			var table = this;
@@ -75,7 +79,7 @@ jQuery(function($) {
 				var cl = ids[i];
 				min = "<i class='icon-bell-alt orange pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
 					" data-placement='right' onclick=\"setMin('"+cl+"');\" ></i>"; 
-				bom = "<i class='icon-cogs pointer tooltip-warning' data-rel='tooltip' title='物料清单'"+
+				bom = "<i class='icon-cogs pointer tooltip-warning' data-rel='tooltip' title='设置物料清单'"+
 					" data-placement='right' onclick=\"setBom('"+cl+"');\" ></i>";
 				jQuery(grid_selector).jqGrid('setRowData',ids[i],{act:min+bom});
 				$('[data-rel=tooltip]').tooltip();
@@ -94,55 +98,44 @@ function toProduct(){
 	$("#tab_product").show();
 }
 function setBom(id){
-	select_obj['product_id']=id;
 	product_id=id;
 	toBom();
-	loadSubpart(id);
-}
-function loadSubpart(id){
-	var para={'method':'getProductById','id':id};
+	var para={'method':'getProductById','id':id};	
 	var product=exeJson(para);
-	//$("#product_span").text(product['name']);
-	var para={'method':'getSubpart','id':id};
-	var subpart_data=exeJson(para);
-	//products=[];
-	debugger
-	if(subpart_data){		
-		$.each(subpart_data,function(){
-			products.push(this);
-		})
-	}
-	//debugger
-	/*debugger
-	$.each(subpart_data,function(){
-		products.push(this);
-	})	*/
+	jQuery('#grid_subpart').jqGrid('setGridParam',{url:"views/setting/bom_data.php?id="+id,page:1});
+	jQuery('#grid_subpart').jqGrid('setCaption',product['name']+' 物料清单:')
+	.trigger('reloadGrid');	
 
+}
+function loadSubgrid(id){	
 	jQuery("#grid_subpart").jqGrid({
-		data: products,
-		datatype: "local",
+		url:'views/setting/bom_data.php?id='+id,
+		datatype: "json",
 		height: 200,
-		colNames:[' ','产品', '数量','id'],
+		colNames:[' ','产品', '数量'],
 		colModel:[
-			{name:'myac',index:'', fixed:true, sortable:false, resize:false,
-				formatter:'actions', 
-				formatoptions:{ 
-					keys:true,		
-					editbutton:false,	
-					delOptions:{onclickSubmit:delProduct},	
-				}
-			},						
+			{name:'act',index:'',width:20, sortable:false},						
 			{name:'name',index:'name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: true,
-				editrules:{required:true,number:true}
-			},			
-			{name:'id',index:'id', width:90,editable: false,hidden:true},
+			{name:'qty',index:'qty', width:120, sortable:true,editable: true,},			
 		], 
-		caption:product['name']+' 物料清单:',	
-		editurl: 'empty.php',
+		caption: '物料清单:',	
+		gridComplete: function(){
+			var ids = jQuery('#grid_subpart').jqGrid('getDataIDs');
+			for(var i=0;i < ids.length;i++){
+				var cl = ids[i];
+				del = "<i class='icon-trash orange pointer ' onclick=\"delRow('"+cl+"');\" ></i>"; 
+				jQuery('#grid_subpart').jqGrid('setRowData',ids[i],{act:del});
+				//enter edit
+				$('#grid_subpart').jqGrid('editRow',cl);
+				//debugger
+				var ele=$("#"+cl+"_qty");
+				var width=ele.width();
+				var td_width=ele.parent().width();
+				ele.width(Math.round(td_width/2));
+			}
+		},
 		autowidth: true,		
 	});
-
 }
 function setMin(id){
 	var para={'method':'getProductById','id':id};
@@ -194,16 +187,9 @@ function editMode(){
 	$('#min_stock').prop('disabled',false);
 }
 
-function delProduct(e){
-	var delrow=$('#grid_subpart').jqGrid('getGridParam','selrow');
-	var i=0;
-	$.each(products,function(key,value){		
-		if(delrow==this.id){
-			products.splice(i,1);
-			return false;
-		}
-		i++;
-	})
+function delRow(id){
+	jQuery("#grid_subpart").jqGrid('delRowData',id);
+	return false;
 }
 
 
@@ -221,18 +207,18 @@ function loadModalProducts(){
 			if(id && id!==lastsel){
 				//产品添加到明细表中并且该行进入edit模式
 				var flag=false;//产品是否已存在
-				var datarow=$('#modal_tbl_products').getRowData(id);				
-				$.each(products,function(key,value){
-					if(id==this.id){
+				//var datarow=$('#modal_tbl_products').getRowData(id);
+				if (id==product_id){flag=true};//防止子件与父件重复
+				var trs=$('#grid_subpart tr');	
+				for(var i=0;i<trs.length;i++){
+					if (id==trs[i].id){
 						flag=true;
-						return false;
+						break;
 					}
-				})				
-				if (!flag){			
-					products.push(datarow);					
+				}									
+				if (!flag){						
 					var newid=id;
-					//debugger
-					datarow['qty']=0;
+					var datarow=$('#modal_tbl_products').getRowData(id);	
 					var su=$('#grid_subpart').addRowData(newid, datarow, "last");	
 									
 					if (su){
@@ -246,7 +232,7 @@ function loadModalProducts(){
 						//var para={'method':'getStockById','loc_id':loc_id,'product_id':id};
 						//var result=exeJson(para);
 						//var stock_qty=result['qty']==null?0:parseInt(result['qty']);					
-						var v_class={required:true,digits:true};
+						var v_class={required:true,digits:true,min:0};
 						addValidate(input_id,v_class);	
 					}
 				}				
@@ -272,4 +258,19 @@ function saveBom(){
 	if(result['status']){
 		toProduct();
 	}
+}
+
+function loadRightSubgrid(){	
+	jQuery("#right_subpart").jqGrid({
+		url:'views/setting/bom_data.php',
+		datatype: "json",
+		height: 200,
+		colNames:['产品', '数量'],
+		colModel:[					
+			{name:'name',index:'name', width:90, sortable:true,editable: false},
+			{name:'qty',index:'qty', width:120, sortable:true,editable: true,},			
+		], 
+		caption: '物料清单:',
+		autowidth: true,		
+	});
 }

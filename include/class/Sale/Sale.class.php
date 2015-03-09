@@ -56,7 +56,7 @@ class Sale extends Base {
 		return array('status'=>false);
 	}
 
-	public static function getAllSaleOrderMst() {
+	public static function getAllSaleOrderMst($filter='') {
 		$db=self::__instance();
 		$cols="sale_order_mst.id,cust_id,createday,op_id,cust_name,user_name,
 			deliveryday,importance.name as importance,order_status.name as status";
@@ -65,14 +65,18 @@ class Sale extends Base {
 			left join users on sale_order_mst.op_id=users.user_id 
 			left join importance on sale_order_mst.importance=importance.id 
 			left join order_status on sale_order_mst.status=order_status.id 
-			order by importance.value desc,deliveryday,createday desc";
+			".$filter." order by importance.value desc,deliveryday,createday desc";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
 		}
 		return $db->error();//array ();
 	}
-
+	
+	public static function getPassedSaleOrder() {
+		$filter='where sale_order_mst.status=3';
+		return self::getAllSaleOrderMst($filter);
+	}
 	public static function getSaleOutList() {
 		$db=self::__instance();
 		
