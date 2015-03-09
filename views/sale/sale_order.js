@@ -91,6 +91,7 @@ function loadDetail(id){
 function showToolbar(){
 	if($("#toolbar").children().length==0){
 		addBtnSaleOut();
+		addBtnPurchase();
 	}	
 	$("#toolbar").show();	
 }
@@ -103,5 +104,12 @@ function addBtnSaleOut(){
 	$("#toolbar").append(html);
 	$("#btn_sale_out").click(function(){
 		window.location.href="index.php#/views/sale/sale_out";
+	})
+}
+function addBtnPurchase(){
+	var html='<button class="btn btn-info" id="btn_purchase">生成采购订单</button>';
+	$("#toolbar").append(html);
+	$("#btn_purchase").click(function(){
+		window.location.href="index.php#/views/purchase/new_purchase_order";
 	})
 }

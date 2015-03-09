@@ -111,6 +111,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/purchase/purchase_requisition', {
+      templateUrl: 'views/purchase/purchase_requisition.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/setting/privilege', {
       templateUrl: 'views/setting/privilege.php',
       resolve: {
