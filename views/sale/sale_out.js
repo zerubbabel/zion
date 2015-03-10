@@ -44,6 +44,7 @@ function saveSaleOut(){
 	showMsg(result);
 	if(result['status']){
 		//跳转到出库单列表
+		select_obj['sale_order_id']=null;
 		window.location.href="index.php#/views/sale/sale_out_list";
 	}
 }

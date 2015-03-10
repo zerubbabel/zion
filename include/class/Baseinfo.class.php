@@ -71,7 +71,9 @@ class Baseinfo extends Base {
 	public static function getSelect($table) {
 		$db=self::__instance();
 		$cols=array('id','name');
-		$list = $db->select($table,$cols);
+		$where=array('status'=>1);
+		$list = $db->select($table,$cols,$where);
+		//$list = $db->select($table,$cols);
 		if ($list) {			
 			return $list;
 		}
@@ -111,7 +113,8 @@ class Baseinfo extends Base {
 
 	
 	//通用的insert into dtl
-	public static function insertDtl($dtl_data,$mst_table,$mst_id,$loc_id) {
+	//$flag为入库出库标记1为入库,-1为出库，帮助更新库存数量
+	public static function insertDtl($dtl_data,$mst_table,$mst_id,$loc_id,$flag=1) {
 		//明细表有一条成功status就为true全失败为false
 		$ans=array();
 		$status=false;
@@ -125,7 +128,7 @@ class Baseinfo extends Base {
 			if($id){				
 				$status=true;
 				if ($loc_id!=null){//$loc_id==null表示无需更新stock
-					Stock::updateStock($dtl_data[$i]['product_id'],$dtl_data[$i]['qty'],$loc_id);
+					Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['qty'])*$flag,$loc_id);
 				}
 			}else{
 				$ans['msg']=$db->error();

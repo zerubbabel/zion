@@ -7,36 +7,20 @@
 ?>
 <form id="frm">
 <div class="row">
-	<div class="col-xs-6">
-		
-		客户:
-		<select id='cust'>
+	<div class="col-xs-12">
+		<label for="os_unit" class="control-label no-padding-right">外协单位:</label>
+		<select id='os_unit'>
 			<!--<option value=0>--请选择--</option>-->
 		</select>	
-		订单重要性：
-		<select id='importance'>
+		<label for="loc" class="control-label no-padding-right">出库仓库:</label>
+		<select id='loc'>
+			<!--<option value=0>--请选择--</option>-->
 		</select>
-		<input type="text" id="order_no" name="order_no" placeholder='订单号' />		
-	</div>	
-	<div class="col-xs-1">
-		交货时间：
-	</div>
-	<div class="col-xs-5">		
-		<div class="input-group input-group-sm">			
-			<input type="text" id="deliveryday" name="deliveryday" class="form-control" placeholder='交货时间' />
-			<span class="input-group-addon">
-				<i class="icon-calendar"></i>
-			</span>
-			
-		
-			<button id='add_btn' class="btn btn-info icon-plus">添加产品</button>
-			<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
-		</div>
-	</div>
-	<div class="col-xs-12">
+		<button id='add_btn' class="btn btn-success icon-plus">添加产品</button>
+		<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
 		<table id="grid_dtl" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-		</table>	
-	</div>	
+		</table>													
+	</div>						
 </div>	
 </form>
 <!--modal of products-->
@@ -53,9 +37,13 @@
 			</div>
 
 			<div class="modal-body no-padding ">												
-				<div class="modal-body" id="modal_products_body">
+				<div class="modal-body ">
 					<div class='row'>
-						筛选:<input type="text" id="product_filter" placeholder="产品描述"/>
+						<label class="col-xs-3 control-label no-padding-right" for="form-field-1">筛选：</label>
+
+						<div class="col-xs-9">
+							<input type="text" id="product_filter" placeholder="产品描述" class="col-xs-10 col-sm-5" />
+						</div>
 					</div>
 					<div class='row'>	
 						<div class="col-xs-12">						
@@ -65,22 +53,13 @@
 					</div>	
 				</div>				
 			</div>
-			<div class="modal-footer no-margin-top"></div>
-		</div>
-	</div>
+
+			<div class="modal-footer no-margin-top">
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div>
-
 <!-- end of modal of products-->
-
-<!-- page specific plugin scripts -->
-<!--<script src="assets/js/jqModal.min.js"></script>-->
-<!--
-<script src="assets/js/jquery.dataTables.min.js"></script>
-<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
-
-
--->
-
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
-<script src="views/sale/new_sale_order.js"></script>
+<script src="views/outsource/os_out.js"></script>

@@ -253,7 +253,8 @@
 		<script src="assets/js/flot/jquery.flot.pie.min.js"></script>
 		<script src="assets/js/flot/jquery.flot.resize.min.js"></script>
 		<script src="assets/js/jquery.gritter.min.js"></script>
-
+		<script src="assets/js/data-time/bootstrap-datepicker.min.js"></script>
+		<script src="assets/js/data-time/bootstrap-datepicker.zh-CN.js"></script>
 		<!-- ace scripts -->
 
 		<script src="assets/js/ace-elements.min.js"></script>

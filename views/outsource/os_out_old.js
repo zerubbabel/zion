@@ -2,39 +2,41 @@ var products=[];
 var lastsel;
 jQuery(function($) {
 	setTitle();
-	//客户
-	loadCust($('#cust'));
-	loadSelect($('#importance'),'importance');
-
-	$( "#deliveryday" ).datepicker({
-		format: 'yyyy-mm-dd',
-		language: 'zh-CN',
-		todayHighlight: true,
+	//外协单位
+	loadSelect($('#os_unit'),'os_units');
+	loadSelect($('#loc'),'locations');
+	//update validate
+	$('#loc').change(function(){
+		var loc_id=$('#loc').val();
+		var grid_id='grid_dtl';
+		var trs=$("#"+grid_id+" tr");
+		for(var i=1;i<trs.length;i++){
+			var id=trs[i].id;
+			var input_id=id+"_qty";
+			var para={'method':'getStockById','loc_id':loc_id,'product_id':id};
+			var result=exeJson(para);
+			var stock_qty=result['qty']==null?0:parseInt(result['qty']);
+			var v_class={required:true,digits:true,range:[0,parseInt(stock_qty)]};
+			addValidate(input_id,v_class);		
+		}
 	});
-
+	
 	//明细
 	loadDetail();
 	
 	//验证
 	$("#frm").validate({
-		rules:{
-			'deliveryday':{required:true,}
-		},
-		submitHandler:function(form){	
-			var trs=$("#grid_dtl tr");
-			if (trs.length>1){				
-				var mst_id=newSaleOrderMst();	
-				if(mst_id>0){			
-					newSaleOrderDtl(mst_id);
-				}
-			}
-			else{
-				var result={'status':false,'msg':'请选择订单产品！'};
-				showMsg(result);
-			}
-			return false;
+		submitHandler:function(form){			
+			if ($('#grid_dtl tr').length>1){
+        		saveOsOutOrder();	
+        	}
+        	else{
+        		var result={'status':false,'msg':'请先添加需要外协加工的物品！'};
+        		showMsg(result);
+        	}
 		}
 	})
+
 	//新增产品
 	$('#add_btn').click(function(){
 		$('#modal_products').modal({show:true});
@@ -44,43 +46,29 @@ jQuery(function($) {
 
 	//产品过滤
 	$('#product_filter').keyup(function(){
-		doFilter('modal_tbl_products',this.value);
+		doFilter(this.value);
 	})
-
 });
 
-function newSaleOrderMst(){
-	var cust_id=$('#cust').val();
-	var importance=$('#importance').val();
-	var deliveryday=$('#deliveryday').val();
-	var order_no=$('#order_no').val();
-	var datas=[];
-	datas.push(cust_id);
-	datas.push(importance);
-	datas.push(deliveryday);
-	datas.push(order_no);
-	var cols=['cust_id','importance','deliveryday','order_no'];
-	var table='sale_order_mst';	
-	return exeSql('insertMst',table,cols,datas);
-}
-
-function newSaleOrderDtl(mst_id){
-	var optype='insertDtl';
-	var table='sale_order_dtl';
-	var cols=['mst_id','product_id','qty'];
+function saveOsOutOrder(){
+	var para={'method':'insertOsOutOrder'};
+	var mst_data={'os_unit':$('#os_unit').val(),'loc_id':$('#loc').val()};
+	para['mst_data']=mst_data;
+	var dtl_data={};
 	var trs=$("#grid_dtl tr");
 	for (var i=1;i<trs.length;i++){
-		var datas=[mst_id];
-		var product_id=trs[i].id;
-		var qty=$('#'+product_id+'_qty').val();
-		datas.push(product_id);
-		datas.push(qty);
-		if (!(exeSql(optype,table,cols,datas)>0)){
-			return false;
-		}
+		dtl_data[i-1]={};		
+		dtl_data[i-1]['product_id']=trs[i].id;
+		var qty=$('#'+trs[i].id+'_qty').val();
+		dtl_data[i-1]['qty']=qty;
 	}
-	window.location.href="index.php#/views/sale/sale_order";
-	return true;
+	para['dtl_data']=dtl_data;
+	var result=exeJson(para);
+	showMsg(result);
+	if(result['status']){
+		//跳转到外协出库单列表
+		window.location.href="index.php#/views/outsource/os_out_list";
+	}
 }
 
 function loadDetail(){
@@ -118,8 +106,8 @@ function loadModalProducts(){
 		colModel:[					
 			{name:'id',index:'id'},
 			{name:'name',index:'name'},			
-		], 	
-		height: 300,
+		], 
+		autowidth: true,	
 		onSelectRow: function(id){			
 			if(id && id!==lastsel){
 				//产品添加到明细表中并且该行进入edit模式
@@ -132,7 +120,7 @@ function loadModalProducts(){
 					}
 				})				
 				if (!flag){					
-					products.push(datarow);					
+					products.push(datarow);							
 					var newid=id;
 					var su=$('#grid_dtl').addRowData(newid, datarow, "last");						
 					if (su){
@@ -141,14 +129,32 @@ function loadModalProducts(){
 						var ele=$("#"+input_id);
 						var width=ele.width();
 						var td_width=ele.parent().width();
-						ele.width(Math.round(td_width/2));						
-						var v_class={required:true,digits:true};
+						ele.width(Math.round(td_width/2));	
+						var loc_id=$('#loc').val();						
+						var para={'method':'getStockById','loc_id':loc_id,'product_id':id};
+						var result=exeJson(para);
+						var stock_qty=result['qty']==null?0:parseInt(result['qty']);					
+						var v_class={required:true,digits:true,range:[0,parseInt(stock_qty)]};
 						addValidate(input_id,v_class);	
 					}
 				}				
 			}
-		},
-		autowidth: true,	
+		},	
+	});
+}
+
+function doFilter(str){
+	var rows=$('#modal_tbl_products').jqGrid('getRowData');
+	var trs=$('#modal_tbl_products').find('tr');
+	$(rows).each(function(i,v){
+		$(trs[i+1]).hide();
+		$.each(v, function(key, value) { 
+			var pos=value.indexOf(str);
+		  	if (value.indexOf(str)>=0){
+				$(trs[i+1]).show();
+				return false;
+			}
+		});
 	});
 }
 

@@ -4,12 +4,19 @@ jQuery(function($) {
 	setTitle();
 	//外协单位
 	loadSelect($('#os_unit'),'os_units');
-
+	$( "#deliveryday" ).datepicker({
+		format: 'yyyy-mm-dd',
+		language: 'zh-CN',
+		todayHighlight: true,
+	});
 	//明细
 	loadDetail();
 	
 	//验证
 	$("#frm").validate({
+		rules:{
+			'deliveryday':{required:true,}
+		},
 		submitHandler:function(form){			
 			if ($('#grid_dtl tr').length>1){
         		saveOsOrder();	
@@ -35,7 +42,7 @@ jQuery(function($) {
 
 function saveOsOrder(){
 	var para={'method':'insertOsOrder'};
-	var mst_data={'os_unit':$('#os_unit').val()};
+	var mst_data={'os_unit':$('#os_unit').val(),'deliveryday':$("#deliveryday").val()};
 	para['mst_data']=mst_data;
 	var dtl_data={};
 	var trs=$("#grid_dtl tr");
@@ -50,7 +57,7 @@ function saveOsOrder(){
 	showMsg(result);
 	if(result['status']){
 		//跳转到外协申请单列表
-		window.location.href="index.php#/views/outsource/os_order_list";
+		//window.location.href="index.php#/views/outsource/os_order_list";
 	}
 }
 

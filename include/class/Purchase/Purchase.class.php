@@ -2,6 +2,51 @@
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Purchase extends Base {
 
+	public static function getSuppliers() {
+		$db=self::__instance();
+		$sql='select a.id,a.name as supplier_name,a.type_id,b.name as type_name from suppliers a 
+			left join cust_types b on a.type_id=b.id 
+			where a.status=1';
+		$result = $db->query($sql)->fetchAll();
+		if($result){
+			return $result;
+		}
+		return false;
+	}
+
+	public static function addSupplier($supplier_name,$type_id) {
+		$db=self::__instance();
+		$data=array('name'=>$supplier_name,'type_id'=>$type_id);
+		$result = $db->insert('suppliers',$data);
+		if($result && $result>0){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
+
+	public static function updateSupplier($id,$supplier_name,$type_id) {
+		$db=self::__instance();
+		$data=array('name'=>$supplier_name,'type_id'=>$type_id);
+		$where=array('id'=>$id);
+		$result = $db->update('suppliers',$data,$where);
+		if($result && $result>0){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
+	public static function stopSupplier($id) {
+		$db=self::__instance();
+		$data=array('status'=>0);	
+		$where=array('id'=>$id);
+		$result = $db->update('suppliers',$data,$where);
+		if($result && $result>0){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
 	public static function insertPurchaseMst($mst_data) {
 		$db=self::__instance();		
 		$createday=date('Y-m-d H:i:s');		

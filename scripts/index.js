@@ -93,6 +93,24 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/outsource/os_in', {
+      templateUrl: 'views/outsource/os_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/outsource/os_order_manage', {
+      templateUrl: 'views/outsource/os_order_manage.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/outsource/os_order_list', {
+      templateUrl: 'views/outsource/os_order_list.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/setting/new_password', {
       templateUrl: 'views/setting/new_password.php',
       resolve: {
@@ -125,6 +143,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
     })
     .when('/views/purchase/purchase_in', {
       templateUrl: 'views/purchase/purchase_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/purchase/suppliers', {
+      templateUrl: 'views/purchase/suppliers.php',
       resolve: {
         async: ['$q', '$location', auth]
       }
