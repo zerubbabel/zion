@@ -51,6 +51,30 @@
 			$data = Purchase::insertPurchaseOrder($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);
 			break;	
+		case 'getAllPurchaseOrderMst':
+			$data = Purchase::getAllPurchaseOrderMst();
+			echo json_encode($data);
+			break;
+		case 'getPassedPurchaseOrder':
+			$data = Purchase::getPassedPurchaseOrder();
+			echo json_encode($data);
+			break;
+		case 'getPurchaseOrderMstById':
+			$data = Purchase::getPurchaseOrderMstById($para['id']);
+			echo json_encode($data);
+			break;
+		case 'getPurchaseOrderDtlById':
+			$data = Purchase::getPurchaseOrderDtlById($para['id']);
+			echo json_encode($data);
+			break;
+		case 'insertPurchaseInOrder':
+			$data = Purchase::insertPurchaseInOrder($para['mst_data'],$para['dtl_data']);
+			echo json_encode($data);
+			break;
+		case 'getPurchaseInAllByPurchaseOrderId':
+			$data = Purchase::getPurchaseInAllByPurchaseOrderId($para['id']);
+			echo json_encode($data);
+			break;
 		case 'getPrivilege':
 			$data = Baseinfo::getPrivilege($para['group_id']);
 			echo json_encode($data);
@@ -63,10 +87,6 @@
 			$data = Baseinfo::getProducts();
 			echo json_encode($data);
 			break;
-		/*case 'getPurchaseProducts':
-			$data = Baseinfo::getProducts('where ');
-			echo json_encode($data);
-			break;	*/
 		case 'getProductById':
 			$data = Baseinfo::getProductById($para['id']);
 			echo json_encode($data);

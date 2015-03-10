@@ -184,7 +184,7 @@ class Sale extends Base {
 			$id=$db->insert('sale_out_dtl',$data);
 			if($id){
 				$status=true;
-				Stock::updateStock($dtl_data[$i]['product_id'],$dtl_data[$i]['qty'],$loc_id);
+				Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['qty'])*(-1),$loc_id);
 			}else{
 				$ans['msg']=$db->error();
 			}
@@ -193,7 +193,7 @@ class Sale extends Base {
 		$ans['status']=$status;
 		return $ans;
 	}
-
+	/*
 	public static function deleteSaleOutMst($mst_id) {
 		$db=self::__instance();
 		$where=array('id'=>$mst_id);
@@ -203,7 +203,7 @@ class Sale extends Base {
 		}else{
 			return array('status' =>false,'msg'=>$db->error());
 		}
-	}
+	}*/
 
 
 	public static function updateSaleOrderStatus($mst_id) {
@@ -225,7 +225,8 @@ class Sale extends Base {
 					$ans['status']=true;
 					$ans['msg']='操作成功！';
 				}else{
-					Sale::deleteSaleOutMst($mst_id);//删除主表
+					//Sale::deleteSaleOutMst($mst_id);//删除主表
+					Baseinfo::deleteMst($mst_id,'sale_out_mst');//删除主表
 					$ans['status']=false;
 					$ans['msg']='操作失败！';
 				}

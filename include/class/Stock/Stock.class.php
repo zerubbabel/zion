@@ -44,7 +44,7 @@ class Stock extends Base {
 		$ans['status']=$status;
 		return $ans;
 	}
-
+	/*
 	public static function updateStock($product_id,$qty,$loc_id) {
 		$db=self::__instance();
 		$data=array('qty[-]'=>$qty);
@@ -54,7 +54,31 @@ class Stock extends Base {
 			return array('status'=>true);
 		}else{
 			return array('status'=>false,'msg'=>$db->error());
-		}
-		
+		}		
+	}*/
+
+	public static function updateStock($product_id,$qty,$loc_id) {
+		$db=self::__instance();
+		$where=array('AND'=>array('product_id'=>$product_id,'loc_id'=>$loc_id));
+		$result=$db->has('stocks',$where);
+		if ($result){
+			$data=array('qty[+]'=>$qty);
+			$id=$db->update('stocks',$data,$where);
+			if($id){
+				return array('status'=>true);
+			}else{
+				return array('status'=>false,'msg'=>$db->error());
+			}
+		}	
+		else{
+			$data=array('qty'=>$qty,'product_id'=>$product_id,'loc_id'=>$loc_id);		
+			$id=$db->insert('stocks',$data);
+			if($id){
+				return array('status'=>true);
+			}else{
+				return array('status'=>false,'msg'=>$db->error());
+			}
+		}	
 	}
+
 }
