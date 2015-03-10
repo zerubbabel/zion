@@ -218,7 +218,63 @@ function doFilter(grid,str){
 		});
 	});
 }
+function loadModal(title,data,dst_grid,input){	
+	//$('#modal_body').empty();//清空				
+	$('#modal_title').text(title);		
+	$('#modal_filter').keyup(function(){
+		doFilter('modal_grid',this.value);
+	})	
+	
+	$('#modal').modal({show:true});
+	loadModalGrid(data,dst_grid,input);
+	
+}
 
+function loadModalGrid(data,dst_grid,input){
+	jQuery("#modal_grid").jqGrid({
+		data:data,
+		datatype: "local",
+		colNames:['产品代码', '产品名称'],
+		colModel:[					
+			{name:'id',index:'id'},
+			{name:'name',index:'name'},			
+		], 
+		height:300,
+		rowNum:10,
+		rowList:[10,20,30],
+		autowidth: true,	
+		onSelectRow: function(id){			
+			if(id){
+				//产品添加到明细表中并且该行进入edit模式
+				var flag=false;//产品是否已存在
+				var trs=$('#'+dst_grid+' tr');	
+				for(var i=1;i<trs.length;i++){
+					if (id==trs[i].id){
+						flag=true;
+						break;
+					}
+				}									
+				if (!flag){						
+					var newid=id;
+					var datarow=$('#modal_grid').getRowData(id);	
+					var su=$('#'+dst_grid).addRowData(newid, datarow, "last");	
+									
+					if (su){
+						$('#'+dst_grid).jqGrid('editRow',newid);
+						var input_id=id+input;
+						var ele=$("#"+input_id);
+						ele.attr('name',input_id);
+						var width=ele.width();
+						var td_width=ele.parent().width();
+						ele.width(Math.round(td_width/2));						
+						var v_class={required:true,digits:true};
+						addValidate(input_id,v_class);	
+					}
+				}					
+			}
+		},	
+	});
+}
 
 function openProducts(){
 	$('#modal_body').empty();//清空				
@@ -298,4 +354,9 @@ function get_status(){
         }
      }   
 	return str;	
+}
+
+function delRow(grid,id){
+	jQuery("#"+grid).jqGrid('delRowData',id);
+	return false;
 }

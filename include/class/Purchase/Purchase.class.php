@@ -9,6 +9,8 @@ class Purchase extends Base {
 		$data=array(
 			'supplier_id'=>$mst_data['supplier_id'],
 			'createday'=>$createday,
+			'deliveryday'=>$mst_data['deliveryday'],
+			'sale_order_mst_id'=>$mst_data['sale_order_mst_id'],
 			'op_id'=>$op_id);
 		$ans=array();
 		$id=$db->insert('purchase_order_mst',$data);

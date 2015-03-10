@@ -37,6 +37,10 @@ body {
 	cursor: pointer;
 }
 
+.actionIcon{
+    font-size:20px;
+}
+
 /*
 #dialog p {
     margin: 0 0 12px;

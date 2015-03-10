@@ -36,10 +36,10 @@
 		</div>
 	</div>	
 	<div class="row">
-		<div class="col-xs-6">	
+		<div class="col-xs-4">	
 			<table id="tbl_dtl"></table>													
 		</div>	
-		<div class="col-xs-6">	
+		<div class="col-xs-8">	
 			<table id="subpart_dtl"></table>													
 		</div>					
 	</div>	

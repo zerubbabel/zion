@@ -63,6 +63,10 @@
 			$data = Baseinfo::getProducts();
 			echo json_encode($data);
 			break;
+		/*case 'getPurchaseProducts':
+			$data = Baseinfo::getProducts('where ');
+			echo json_encode($data);
+			break;	*/
 		case 'getProductById':
 			$data = Baseinfo::getProductById($para['id']);
 			echo json_encode($data);

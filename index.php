@@ -198,10 +198,14 @@
 					<div id="modal_title"></div> 
 				</div>
 			</div>
-			<div class="modal-body no-padding ">												
-				<div class="modal-body" id="modal_body">
-					
-				</div>				
+			<div class="modal-body no-padding " id="modal_body">				
+				<div class="col-xs-12">
+					筛选：
+					<input type="text" id="modal_filter" placeholder="产品描述" />
+				</div>									
+				<div class="col-xs-12">						
+					<table id="modal_grid"></table>						
+				</div>								
 			</div>
 			<div class="modal-footer no-margin-top">
 			</div>
