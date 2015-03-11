@@ -69,14 +69,26 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
-    .when('/views/work/work_draw', {
-      templateUrl: 'views/work/work_draw.php',
+    .when('/views/work/new_work_draw', {
+      templateUrl: 'views/work/new_work_draw.php',
       resolve: {
         async: ['$q', '$location', auth]
       }
     })
     .when('/views/work/work_draw_list', {
       templateUrl: 'views/work/work_draw_list.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/work/work_draw_manage', {
+      templateUrl: 'views/work/work_draw_manage.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/work/work_out', {
+      templateUrl: 'views/work/work_out.php',
       resolve: {
         async: ['$q', '$location', auth]
       }

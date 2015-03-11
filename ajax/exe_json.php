@@ -23,8 +23,12 @@
 			$data = Stock::getStockById($para['loc_id'],$para['product_id']);
 			echo json_encode($data);
 			break;	
-		case 'insertWorkDrawOrder':
-			$data = Work::insertWorkDrawOrder($para['mst_data'],$para['dtl_data']);
+		case 'insertWorkDraw':
+			$data = Work::insertWorkDraw($para['mst_data'],$para['dtl_data']);
+			echo json_encode($data);
+			break;
+		case 'getWorkDrawMst':
+			$data = Work::getWorkDrawMst();
 			echo json_encode($data);
 			break;
 		case 'insertOsOrder':
@@ -69,6 +73,22 @@
 			break;
 		case 'getOs_units':
 			$data = Outsource::getOs_units();
+			echo json_encode($data);
+			break;
+		case 'getOsInMst':
+			$data = Outsource::getOsInMst();
+			echo json_encode($data);
+			break;
+		case 'getOsInMstById':
+			$data = Outsource::getOsInMst($para['id']);
+			echo json_encode($data);
+			break;
+		case 'getOsInDtlById':
+			$data = Outsource::getOsInDtlById($para['id']);
+			echo json_encode($data);
+			break;
+		case 'insertOsTest':
+			$data = Outsource::insertOsTest($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);
 			break;
 		case 'getSelect':

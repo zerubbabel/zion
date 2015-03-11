@@ -114,7 +114,7 @@ class Baseinfo extends Base {
 	
 	//通用的insert into dtl
 	//$flag为入库出库标记1为入库,-1为出库，帮助更新库存数量
-	public static function insertDtl($dtl_data,$mst_table,$mst_id,$loc_id,$flag=1) {
+	public static function insertDtl($dtl_data,$mst_table,$mst_id,$loc_id=null,$flag=1) {
 		//明细表有一条成功status就为true全失败为false
 		$ans=array();
 		$status=false;

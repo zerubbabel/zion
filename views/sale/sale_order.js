@@ -92,6 +92,7 @@ function showToolbar(){
 	if($("#toolbar").children().length==0){
 		addBtnSaleOut();
 		addBtnPurchase();
+		addBtnWorkDraw();
 	}	
 	$("#toolbar").show();	
 }
@@ -100,16 +101,23 @@ function hideToolbar(){
 	$("#toolbar").hide();
 }
 function addBtnSaleOut(){
-	var html='<button class="btn btn-success icon-check" id="btn_sale_out">生成销售出库</button>';
+	var html='<button class="btn btn-info" id="btn_sale_out">生成销售出库</button>';
 	$("#toolbar").append(html);
 	$("#btn_sale_out").click(function(){
 		window.location.href="index.php#/views/sale/sale_out";
 	})
 }
 function addBtnPurchase(){
-	var html='<button class="btn btn-info" id="btn_purchase">生成采购订单</button>';
+	var html='<button class="btn btn-success" id="btn_purchase">生成采购订单</button>';
 	$("#toolbar").append(html);
 	$("#btn_purchase").click(function(){
 		window.location.href="index.php#/views/purchase/new_purchase_order";
+	})
+}
+function addBtnWorkDraw(){
+	var html='<button class="btn btn-primary" id="btn_work_draw">生产领料</button>';
+	$("#toolbar").append(html);
+	$("#btn_work_draw").click(function(){
+		window.location.href="index.php#/views/work/new_work_draw";
 	})
 }

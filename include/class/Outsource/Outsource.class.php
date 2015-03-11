@@ -51,6 +51,20 @@ class Outsource extends Base {
 		$result=$db->query($sql)->fetchAll();
 		return $result;		
 	}
+	public static function getOsInMst($id=null){
+		$db=self::__instance();
+		$sql='select a.id,a.createday,b.name as loc_name, 
+			c.user_name,d.name as os_unit_name from os_in_mst a 
+			LEFT JOIN locations b on a.loc_id=b.id 
+			left join users c on a.op_id=c.user_id 
+			left join os_units d on a.os_unit=d.id';
+		if ($id!=null){
+			$sql.=' where a.id='.$id;
+		}	
+		$result=$db->query($sql)->fetchAll();
+		return $result;		
+	}
+
 	public static function insertOsMst($mst_data) {
 		$db=self::__instance();		
 		$createday=date('Y-m-d H:i:s');		
@@ -349,6 +363,22 @@ AND a.id = b.id*/
 			$ans['status']=false;
 		}				
 		return $ans;
+	}
+
+	public static function getOsInDtlById($id) {
+		$db=self::__instance();		
+		$sql="select b.id,b.product_name,qty from os_in_dtl a 
+			left join products b on a.product_id=b.id 
+			where a.mst_id=".$id. " order by b.id";	
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function insertOsTest(){
+		
 	}
 }
 
