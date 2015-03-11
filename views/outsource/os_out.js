@@ -1,5 +1,6 @@
 var mst_data;
 var dtl_data;
+var go_url="index.php";
 $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
@@ -39,11 +40,12 @@ function saveOsOut(){
 	}
 	para['dtl_data']=dtl_data;
 	var result=exeJson(para);
+	
 	showMsg(result);
 	if(result['status']){
 		//跳转到列表
 		select_obj['os_order_id']=null;
-		//window.location.href="index.php#/views/purchase/purchase_in_list";
+		window.location.href=go_url;
 	}
 }
 
@@ -69,16 +71,16 @@ function loadDtl(id){
 	
 	var para={'method':'getOsOutAllByOsOrderId','id':id};
 	var out_data=exeJson(para);
-
+	
 	for (var i =0; i<dtl_data.length; i++) {
 		var product_id=dtl_data[i]['id'];
 		var qty=parseInt(dtl_data[i]['qty']);
 		dtl_data[i]['left_qty']=qty;
 		for(var j=0;j<out_data.length;j++){
 			var id=out_data[j]['id'];
-			var in_qty=parseInt(out_data[j]['qty']);
+			var out_qty=parseInt(out_data[j]['qty']);
 			if (product_id==id){
-				dtl_data[i]['left_qty']-=in_qty;
+				dtl_data[i]['left_qty']-=out_qty;
 				break;
 			}
 		}
@@ -108,7 +110,7 @@ function loadDtl(id){
 		var width=ele.width();
 		var td_width=ele.parent().width();
 		ele.width(Math.round(td_width/2));					
-		var v_class={required:true,digits:true,range:[0,parseInt(this.qty)]};
+		var v_class={required:true,digits:true,range:[0,parseInt(this.left_qty)]};
 		addValidate(input_id,v_class);	
 	});	
 }

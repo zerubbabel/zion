@@ -70,7 +70,7 @@ class Sale extends Base {
 		if ($list) {			
 			return $list;
 		}
-		return $db->error();//array ();
+		return array ();
 	}
 	
 	public static function getPassedSaleOrder() {

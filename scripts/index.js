@@ -111,6 +111,30 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/outsource/os_in', {
+      templateUrl: 'views/outsource/os_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/outsource/os_in_list', {
+      templateUrl: 'views/outsource/os_in_list.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/outsource/os_in_test', {
+      templateUrl: 'views/outsource/os_in_test.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/outsource/os_units', {
+      templateUrl: 'views/outsource/os_units.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/setting/new_password', {
       templateUrl: 'views/setting/new_password.php',
       resolve: {

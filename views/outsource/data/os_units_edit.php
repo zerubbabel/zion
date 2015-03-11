@@ -22,13 +22,13 @@ function stop(){//状态status改为0，停用
 }
 function edit(){
 	$id=$_POST['id'];
-	$Os_unit_name=$_POST['Os_unit_name'];
+	$Os_unit_name=$_POST['name'];
 	$type_id=$_POST['type_name'];	
 	$result=Outsource::updateOs_unit($id,$Os_unit_name,$type_id);	
 	echo json_encode($result); 
 }
 function add()	{
-	$Os_unit_name=$_POST['Os_unit_name'];
+	$Os_unit_name=$_POST['name'];
 	$type_id=$_POST['type_name'];	
 	$result=Outsource::addOs_unit($Os_unit_name,$type_id);	
 	echo json_encode($result); 

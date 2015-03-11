@@ -1,3 +1,5 @@
+var go_url="index.php#/views/purchase/purchase_order_manage";
+
 $(document).ready(function(){
 	setTitle();
 	
@@ -51,7 +53,8 @@ function savePurchaseOrder(){
 	showMsg(result);
 	if(result['status']){
 		//跳转到列表
-		window.location.href="index.php#/views/purchase/purchase_order_list";
+		select_obj['sale_order_id']=null;
+		window.location.href=go_url;//"index.php#/views/purchase/purchase_order_list";
 	}
 }
 

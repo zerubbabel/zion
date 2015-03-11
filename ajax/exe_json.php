@@ -35,6 +35,10 @@
 			$data = Outsource::insertOsOutOrder($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);
 			break;	
+		case 'insertOsInOrder':
+			$data = Outsource::insertOsInOrder($para['mst_data'],$para['dtl_data']);
+			echo json_encode($data);
+			break;
 		case 'getAllOsOrderMst':
 			$data = Outsource::getAllOsOrderMst();
 			echo json_encode($data);
@@ -49,6 +53,22 @@
 			break;			
 		case 'getOsOrderDtlById':
 			$data = Outsource::getOsOrderDtlById($para['id']);
+			echo json_encode($data);
+			break;
+		case 'getOsOutAllByOsOrderId':
+			$data = Outsource::getOsOutAllByOsOrderId($para['id']);
+			echo json_encode($data);
+			break;
+		case 'getOsStocks':
+			$data = Outsource::getOsStocks($para['os_unit']);
+			echo json_encode($data);
+			break;
+		case 'getOsTypes':
+			$data = Outsource::getOsTypes();
+			echo json_encode($data);
+			break;
+		case 'getOs_units':
+			$data = Outsource::getOs_units();
 			echo json_encode($data);
 			break;
 		case 'getSelect':

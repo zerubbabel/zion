@@ -1,5 +1,6 @@
 var products=[];
 var lastsel;
+var go_url="index.php#/views/outsource/os_order_manage";
 jQuery(function($) {
 	setTitle();
 	//外协单位
@@ -57,7 +58,7 @@ function saveOsOrder(){
 	showMsg(result);
 	if(result['status']){
 		//跳转到外协申请单列表
-		//window.location.href="index.php#/views/outsource/os_order_list";
+		window.location.href=go_url;
 	}
 }
 

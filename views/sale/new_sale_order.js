@@ -1,5 +1,6 @@
 var products=[];
 var lastsel;
+var go_url="index.php#/views/sale/sale_order_manage";
 jQuery(function($) {
 	setTitle();
 	//客户
@@ -79,7 +80,9 @@ function newSaleOrderDtl(mst_id){
 			return false;
 		}
 	}
-	window.location.href="index.php#/views/sale/sale_order";
+	var result={'status':true,'msg':'操作成功！'};
+	showMsg(result);
+	window.location.href=go_url;
 	return true;
 }
 
