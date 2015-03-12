@@ -203,7 +203,7 @@
 					筛选：
 					<input type="text" id="modal_filter" placeholder="产品描述" />
 				</div>									
-				<div class="col-xs-12">						
+				<div class="col-xs-12" id="div_grid">						
 					<table id="modal_grid"></table>						
 				</div>								
 			</div>

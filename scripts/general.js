@@ -221,7 +221,12 @@ function doFilter(grid,str){
 function loadModal(title,data,dst_grid,input){	
 	//$('#modal_body').empty();//清空
 
-	$('#modal_title').text(title);		
+	$('#modal_title').text(title);	
+	/*
+	var grid_html='<table id="modal_grid"></table>';
+	$("#div_grid").empty();
+	$("#div_grid").append(grid_html);*/
+
 	$('#modal_filter').keyup(function(){
 		doFilter('modal_grid',this.value);
 	})	

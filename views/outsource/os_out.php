@@ -33,6 +33,7 @@
 	</div>	
 </div>
 </form>
+
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 <script src="views/outsource/os_out.js"></script>

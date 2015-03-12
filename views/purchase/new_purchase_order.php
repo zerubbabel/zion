@@ -45,6 +45,8 @@
 	</div>	
 </div>
 </form>
+
+
 <script src="assets/js/data-time/bootstrap-datepicker.min.js"></script>
 <script src="assets/js/data-time/bootstrap-datepicker.zh-CN.js"></script>
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
