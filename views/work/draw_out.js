@@ -1,4 +1,4 @@
-var go_url="index.php";
+var go_url="#/";
 var select_url="index.php#/views/work/work_draw_list";
 $(document).ready(function(){
 	setTitle();	

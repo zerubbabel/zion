@@ -43,6 +43,10 @@
 			$data = Work::insertDrawOutOrder($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);
 			break;
+		case 'insertWorkInOrder':
+			$data = Work::insertWorkInOrder($para['mst_data'],$para['dtl_data']);
+			echo json_encode($data);
+			break;
 		case 'insertOsOrder':
 			$data = Outsource::insertOsOrder($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);

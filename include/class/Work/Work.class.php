@@ -217,4 +217,49 @@ class Work extends Base {
 		return $ans;
 	}
 
+
+	public static function insertWorkInMst($mst_data) {
+		$db=self::__instance();		
+		$createday=date('Y-m-d H:i:s');		
+		$op_id=$_SESSION['user_info']['user_id'];
+		$data=array('workcenter_id'=>$mst_data['workcenter_id'],
+			'loc_id'=>$mst_data['loc_id'],
+			'createday'=>$createday,
+			'op_id'=>$op_id);
+		$ans=array();
+		$id=$db->insert('work_in_mst',$data);
+		if($id){
+			$ans['status']=true;
+			$ans['id']=$id;			
+		}else{			
+			$ans['status']=false;
+			$ans['msg']=$db->error()[2].' work in mst fail!';
+		}
+		return $ans;
+	}
+
+	public static function insertWorkInOrder($mst_data,$dtl_data) {
+		$db=self::__instance();
+		$ans=array();
+		
+		$result=Work::insertWorkInMst($mst_data);//插入主表
+		if($result['status']){
+			$mst_id=$result['id'];
+			$result=Baseinfo::insertDtl($dtl_data,'work_in',$mst_id,$mst_data['loc_id'],1);//插入明细表并更新库存
+			if($result['status']){//明细表有一条成功status就为true
+				//Work::updateWorkDrawStatus($mst_id);//判断并更新销售单状态为完成
+				$ans['status']=true;
+				$ans['msg']='操作成功！';
+			}else{
+				Baseinfo::deleteMst($mst_id,'work_in_mst');//删除主表
+				$ans['status']=false;
+				$ans['msg']='操作失败！';
+			}
+		}
+		else{
+			$ans['msg']=$result['msg'];
+			$ans['status']=false;
+		}
+		return $ans;
+	}
 }

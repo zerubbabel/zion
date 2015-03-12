@@ -219,7 +219,8 @@ function doFilter(grid,str){
 	});
 }
 function loadModal(title,data,dst_grid,input){	
-	//$('#modal_body').empty();//清空				
+	//$('#modal_body').empty();//清空
+
 	$('#modal_title').text(title);		
 	$('#modal_filter').keyup(function(){
 		doFilter('modal_grid',this.value);

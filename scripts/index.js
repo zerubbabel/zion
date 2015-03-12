@@ -93,6 +93,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/work/work_in', {
+      templateUrl: 'views/work/work_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/outsource/new_os_order', {
       templateUrl: 'views/outsource/new_os_order.php',
       resolve: {

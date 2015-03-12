@@ -73,7 +73,7 @@ function loadSubpart(){
 			{name:'name',index:'name', width:90, sortable:true,editable: false},			
 			{name:'qty',index:'qty', width:90, sortable:true,editable: true},
 		], 
-		caption: "领料产品明细  "+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning' data-rel='tooltip' title='添加配件'"+
+		caption: "领料产品明细  "+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning' data-rel='tooltip' title='添加产品'"+
 					" data-placement='right' onclick=\"addPart();\" ></i>",
 		autowidth: true,
 		gridComplete: function(){
