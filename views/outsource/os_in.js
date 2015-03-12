@@ -1,12 +1,13 @@
 var caption='入库产品明细  ';
 var go_url="index.php#/views/outsource/os_in_list";
+var data_url='views/outsource/data/os_stocks_data.php?os_unit=';
 $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
 	loadSelect($('#os_unit'),'os_units');
 	loadDtl();
 	$('#os_unit').change(function(){
-		//$("#tbl_dtl").jqGrid()
+		$("#tbl_dtl").clearGridData();				
 	})
 	//验证,submit
 	 $("#frm").validate({	 	
@@ -60,20 +61,22 @@ function loadDtl(){
 }
 
 function addProduct(){
-	var para={'method':'getOsStocks','os_unit':$("#os_unit").val()};
-	var data=exeJson(para);
+	//var para={'method':'getOsStocks','os_unit':$("#os_unit").val()};
+	//var data=exeJson(para);
 	$('#modal_title').text('选择入库物品');		
 	$('#modal_filter').keyup(function(){
 		doFilter('modal_grid',this.value);
 	});	
 	$('#modal').modal({show:true});
-	loadModalGrid(data,'tbl_dtl','_in_qty');
+	loadModalGrid('tbl_dtl','_in_qty');
+	jQuery('#modal_grid').jqGrid('setGridParam',{url:data_url+$('#os_unit').val(),page:1})
+	.trigger('reloadGrid');	
 }
 
-function loadModalGrid(data,dst_grid,input){
+function loadModalGrid(dst_grid,input){
 	jQuery("#modal_grid").jqGrid({
-		data:data,
-		datatype: "local",
+		url:data_url,
+		datatype: "json",
 		colNames:['产品名称','数量'],
 		colModel:[					
 			{name:'product_name',index:'product_name'},			

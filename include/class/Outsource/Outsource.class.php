@@ -252,7 +252,7 @@ FROM
 	v_os_out_stocks a
 LEFT JOIN v_os_in_stocks b ON a.os_unit = b.os_unit
 AND a.id = b.id*/
-		$table='v_os_out_stock';
+		$table='v_os_out_stocks';
 		$cols=array('id','product_name','qty');
 		$where=array();
 		if ($os_unit){

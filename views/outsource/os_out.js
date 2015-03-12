@@ -1,6 +1,6 @@
 var mst_data;
 var dtl_data;
-var go_url="index.php";
+var go_url="#/";
 $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
