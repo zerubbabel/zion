@@ -28,7 +28,19 @@
 			echo json_encode($data);
 			break;
 		case 'getWorkDrawMst':
-			$data = Work::getWorkDrawMst();
+			$data = Work::getWorkDrawMst($para['id']);
+			echo json_encode($data);
+			break;
+		case 'getWorkDrawDtlById':
+			$data = Work::getWorkDrawDtlById($para['id']);
+			echo json_encode($data);
+			break;
+		case 'getDrawOutAllByWorkDrawId':
+			$data = Work::getDrawOutAllByWorkDrawId($para['id']);
+			echo json_encode($data);
+			break;
+		case 'insertDrawOutOrder':
+			$data = Work::insertDrawOutOrder($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);
 			break;
 		case 'insertOsOrder':

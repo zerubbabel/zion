@@ -79,7 +79,7 @@ function loadDetail(id){
 		sortname:'item',
 		viewrecords:true,
 		sortorder:'asc',
-		caption:caption+'明细',	
+		caption:'产品明细',	
 		autowidth: true,		
 	});
 }
