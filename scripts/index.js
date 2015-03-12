@@ -1,4 +1,5 @@
 var select_obj={};
+var row_num=100000;
 $(document).ready(function(){
   setTitle();
 })

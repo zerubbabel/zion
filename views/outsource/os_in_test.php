@@ -15,11 +15,11 @@
 <form id="frm">
 <div id="tab_out">
 	<div class="row" style="height:50px">
-		<div class="col-xs-4">
+		<div class="col-xs-6">
 			<label id="os_unit" class="control-label no-padding-right">加工单位:</label>
-			<label id="loc" class="control-label no-padding-right">仓库:</label>
+			检验入库仓库:<select id='loc'></select>
 		</div>	
-		<div class="col-xs-8">					
+		<div class="col-xs-6">					
 			<button id='btn_reselect' class="btn btn-info icon-search">重新选择外协入库单</button>
 			<button id='btn_save' type="submit" class="btn btn-success icon-save">检验</button>
 		</div>

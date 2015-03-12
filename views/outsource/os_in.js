@@ -1,20 +1,28 @@
 var caption='入库产品明细  ';
 var go_url="index.php#/views/outsource/os_in_list";
 var data_url='views/outsource/data/os_stocks_data.php?os_unit=';
+var to_loc=7;//默认自动进入待检验仓库id=7
 $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
+
 	loadSelect($('#os_unit'),'os_units');
 	loadDtl();
 	$('#os_unit').change(function(){
 		$("#tbl_dtl").clearGridData();				
 	})
+
 	//验证,submit
 	 $("#frm").validate({	 	
         submitHandler:function(form){    
         	saveOsIn();
         }    
     });	
+
+	//设置默认仓库 暂时
+	
+	$("#loc").val(to_loc);
+	$("#loc").attr('disabled',true); 
 })
 function saveOsIn(){
 	var para={'method':'insertOsInOrder'};
@@ -68,14 +76,14 @@ function addProduct(){
 		doFilter('modal_grid',this.value);
 	});	
 	$('#modal').modal({show:true});
-	loadModalGrid('tbl_dtl','_in_qty');
+	loadModalGrid($('#os_unit').val(),'tbl_dtl','_in_qty');
 	jQuery('#modal_grid').jqGrid('setGridParam',{url:data_url+$('#os_unit').val(),page:1})
 	.trigger('reloadGrid');	
 }
 
-function loadModalGrid(dst_grid,input){
+function loadModalGrid(os_unit,dst_grid,input){
 	jQuery("#modal_grid").jqGrid({
-		url:data_url,
+		url:data_url+os_unit,
 		datatype: "json",
 		colNames:['产品名称','数量'],
 		colModel:[					

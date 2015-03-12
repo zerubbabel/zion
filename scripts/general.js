@@ -99,6 +99,7 @@ function loadCust(selector){
 function loadSelect(selector,table){	
 	var para={'method':'getSelect','table':table};
 	var data=exeJson(para);
+	
 	var jsonobj=eval(data);		        
     var length=jsonobj.length;		      
     for(var i=0;i<length;i++){  		       

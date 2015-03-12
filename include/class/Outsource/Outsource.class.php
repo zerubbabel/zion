@@ -54,7 +54,7 @@ class Outsource extends Base {
 	public static function getOsInMst($id=null){
 		$db=self::__instance();
 		$sql='select a.id,a.createday,b.name as loc_name, 
-			c.user_name,d.name as os_unit_name from os_in_mst a 
+			c.user_name,d.name as os_unit_name,a.os_unit from os_in_mst a 
 			LEFT JOIN locations b on a.loc_id=b.id 
 			left join users c on a.op_id=c.user_id 
 			left join os_units d on a.os_unit=d.id';
@@ -245,20 +245,12 @@ class Outsource extends Base {
 
 	public static function getOsStocks($os_unit){
 		$db=self::__instance();
-		//$sql=''
-		/*SELECT
-	a.os_unit,a.product_name,a.id,a.qty as out_qty,b.qty as in_qty,(a.qty-b.qty) as left_qty 
-FROM
-	v_os_out_stocks a
-LEFT JOIN v_os_in_stocks b ON a.os_unit = b.os_unit
-AND a.id = b.id*/
-		$table='v_os_out_stocks';
-		$cols=array('id','product_name','qty');
-		$where=array();
-		if ($os_unit){
-			$where=array('os_unit'=>$os_unit);
-		}
-		$data=$db->select($table,$cols,$where);
+	
+		$sql='select a.os_unit,a.product_name,a.id,a.qty as out_qty,ifnull(b.qty,0) as in_qty,
+			(a.qty-ifnull(b.qty,0)) as qty FROM v_os_out_stocks a  
+			LEFT JOIN v_os_in_stocks b ON a.os_unit = b.os_unit AND a.id = b.id  
+			where a.os_unit='.$os_unit;
+		$data=$db->query($sql)->fetchAll();
 		return $data;
 	}
 
@@ -377,8 +369,94 @@ AND a.id = b.id*/
 		return array ();
 	}
 
-	public static function insertOsTest(){
-		
+	public static function insertOsTestMst($mst_data) {
+		$db=self::__instance();		
+		$createday=date('Y-m-d H:i:s');		
+		$op_id=$_SESSION['user_info']['user_id'];
+		$data=array(
+			'loc_id'=>$mst_data['loc_id'],
+			'createday'=>$createday,
+			'os_in_mst_id'=>$mst_data['os_in_mst_id'],
+			'op_id'=>$op_id);
+		$ans=array();
+		$id=$db->insert('os_in_test_mst',$data);
+		if($id){
+			$ans['status']=true;
+			$ans['id']=$id;			
+		}else{			
+			$ans['status']=false;
+			$ans['msg']=$db->error()[2].'os in test mst fail!';
+		}
+		return $ans;
+	}	
+
+
+	public static function insertOsTestDtl($dtl_data,$mst_id,$loc_id,$os_unit) {
+		//明细表有一条成功status就为true全失败为false
+		$ans=array();
+		$status=false;
+		$db=self::__instance();
+		for($i=0;$i<count($dtl_data);$i++){
+			$data=array('product_id'=>$dtl_data[$i]['product_id'],
+				'good_qty'=>$dtl_data[$i]['good_qty'],
+				'bad_qty'=>$dtl_data[$i]['bad_qty'],
+				'back_qty'=>$dtl_data[$i]['back_qty'],
+				'lost_qty'=>$dtl_data[$i]['lost_qty'],				
+				'mst_id'=>$mst_id);
+			$id=$db->insert('os_in_test_dtl',$data);
+			if($id && ($id>0)){				
+				$status=true;
+				if ($loc_id!=null){//$loc_id==null表示无需更新stock
+					Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['good_qty']),$loc_id);//合格入库
+					$bad_loc=8;
+					Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['bad_qty']),$bad_loc);//次品入库
+					$from_loc=7;//出待检验仓库				
+					Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['qty'])*(-1),$from_loc);
+				}
+			}else{
+				$ans['msg']=$db->error();
+			}
+
+		}
+		$ans['status']=$status;		
+		return $ans;
+	}
+
+	public static function insertOsTest($mst_data,$dtl_data){
+		$db=self::__instance();		
+		$ans=array();		
+		$from_loc=7;
+		$result=Stock::checkStock($dtl_data,$from_loc);//检查库存情况
+		if ($result['status']){
+			$result=Outsource::insertOsTestMst($mst_data);//插入主表
+			if($result['status']){
+				$mst_id=$result['id'];
+				$result=Outsource::insertOsTestDtl($dtl_data,$mst_id,$mst_data['loc_id'],$mst_data['os_unit']);//插入明细表并更新库存
+				if($result['status']){//明细表有一条成功status就为true					
+					$ans['status']=true;
+					$ans['msg']='操作成功！';
+				}else{
+					//Baseinfo::deleteMst($mst_id,'os_in_test_mst');//删除主表
+					$ans['status']=false;
+					$ans['msg']='操作失败！';
+				}
+			}
+			else{
+				$ans['msg']=$result['msg'];
+				$ans['status']=false;
+			}				
+		}	
+		else{//库存不足
+			$ans['msg']='';
+			for ($i=0;$i<count($result['error_indexs']);$i++){
+				$product_id=$dtl_data[$result['error_indexs'][$i]]['product_id'];			
+				$product_name=Baseinfo::getProductById($product_id)['name'];		
+				$ans['msg'].=$product_name.',';
+			}
+			$ans['msg'].='库存不足！';
+			$ans['status']=false;
+		}
+		return $ans;
 	}
 }
 

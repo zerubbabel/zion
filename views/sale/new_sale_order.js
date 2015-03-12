@@ -123,6 +123,8 @@ function loadModalProducts(){
 			{name:'name',index:'name'},			
 		], 	
 		height: 300,
+		rowNum:row_num,
+		//rowList:[10,20,30],
 		onSelectRow: function(id){			
 			if(id && id!==lastsel){
 				//产品添加到明细表中并且该行进入edit模式
