@@ -160,6 +160,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/setting/users', {
+      templateUrl: 'views/setting/users.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/stock/stocks', {
       templateUrl: 'views/stock/stocks.php',
       resolve: {

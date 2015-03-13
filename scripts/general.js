@@ -367,3 +367,20 @@ function delRow(grid,id){
 	jQuery("#"+grid).jqGrid('delRowData',id);
 	return false;
 }
+
+function getGroups(){
+	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
+	var str="";
+	var para={'method':'getGroups'};
+	var data=exeJson(para);
+    var jsonobj=eval(data);    
+    var length=jsonobj.length;
+    for(var i=0;i<length;i++){  
+        if(i!=length-1){
+        	str+=jsonobj[i].id+":"+jsonobj[i].name+";";
+        }else{
+          	str+=jsonobj[i].id+":"+jsonobj[i].name;
+        }
+     }   
+	return str;	
+}

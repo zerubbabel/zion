@@ -115,6 +115,14 @@
 			$data = User::changePassword($para['old_password'],$para['new_password']);
 			echo json_encode($data);
 			break;	
+		case 'getUsers':
+			$data = User::getUsers();
+			echo json_encode($data);
+			break;
+		case 'getGroups':
+			$data = Baseinfo::getSelect('user_group');
+			echo json_encode($data);
+			break;
 		case 'getStocks':
 			$data = Stock::getStocks($para['loc_id']);
 			echo json_encode($data);

@@ -149,4 +149,19 @@ class User extends Base{
 			return false;
 		}
 	}
+
+	public static function getUsers(){
+		$db=self::__instance();
+		$sql='select a.user_name,a.user_id as id,a.user_group,b.name as group_name 
+			from users a LEFT JOIN user_group b on a.user_group=b.id';
+		$result=$db->query($sql)->fetchAll();
+		if($result){
+			return $result;
+		}
+		return false;
+	}
+
+	public static function stopUser(){
+		$db=self::__instance();
+	}
 }
