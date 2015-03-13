@@ -161,7 +161,4 @@ class User extends Base{
 		return false;
 	}
 
-	public static function stopUser(){
-		$db=self::__instance();
-	}
 }

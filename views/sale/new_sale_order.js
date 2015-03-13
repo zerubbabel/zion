@@ -123,7 +123,7 @@ function loadModalProducts(){
 			{name:'name',index:'name'},			
 		], 	
 		height: 300,
-		rowNum:row_num,
+		rowNum:10,
 		//rowList:[10,20,30],
 		onSelectRow: function(id){			
 			if(id && id!==lastsel){

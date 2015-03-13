@@ -43,4 +43,21 @@ class Db extends Base {
 		}
 	}
 
+	public static function updateRecord($table,$data,$where){
+		$db=self::__instance();
+		$result=$db->update($table,$data,$where);
+		if($result){
+			return array('status'=>true,'msg'=>'操作成功！');
+		}
+		return array('status'=>false,'msg'=>$db->error()[2]);//'操作失败！');
+	}
+
+	public static function insertRecord($table,$data){
+		$db=self::__instance();
+		$result=$db->insert($table,$data);
+		if($result){
+			return array('status'=>true,'msg'=>'操作成功！');
+		}
+		return array('status'=>false,'msg'=>'操作失败！');
+	}
 }

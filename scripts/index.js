@@ -1,5 +1,14 @@
 var select_obj={};
-var row_num=100000;
+var jgGrid_setting={
+    datatype: "json",
+    height: 350,
+    viewrecords : true,
+    rowNum:10,
+    rowList:[10,20,30],
+    viewrecords:true,
+    sortorder:'asc', 
+    autowidth: true,
+};
 $(document).ready(function(){
   setTitle();
 })

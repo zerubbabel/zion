@@ -62,3 +62,28 @@ function addBtnSetMin(id){
 	})
 }
 
+//test
+function loadProducts(data_url){
+	var grid_selector='#list_d';
+	$(grid_selector).jqGrid({
+		url:data_url,
+		datatype: "json",
+		height: 350,
+		colNames:['产品'],
+		colModel:[
+			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			
+		], 
+
+		viewrecords : true,
+		rowNum:10,
+		rowList:[10,20,30],
+		pager : 'pager_d',
+		sortname:'item',
+		viewrecords:true,
+		sortorder:'asc',
+		caption:caption+'明细',	
+		autowidth: true,
+	})
+}
+
