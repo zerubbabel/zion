@@ -1,4 +1,5 @@
 ﻿var lastsel;
+var edit_url="views/setting/data/products_edit.php";
 //var products=[];
 var product_id;
 jQuery(function($) {
@@ -49,10 +50,16 @@ jQuery(function($) {
 		data: grid_data,
 		datatype: "local",
 		height: 400,
-		colNames:['操作','产品名称',],
-		colModel:[		
-			{name:'act',index:'act',width:10}, 	
-			{name:'name',index:'name', width:90, editable: false} 
+		colNames:['','操作','产品名称',],
+		colModel:[	
+			{name:'myaction',index:'',width:20,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,	
+					delbutton:false,
+				}},	
+			{name:'act',index:'act',width:15}, 	
+			{name:'name',index:'name', width:90, editable: true} 
 		], 
 
 		viewrecords : true,
@@ -77,9 +84,9 @@ jQuery(function($) {
 			var ids = jQuery(grid_selector).jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
-				min = "<i class='icon-bell-alt orange pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
+				min = "<i class='icon-bell-alt actionIcon orange pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
 					" data-placement='right' onclick=\"setMin('"+cl+"');\" ></i>"; 
-				bom = "<i class='icon-cogs pointer tooltip-warning' data-rel='tooltip' title='设置物料清单'"+
+				bom = "<i class='icon-cogs actionIcon  pointer tooltip-warning' data-rel='tooltip' title='设置物料清单'"+
 					" data-placement='right' onclick=\"setBom('"+cl+"');\" ></i>";
 				jQuery(grid_selector).jqGrid('setRowData',ids[i],{act:min+bom});
 				$('[data-rel=tooltip]').tooltip();
@@ -87,7 +94,35 @@ jQuery(function($) {
 		},
 		caption: "产品列表",
 		autowidth: true,
+		editurl:edit_url,
 	});
+	
+	jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+		{ 	//navbar options
+			add: true,
+			addicon : 'icon-plus-sign purple',
+			edit: false,
+			del:false,
+			search: false,
+			refresh: false,
+			view: false,
+		},		
+		{
+			//new record form
+			closeAfterAdd: true,
+			recreateForm: true,
+			reloadAfterSubmit:true,
+			processData:"操作中...",
+			viewPagerButtons: false,
+			afterSubmit:function(result){						
+				if (result&&jQuery.parseJSON(result.responseText).status) {
+					jQuery(grid_selector).jqGrid().trigger('reloadGrid');
+					return true;					
+				}
+				else{alert("操作失败！"); return false;} 			
+			}
+		}
+	);
 });
 function toBom(){
 	$("#tab_product").hide();
