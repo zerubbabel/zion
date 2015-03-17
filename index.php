@@ -182,9 +182,17 @@
 
 					<div class="page-content">
 						<div ng-view></div>
-					</div><!-- /.page-content -->
-				</div><!-- /.main-content -->
+						<footer style="font-size:16px">
+	                        <hr>
+	                        <p class="pull-right">A <a href="mailto:imate818@gmail.com" target="_blank">Information Management System.</a> 
+								by <a href="mailto:imate818@gmail.com" target="_blank">hcy</a></p>
 
+	                        <p >© 2015 <a href="mailto:imate818@gmail.com" target="_blank">hcy</a></p>
+		                </footer>
+					</div><!-- /.page-content -->
+
+					
+				</div><!-- /.main-content -->
 
 <!--modal-->
 <div id="modal" class="modal fade" tabindex="-1">
