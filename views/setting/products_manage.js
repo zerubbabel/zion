@@ -7,6 +7,8 @@ jQuery(function($) {
 	toProduct();
 	//产品过滤
 	$('#product_filter').keyup(function(){
+		//debugger
+
 		doFilter('grid-table',this.value);
 	})
 	$("#btn_back").click(function(){
@@ -84,7 +86,7 @@ jQuery(function($) {
 			var ids = jQuery(grid_selector).jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
-				min = "<i class='icon-bell-alt actionIcon orange pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
+				min = "<i class='icon-bell-alt actionIcon red pointer tooltip-warning' data-rel='tooltip' title='设置最小库存'"+
 					" data-placement='right' onclick=\"setMin('"+cl+"');\" ></i>"; 
 				bom = "<i class='icon-cogs actionIcon  pointer tooltip-warning' data-rel='tooltip' title='设置物料清单'"+
 					" data-placement='right' onclick=\"setBom('"+cl+"');\" ></i>";

@@ -90,6 +90,8 @@ function loadDetail(){
 }
 
 function loadModalProducts(){
+	var pager_selector='#modal_pager';
+	var grid_selector="#modal_tbl_products"
 	jQuery("#modal_tbl_products").jqGrid({
 		url:'ajax/get_products.php',
 		datatype: "json",
@@ -99,6 +101,19 @@ function loadModalProducts(){
 			{name:'name',index:'name'},			
 		], 
 		autowidth: true,	
+		rowNum:jqgrid_row_num,
+		height:jqgrid_height,
+		pager:pager_selector,
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				//styleCheckbox(table);
+				
+				//updateActionIcons(table);
+				updatePagerIcons(table);
+				//enableTooltips(table);
+			}, 0);
+		},
 		onSelectRow: function(id){			
 			if(id && id!==lastsel){
 				//产品添加到明细表中并且该行进入edit模式
@@ -128,6 +143,8 @@ function loadModalProducts(){
 			}
 		},	
 	});
+
+	//jQuery(grid_selector).jqGrid('navGrid',pager_selector,{});
 }
 
 function doFilter(str){

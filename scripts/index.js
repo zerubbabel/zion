@@ -1,14 +1,18 @@
 var select_obj={};
+var jqgrid_row_num=20;
+var jqgrid_height=350;
+/*
 var jgGrid_setting={
     datatype: "json",
     height: 350,
     viewrecords : true,
-    rowNum:10,
-    rowList:[10,20,30],
+    rowNum:20,
+    //rowList:[10,20,30],
     viewrecords:true,
     sortorder:'asc', 
     autowidth: true,
-};
+};*/
+
 $(document).ready(function(){
   setTitle();
 })
@@ -33,7 +37,8 @@ function auth($q, $location) {
         }
     else{      
         select_obj['title']='';  
-        $location.path('/');
+        //$location.path('/');
+        $location.path('/views/error');
         $location.replace();  
         return $q.reject();
     }
@@ -235,7 +240,9 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
-
+    .when('/views/error', {
+      templateUrl: 'views/error.php',
+    })
     .when('/', {
       templateUrl: 'views/index.php',
     });

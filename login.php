@@ -71,7 +71,7 @@ if(!isset($_SESSION['user_info'])){
 									<i class="icon-leaf green"></i>
 									<span class="red"><?php echo APP_TITLE;?></span>									
 								</h1>
-								<h4 class="blue">&copy; <?php echo COMPANY_NAME;?></h4>
+								<h4 class="blue">&copy; <?php echo AUTHOR_NAME;?></h4>
 							</div>
 
 							<div class="space-6"></div>

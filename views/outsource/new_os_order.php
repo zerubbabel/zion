@@ -56,7 +56,8 @@
 					<div class='row'>	
 						<div class="col-sm-12">						
 							<table id="modal_tbl_products" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-							</table>						
+							</table>
+							<div id="modal_pager"></div>						
 						</div>
 					</div>	
 				</div>				

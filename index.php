@@ -185,9 +185,9 @@
 						<footer style="font-size:16px">
 	                        <hr>
 	                        <p class="pull-right">A <a href="mailto:imate818@gmail.com" target="_blank">Information Management System.</a> 
-								by <a href="mailto:imate818@gmail.com" target="_blank">hcy</a></p>
+								by <a href="mailto:imate818@gmail.com" target="_blank">hcy </a>ver.<?php echo VERSION;?></p>
 
-	                        <p >© 2015 <a href="mailto:imate818@gmail.com" target="_blank">hcy</a></p>
+	                        <p >© 2015 <a href="mailto:imate818@gmail.com" target="_blank">hcy(tel:15824563614)</a></p>
 		                </footer>
 					</div><!-- /.page-content -->
 
