@@ -1,5 +1,5 @@
 var select_obj={};
-var jqgrid_row_num=20;
+var jqgrid_row_num=10;
 var jqgrid_height=350;
 /*
 var jgGrid_setting={

@@ -1,4 +1,6 @@
-﻿[2015-3-18]
+﻿[2015-3-19]
+jqgrid local data filter
+[2015-3-18]
 无权限跳转error页面
 参考：网上管家婆http://www.wsgjp.com.cn/ErpPrice.aspx
 用户组：添加，及职位说明

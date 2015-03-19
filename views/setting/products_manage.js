@@ -1,15 +1,28 @@
 ﻿var lastsel;
 var edit_url="views/setting/data/products_edit.php";
-//var products=[];
 var product_id;
-jQuery(function($) {
+var products_data;
+var sum=0;
+var grid_data=[];
+jQuery(function($) {	
+	var grid_selector = "#grid-table";
+	var pager_selector = "#grid-pager";
 	setTitle();
 	toProduct();
 	//产品过滤
 	$('#product_filter').keyup(function(){
-		//debugger
-
-		doFilter('grid-table',this.value);
+		var keyword=this.value;
+		grid_data=[];
+		for (var i=0;i<sum;i++){
+			var pos=products_data[i]['name'].indexOf(keyword);
+		  	if (pos>=0){
+				grid_data.push(products_data[i]);
+			}
+		}
+		$(grid_selector).clearGridData();
+		$(grid_selector).setGridParam({data: grid_data});
+		$(grid_selector).trigger('reloadGrid');
+		//doFilter('grid-table',this.value);
 	})
 	$("#btn_back").click(function(){
 		toProduct();
@@ -23,7 +36,7 @@ jQuery(function($) {
 	});
 
 	//产品过滤
-	$('#modal_product_filter').keyup(function(){
+	$('#modal_product_filter').keyup(function(){		
 		doFilter('modal_tbl_products',this.value);
 	})
 
@@ -42,14 +55,12 @@ jQuery(function($) {
         	}
 		}
 	})
-
-
-	var grid_selector = "#grid-table";
-	var pager_selector = "#grid-pager";
+	
 	var para={'method':'getProducts'};
-	var grid_data=exeJson(para);
+	products_data=exeJson(para);
+	sum=products_data.length;
 	jQuery(grid_selector).jqGrid({
-		data: grid_data,
+		data: products_data,
 		datatype: "local",
 		height: 400,
 		colNames:['','操作','产品名称',],
