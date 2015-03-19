@@ -1,11 +1,10 @@
 var caption='入库产品明细  ';
 var go_url="index.php#/views/outsource/os_in_list";
-var data_url='views/outsource/data/os_stocks_data.php?os_unit=';
 var to_loc=7;//默认自动进入待检验仓库id=7
+var os_products_data;
 $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
-
 	loadSelect($('#os_unit'),'os_units');
 	loadDtl();
 	$('#os_unit').change(function(){
@@ -19,8 +18,7 @@ $(document).ready(function(){
         }    
     });	
 
-	//设置默认仓库 暂时
-	
+	//设置默认仓库 暂时	
 	$("#loc").val(to_loc);
 	$("#loc").attr('disabled',true); 
 })
@@ -47,7 +45,6 @@ function saveOsIn(){
 	}
 }
 
-
 function loadDtl(){
 	var dtl_data=[];
 	$("#tbl_dtl").jqGrid({
@@ -57,7 +54,7 @@ function loadDtl(){
 		colNames:['','产品', '加工总数','入库数量'],
 		colModel:[
 			{name:'act',width:40},
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			{name:'name',index:'name', width:90, sortable:true,editable: false},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: false},
 			{name:'in_qty',index:'in_qty', width:90, sortable:true,editable: true},
 		], 
@@ -67,62 +64,9 @@ function loadDtl(){
 	});	
 	$('[data-rel=tooltip]').tooltip();
 }
-
 function addProduct(){
-	//var para={'method':'getOsStocks','os_unit':$("#os_unit").val()};
-	//var data=exeJson(para);
-	$('#modal_title').text('选择入库物品');		
-	$('#modal_filter').keyup(function(){
-		doFilter('modal_grid',this.value);
-	});	
-	$('#modal').modal({show:true});
-	loadModalGrid($('#os_unit').val(),'tbl_dtl','_in_qty');
-	jQuery('#modal_grid').jqGrid('setGridParam',{url:data_url+$('#os_unit').val(),page:1})
-	.trigger('reloadGrid');	
-}
-
-function loadModalGrid(os_unit,dst_grid,input){
-	jQuery("#modal_grid").jqGrid({
-		url:data_url+os_unit,
-		datatype: "json",
-		colNames:['产品名称','数量'],
-		colModel:[					
-			{name:'product_name',index:'product_name'},			
-			{name:'qty',index:'qty'},	
-		], 
-		height:300,
-		rowNum:10,
-		rowList:[10,20,30],
-		autowidth: true,	
-		onSelectRow: function(id){		
-			if(id){
-				var flag=false;//产品是否已存在
-				var trs=$('#'+dst_grid+' tr');	
-				for(var i=1;i<trs.length;i++){
-					if (id==trs[i].id){
-						flag=true;
-						break;
-					}
-				}									
-				if (!flag){						
-					var newid=id;
-					var datarow=$('#modal_grid').getRowData(id);	
-					var su=$('#'+dst_grid).addRowData(newid, datarow, "last");								
-					if (su){
-						$('#'+dst_grid).jqGrid('editRow',newid);
-						del = "<i class='icon-trash orange pointer actionIcon ' onclick=\"delRow('"+dst_grid+"',"+newid+");\" ></i>"; 				
-						jQuery('#'+dst_grid).jqGrid('setRowData',newid,{act:del});
-						var input_id=id+input;
-						var ele=$("#"+input_id);
-						ele.attr('name',input_id);
-						var width=ele.width();
-						var td_width=ele.parent().width();
-						ele.width(Math.round(td_width/2));						
-						var v_class={required:true,digits:true,range:[0,datarow['qty']]};
-						addValidate(input_id,v_class);	
-					}
-				}					
-			}
-		},	
-	});
-}
+	var para={'method':'getOsStocks','os_unit':$("#os_unit").val()};
+	os_products_data=exeJson(para);
+	openModalOsProducts(os_products_data,'#tbl_dtl','_in_qty');
+	return false;
+}	

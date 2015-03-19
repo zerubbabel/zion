@@ -1,5 +1,5 @@
 var go_url="index.php#/views/purchase/purchase_order_manage";
-
+var products_data;
 $(document).ready(function(){
 	setTitle();
 	
@@ -139,7 +139,7 @@ function loadSubpart(data){
 			var ids = jQuery('#subpart_dtl').jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
-				del = "<i class='icon-trash orange pointer actionIcon ' onclick=\"delRow('subpart_dtl',"+cl+");\" ></i>"; 				
+				del = "<i class='icon-trash orange pointer actionIcon ' onclick=\"delRow('#subpart_dtl',"+cl+");\" ></i>"; 				
 				jQuery('#subpart_dtl').jqGrid('setRowData',ids[i],{act:del});
 				//enter edit
 				$('#subpart_dtl').jqGrid('editRow',cl);
@@ -157,8 +157,10 @@ function loadSubpart(data){
 
 function addPart(){
 	var para={'method':'getProducts'};
-	var data=exeJson(para);
-	loadModal('选择采购物品',data,'subpart_dtl','_p_qty');
+	products_data=exeJson(para);
+	openModalProducts(products_data,'#subpart_dtl','_p_qty');
+	return false;
+	//loadModal('选择采购物品',data,'subpart_dtl','_p_qty');
 }
 
 

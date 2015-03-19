@@ -246,10 +246,15 @@ class Outsource extends Base {
 	public static function getOsStocks($os_unit){
 		$db=self::__instance();
 	
-		$sql='select a.os_unit,a.product_name,a.id,a.qty as out_qty,ifnull(b.qty,0) as in_qty,
+		/*$sql='select a.os_unit,a.product_name,a.id,a.qty as out_qty,ifnull(b.qty,0) as in_qty,
 			(a.qty-ifnull(b.qty,0)) as qty FROM v_os_out_stocks a  
 			LEFT JOIN v_os_in_stocks b ON a.os_unit = b.os_unit AND a.id = b.id  
-			where a.os_unit='.$os_unit;
+			where a.os_unit='.$os_unit;*/
+		$sql='select a.os_unit,a.qty,b.name as os_unit_name,c.product_name as name,
+			c.id from os_stocks a
+			LEFT JOIN os_units b on a.os_unit=b.id
+			LEFT JOIN products c on a.product_id=c.id
+			where a.os_unit='.$os_unit;	
 		$data=$db->query($sql)->fetchAll();
 		return $data;
 	}

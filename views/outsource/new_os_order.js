@@ -1,6 +1,7 @@
 var products=[];
 var lastsel;
 var go_url="index.php#/views/outsource/os_order_manage";
+var products_data;
 jQuery(function($) {
 	setTitle();
 	//外协单位
@@ -29,16 +30,12 @@ jQuery(function($) {
 		}
 	})
 	//新增产品
+	var para={'method':'getProducts'};
+	products_data=exeJson(para);
 	$('#add_btn').click(function(){
-		$('#modal_products').modal({show:true});
-		loadModalProducts();
+		openModalProducts(products_data,'#grid_dtl','_qty');
 		return false;
 	});
-
-	//产品过滤
-	$('#product_filter').keyup(function(){
-		doFilter(this.value);
-	})
 });
 
 function saveOsOrder(){
@@ -86,79 +83,6 @@ function loadDetail(){
 		caption:'产品明细:',	
 		editurl: 'empty.php',//"views/sale/save2.php",
 		autowidth: true,		
-	});
-}
-
-function loadModalProducts(){
-	var pager_selector='#modal_pager';
-	var grid_selector="#modal_tbl_products"
-	jQuery("#modal_tbl_products").jqGrid({
-		url:'ajax/get_products.php',
-		datatype: "json",
-		colNames:['产品代码', '产品名称'],
-		colModel:[					
-			{name:'id',index:'id'},
-			{name:'name',index:'name'},			
-		], 
-		autowidth: true,	
-		rowNum:jqgrid_row_num,
-		height:jqgrid_height,
-		pager:pager_selector,
-		loadComplete : function() {
-			var table = this;
-			setTimeout(function(){
-				//styleCheckbox(table);
-				
-				//updateActionIcons(table);
-				updatePagerIcons(table);
-				//enableTooltips(table);
-			}, 0);
-		},
-		onSelectRow: function(id){			
-			if(id && id!==lastsel){
-				//产品添加到明细表中并且该行进入edit模式
-				var flag=false;//产品是否已存在
-				var datarow=$('#modal_tbl_products').getRowData(id);				
-				$.each(products,function(key,value){
-					if(id==this.id){
-						flag=true;
-						return false;
-					}
-				})				
-				if (!flag){					
-					products.push(datarow);					
-					var newid=id;
-					var su=$('#grid_dtl').addRowData(newid, datarow, "last");						
-					if (su){
-						$('#grid_dtl').jqGrid('editRow',newid);
-						var input_id=id+"_qty";
-						var ele=$("#"+input_id);
-						var width=ele.width();
-						var td_width=ele.parent().width();
-						ele.width(Math.round(td_width/2));						
-						var v_class={required:true,digits:true};
-						addValidate(input_id,v_class);	
-					}
-				}				
-			}
-		},	
-	});
-
-	//jQuery(grid_selector).jqGrid('navGrid',pager_selector,{});
-}
-
-function doFilter(str){
-	var rows=$('#modal_tbl_products').jqGrid('getRowData');
-	var trs=$('#modal_tbl_products').find('tr');
-	$(rows).each(function(i,v){
-		$(trs[i+1]).hide();
-		$.each(v, function(key, value) { 
-			var pos=value.indexOf(str);
-		  	if (value.indexOf(str)>=0){
-				$(trs[i+1]).show();
-				return false;
-			}
-		});
 	});
 }
 

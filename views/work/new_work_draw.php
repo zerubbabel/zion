@@ -33,6 +33,7 @@
 	</div>	
 </div>
 </form>
+<?php include '../modal_products.php';?>
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 <script src="views/work/new_work_draw.js"></script>

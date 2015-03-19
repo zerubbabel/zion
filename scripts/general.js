@@ -109,7 +109,6 @@ function loadSelect(selector,table){
 
 //显示jQuery 遮罩层
 function showLoading() {
-	//debugger
     var bh = $("body").height();
     var bw = $("body").width();
     $("#fullbg").css({
@@ -188,7 +187,6 @@ function addValidate(input_id,v_class){
 }
 
 function collapse(ele,id){
-	//debugger	
 	var class_name=$(ele).attr('class');
 	var str1=class_name.substring(0,13);
 	var str2=class_name.substring(13);
@@ -303,7 +301,7 @@ function openProducts(){
 	$('#modal').modal({show:true});
 }
 
-
+/*
 function loadModalProducts(products){
 	jQuery("#modal_tbl_products").jqGrid({
 		data:products,
@@ -344,7 +342,7 @@ function loadModalProducts(products){
 		},	
 	});
 }
-
+*/
 function get_status(){
 	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
 	//动态生成select内容
@@ -364,10 +362,9 @@ function get_status(){
 }
 
 function delRow(grid,id){
-	jQuery("#"+grid).jqGrid('delRowData',id);
+	jQuery(grid).jqGrid('delRowData',id);
 	return false;
 }
-
 function getGroups(){
 	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
 	var str="";
@@ -383,4 +380,155 @@ function getGroups(){
         }
      }   
 	return str;	
+}
+
+//通用 产品选择
+//html:modal_products
+//data:all products data
+//dst_grid:'#grid_id' 目标grid
+//input:目标grid中待验证的input id 后半部分
+function openModalProducts(data,dst_grid,input){	
+	$('#modal_title').text('选择产品');	
+	$('#modal').modal({show:true});
+	loadModalProducts(data,dst_grid,input);
+	//产品过滤
+	var grid_selector='#modal_grid';
+	$('#modal_filter').keyup(function(){
+		var keyword=this.value;
+		grid_data=[];
+		for (var i=0;i<data.length;i++){
+			var pos=data[i]['name'].indexOf(keyword);
+		  	if (pos>=0){
+				grid_data.push(data[i]);
+			}
+		}
+		$(grid_selector).clearGridData();
+		$(grid_selector).setGridParam({data: grid_data});
+		$(grid_selector).trigger('reloadGrid');
+	})
+}
+function loadModalProducts(data,dst_grid,input){
+	jQuery("#modal_grid").jqGrid({
+		data:data,
+		datatype: "local",
+		colNames:['产品代码', '产品名称'],
+		colModel:[					
+			{name:'id',index:'id'},
+			{name:'name',index:'name'},			
+		], 
+		height:jqgrid_height,
+		rowNum:jqgrid_row_num,
+		//rowList:[10,20,30],
+		width:500,
+		//autowidth: true,	
+		pager : '#modal_pager',
+		viewrecords : true,
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				updatePagerIcons(table);
+				enableTooltips(table);
+			}, 0);
+		},
+		onSelectRow: function(id){			
+			if(id){
+				//产品添加到明细表中并且该行进入edit模式
+				var flag=false;//产品是否已存在
+				var trs=$(dst_grid+' tr');	
+				for(var i=1;i<trs.length;i++){
+					if (id==trs[i].id){
+						flag=true;
+						break;
+					}
+				}									
+				if (!flag){						
+					var newid=id;
+					var datarow=$('#modal_grid').getRowData(id);	
+					var su=$(dst_grid).addRowData(newid, datarow, "last");										
+					if (su){
+						$(dst_grid).jqGrid('editRow',newid);
+						var input_id=id+input;
+						var ele=$("#"+input_id);
+						ele.attr('name',input_id);
+						var width=ele.width();
+						var td_width=ele.parent().width();
+						ele.width(Math.round(td_width/2));						
+						var v_class={required:true,digits:true};
+						addValidate(input_id,v_class);	
+					}
+				}					
+			}
+		},	
+	});
+}
+
+function openModalOsProducts(data,dst_grid,input){	
+	$('#modal_title').text('选择产品');	
+	$('#modal').modal({show:true});
+	loadModalOsProducts(data,dst_grid,input);
+	var grid_selector='#modal_grid';
+	$(grid_selector).clearGridData();
+	$(grid_selector).setGridParam({data:data});
+	$(grid_selector).trigger('reloadGrid');
+	//产品过滤
+	var grid_selector='#modal_grid';
+	$('#modal_filter').keyup(function(){
+		var keyword=this.value;
+		grid_data=[];
+		for (var i=0;i<data.length;i++){
+			var pos=data[i]['name'].indexOf(keyword);
+		  	if (pos>=0){
+				grid_data.push(data[i]);
+			}
+		}
+		$(grid_selector).clearGridData();
+		$(grid_selector).setGridParam({data: grid_data});
+		$(grid_selector).trigger('reloadGrid');
+	})
+}
+function loadModalOsProducts(data,dst_grid,input){
+	jQuery("#modal_grid").jqGrid({
+		data:data,
+		datatype: "local",
+		colNames:['产品名称','数量'],
+		colModel:[					
+			{name:'name',index:'name'},			
+			{name:'qty',index:'qty'},	
+		], 
+		height:jqgrid_height,
+		rowNum:jqgrid_row_num,
+		//rowList:[10,20,30],
+		//autowidth: true,	
+		width:500,
+		onSelectRow: function(id){		
+			if(id){
+				var flag=false;//产品是否已存在
+				var trs=$(dst_grid+' tr');	
+				for(var i=1;i<trs.length;i++){
+					if (id==trs[i].id){
+						flag=true;
+						break;
+					}
+				}									
+				if (!flag){						
+					var newid=id;
+					var datarow=$('#modal_grid').getRowData(id);	
+					var su=$(dst_grid).addRowData(newid, datarow, "last");								
+					if (su){
+						$(dst_grid).jqGrid('editRow',newid);
+						del = "<i class='icon-trash red pointer actionIcon ' onclick=\"delRow('"+dst_grid+"',"+newid+");\" ></i>"; 				
+						jQuery(dst_grid).jqGrid('setRowData',newid,{act:del});
+						var input_id=id+input;
+						var ele=$("#"+input_id);
+						ele.attr('name',input_id);
+						var width=ele.width();
+						var td_width=ele.parent().width();
+						ele.width(Math.round(td_width/2));						
+						var v_class={required:true,digits:true,range:[0,datarow['qty']]};
+						addValidate(input_id,v_class);	
+					}
+				}					
+			}
+		},	
+	});
 }

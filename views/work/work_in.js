@@ -1,5 +1,6 @@
 var caption='入库产品明细  ';
 var go_url="#/";
+var products_data;
 $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
@@ -57,7 +58,7 @@ function loadDtl(){
 			var ids = jQuery('#tbl_dtl').jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
-				del = "<i class='icon-trash orange pointer actionIcon ' onclick=\"delRow('tbl_dtl',"+cl+");\" ></i>"; 				
+				del = "<i class='icon-trash red pointer actionIcon ' onclick=\"delRow('#tbl_dtl',"+cl+");\" ></i>"; 				
 				jQuery('#tbl_dtl').jqGrid('setRowData',ids[i],{act:del});
 			}
 		},
@@ -66,10 +67,10 @@ function loadDtl(){
 
 function addProduct(){
 	var para={'method':'getProducts'};
-	var data=exeJson(para);
-	var title='选择产品';
-	var dst_grid='tbl_dtl';
+	products_data=exeJson(para);
+	//var title='选择产品';
+	var dst_grid='#tbl_dtl';
 	var input='_qty';
-
-	loadModal(title,data,dst_grid,input)
+	openModalProducts(products_data,dst_grid,input);
+	//loadModal(title,data,dst_grid,input)
 }

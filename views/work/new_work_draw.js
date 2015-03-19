@@ -1,5 +1,5 @@
 var go_url="index.php#/views/work/work_draw_manage";
-
+var products_data;
 $(document).ready(function(){
 	setTitle();
 
@@ -81,7 +81,7 @@ function loadSubpart(){
 			var ids = jQuery('#subpart_dtl').jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
-				del = "<i class='icon-trash orange pointer actionIcon ' onclick=\"delRow('subpart_dtl',"+cl+");\" ></i>"; 				
+				del = "<i class='icon-trash orange pointer actionIcon ' onclick=\"delRow('#subpart_dtl',"+cl+");\" ></i>"; 				
 				jQuery('#subpart_dtl').jqGrid('setRowData',ids[i],{act:del});
 				//enter edit
 				$('#subpart_dtl').jqGrid('editRow',cl);
@@ -99,8 +99,9 @@ function loadSubpart(){
 
 function addPart(){
 	var para={'method':'getProducts'};
-	var data=exeJson(para);
-	loadModal('选择领料物品',data,'subpart_dtl','_qty');
+	products_data=exeJson(para);
+	openModalProducts(products_data,'#subpart_dtl','_qty');
+	//loadModal('选择领料物品',data,'subpart_dtl','_qty');
 }
 
 
