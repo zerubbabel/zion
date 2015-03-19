@@ -132,6 +132,34 @@ class Outsource extends Base {
 		return $ans;
 	}
 
+	//更新外协供应商处库存
+	public static function updateOsStock($dtl_data,$os_unit,$flag) {		
+		$db=self::__instance();
+		$table='os_stocks';
+		for($i=0;$i<count($dtl_data);$i++)
+		{
+			$qty=$dtl_data[$i]['qty']*$flag;
+			$product_id=$dtl_data[$i]['product_id'];
+			$where=array('AND'=>array('product_id'=>$product_id,'os_unit'=>$os_unit));
+			$result=$db->has($table,$where);
+			if ($result){
+				$data=array('qty[+]'=>$qty);
+				$id=$db->update($table,$data,$where);
+				if(!$id){
+					return array('status'=>false,'msg'=>$db->error());
+				}
+			}	
+			else{
+				$data=array('qty'=>$qty,'product_id'=>$product_id,'os_unit'=>$os_unit);		
+				$id=$db->insert($table,$data);
+				if(!$id){
+					return array('status'=>false,'msg'=>$db->error());
+				}
+			}	
+		}
+		return array('status'=>true);
+	}
+
 	public static function insertOsOutOrder($mst_data,$dtl_data) {
 		$db=self::__instance();		
 		$ans=array();		
@@ -141,6 +169,7 @@ class Outsource extends Base {
 			if($result['status']){
 				$mst_id=$result['id'];
 				$result=Baseinfo::insertDtl($dtl_data,'os_out',$mst_id,$mst_data['loc_id'],-1);//插入明细表并更新库存
+				Outsource::updateOsStock($dtl_data,$mst_data['os_unit'],1);
 				if($result['status']){//明细表有一条成功status就为true					
 					$ans['status']=true;
 					$ans['msg']='操作成功！';
@@ -346,6 +375,7 @@ class Outsource extends Base {
 		if($result['status']){
 			$mst_id=$result['id'];
 			$result=Outsource::insertOsInDtl($dtl_data,$mst_id,$mst_data['loc_id'],$mst_data['os_unit']);//插入明细表并更新库存
+			Outsource::updateOsStock($dtl_data,$mst_data['os_unit'],-1);
 			if($result['status']){//明细表有一条成功status就为true					
 				$ans['status']=true;
 				$ans['msg']='操作成功！';
@@ -427,6 +457,21 @@ class Outsource extends Base {
 		return $ans;
 	}
 
+	public static function getOsParentProductById($id){
+		$db=self::__instance();
+		$r=$db->select('products',array('os_code'),array('id'=>$id));
+		if($r){
+			$os_code=$r[0]['os_code'];
+			$data=explode('-', $os_code);
+			$len=count($data);
+			if($len==2){
+				$p_id=$data[0];
+				return $p_id;
+			}
+		}
+		return 0;
+	}
+
 	public static function insertOsTest($mst_data,$dtl_data){
 		$db=self::__instance();		
 		$ans=array();		
@@ -437,6 +482,23 @@ class Outsource extends Base {
 			if($result['status']){
 				$mst_id=$result['id'];
 				$result=Outsource::insertOsTestDtl($dtl_data,$mst_id,$mst_data['loc_id'],$mst_data['os_unit']);//插入明细表并更新库存
+				//update os_stocks base on back_qty
+				$back_data=array();
+				//$k=0;
+				for($i=0;$i<count($dtl_data);$i++){
+					if((int)$dtl_data[$i]['back_qty']>0){
+						//$back_data[]=array();
+
+						$p_product_id=Outsource::getOsParentProductById($dtl_data[$i]['product_id']);						
+						if((int)$p_product_id>0){
+							$back_data[]=array('product_id'=>$p_product_id,
+								'qty'=>$dtl_data[$i]['back_qty']);
+						}
+					}
+				}
+				
+	
+				Outsource::updateOsStock($back_data,$mst_data['os_unit'],1);
 				if($result['status']){//明细表有一条成功status就为true					
 					$ans['status']=true;
 					$ans['msg']='操作成功！';

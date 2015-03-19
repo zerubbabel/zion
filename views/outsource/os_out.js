@@ -1,6 +1,7 @@
 var mst_data;
 var dtl_data;
 var go_url="#/";
+var os_unit;
 $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
@@ -28,7 +29,8 @@ $(document).ready(function(){
 })
 function saveOsOut(){
 	var para={'method':'insertOsOutOrder'};
-	var mst_data={'os_order_mst_id':select_obj['os_order_id'],'loc_id':$('#loc').val()};
+	var mst_data={'os_order_mst_id':select_obj['os_order_id'],
+		'loc_id':$('#loc').val(),'os_unit':os_unit};
 	para['mst_data']=mst_data;
 	var dtl_data={};
 	var trs=$("#tbl_dtl tr");
@@ -63,6 +65,7 @@ function loadMst(id){
 	var para={'method':'getOsOrderMstById','id':id};
 	mst_data=exeJson(para);
 	$("#os_unit").text("加工单位:"+mst_data.os_unit_name);
+	os_unit=mst_data['os_unit'];
 }
 
 function loadDtl(id){

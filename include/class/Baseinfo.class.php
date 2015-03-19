@@ -1,6 +1,7 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Baseinfo extends Base {
+	
 	//列表 
 	public static function getModules() {
 		$db=self::__instance();
