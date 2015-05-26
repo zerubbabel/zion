@@ -84,6 +84,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/work/new_wc_work_draw', {
+      templateUrl: 'views/work/new_wc_work_draw.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/work/new_work_draw', {
       templateUrl: 'views/work/new_work_draw.php',
       resolve: {

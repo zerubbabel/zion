@@ -1,3 +1,4 @@
+//生产入库是否跟踪生产领料？
 var caption='入库产品明细  ';
 var go_url="#/";
 var products_data;
@@ -10,7 +11,17 @@ $(document).ready(function(){
 	//验证,submit
 	 $("#frm").validate({	 	
         submitHandler:function(form){    
-        	saveWorkIn();
+        	var trs=$("#tbl_dtl tr");
+			if (trs.length>1){				
+				saveWorkIn();
+			}
+			else{
+				var result={'status':false,'msg':'请选择待入库的产品！'};
+				showMsg(result);
+			}
+			return false; 
+
+        	
         }    
     });	
 })
