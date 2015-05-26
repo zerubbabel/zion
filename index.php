@@ -184,10 +184,10 @@
 						<div ng-view></div>
 						<footer style="font-size:16px">
 	                        <hr>
-	                        <p class="pull-right">A <a href="mailto:imate818@gmail.com" target="_blank">Information Management System.</a> 
-								by <a href="mailto:imate818@gmail.com" target="_blank">hcy </a>ver.<?php echo VERSION;?></p>
+	                        <p class="pull-right"><a href="mailto:imate818@gmail.com" target="_blank">企业管理平台</a> 
+								作者：<a href="mailto:imate818@gmail.com" target="_blank">hcy </a>ver.<?php echo VERSION;?></p>
 
-	                        <p >© 2015 <a href="mailto:imate818@gmail.com" target="_blank">hcy(tel:15824563614)</a></p>
+	                        <p >© 2015 <a href="mailto:imate818@gmail.com" target="_blank">hcy(电话:15824563614)</a></p>
 		                </footer>
 					</div><!-- /.page-content -->
 

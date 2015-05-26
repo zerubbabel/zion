@@ -56,7 +56,8 @@ class Purchase extends Base {
 			'createday'=>$createday,
 			'deliveryday'=>$mst_data['deliveryday'],
 			'sale_order_mst_id'=>$mst_data['sale_order_mst_id'],
-			'op_id'=>$op_id);
+			'op_id'=>$op_id,
+			'status'=>$mst_data['status']);
 		$ans=array();
 		$id=$db->insert('purchase_order_mst',$data);
 		if($id){
