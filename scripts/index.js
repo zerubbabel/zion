@@ -19,6 +19,7 @@ $(document).ready(function(){
 })
 function addShortcut(){
   alert(page_id);
+
 }
 
 function setTitle(){

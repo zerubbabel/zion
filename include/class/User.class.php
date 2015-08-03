@@ -150,6 +150,37 @@ class User extends Base{
 		}
 	}
 
+	//shortcut based on access
+	public static function getAccessShortCut() {	
+		$db=self::__instance();	
+		$user_id=$_SESSION['user_info']['user_id'];
+		$sql="select a.page_id from access a inner join users b 
+		on b.user_group=a.group_id 
+		where b.user_id=".$user_id;
+		$result=$db->query($sql)->fetchAll();
+		$ans=array();
+		if($result){
+			$data=$result;
+			for ($i=0;$i<count($data);$i++){
+				$id=$data[$i];
+				$where=array('id'=>$id);
+				$page=$db->select('pages',array('url','page_name','icon'),$where);
+				if($page){
+					$ans[]=array();
+					$ans[$i]['url']=$page[0]['url'];
+					$ans[$i]['page_name']=$page[0]['page_name'];
+					$ans[$i]['icon']=$page[0]['icon'];
+				}
+				else{
+					return false;
+				}
+			}
+			return $ans;
+		}else{
+			return false;
+		}
+	}
+
 	public static function getUsers(){
 		$db=self::__instance();
 		$sql='select a.user_name,a.user_id as id,a.user_group,b.name as group_name 

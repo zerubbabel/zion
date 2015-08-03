@@ -1,7 +1,7 @@
 ﻿<?php
 	require ('../include/init.inc.php');
-	$pages=User::getShortCut();
-	
+	//$pages=User::getShortCut();
+	$pages=User::getAccessShortCut();
 	if ($pages){		
 		$height=ceil(count($pages) / 5)*66+40;
 ?>
