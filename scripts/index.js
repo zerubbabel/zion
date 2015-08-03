@@ -198,6 +198,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/stock/stocks_view', {
+      templateUrl: 'views/stock/stocks_view.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/purchase/new_purchase_order', {
       templateUrl: 'views/purchase/new_purchase_order.php',
       resolve: {
