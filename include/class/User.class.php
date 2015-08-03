@@ -56,7 +56,7 @@ class User extends Base{
 	
 	public static function getAccess($user_id,$url) {
 		$db=self::__instance();
-		$sql="select * from access 
+		$sql="select pages.page_name,access.page_id from access 
 			left join users on access.group_id=users.user_group  
 			left join pages on access.page_id=pages.id  
 			where pages.url='".$url."' and users.user_id=".$user_id;

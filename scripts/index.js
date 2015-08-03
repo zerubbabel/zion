@@ -1,6 +1,7 @@
 var select_obj={};
 var jqgrid_row_num=10;
 var jqgrid_height=350;
+var page_id=0;
 /*
 var jgGrid_setting={
     datatype: "json",
@@ -16,6 +17,10 @@ var jgGrid_setting={
 $(document).ready(function(){
   setTitle();
 })
+function addShortcut(){
+  alert(page_id);
+}
+
 function setTitle(){
   if (select_obj['title']){
     $('#title').text(select_obj['title']);
@@ -34,6 +39,7 @@ function auth($q, $location) {
     });
     if (result&&result.status){
         select_obj['title']=result.page_name;
+        page_id=result.page_id;
         }
     else{      
         select_obj['title']='';  

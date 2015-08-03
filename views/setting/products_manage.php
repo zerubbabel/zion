@@ -70,6 +70,7 @@
 </div>
 <!-- end of modal of products-->
 
+<?php include '../modal_products.php';?>
 <!-- page specific plugin scripts -->
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>

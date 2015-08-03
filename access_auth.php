@@ -9,7 +9,8 @@
 	$datas=User::getAccess($user_id,$url);
 
 	if (count($datas)>0){
-		$json = array ('status'=>true,'page_name'=>$datas[0]['page_name']);
+		$json = array ('status'=>true,'page_name'=>$datas[0]['page_name'],
+			'page_id'=>$datas[0]['page_id']);
 	}else{
 		$json = array ('status'=>false);
 	}

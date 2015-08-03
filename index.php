@@ -177,6 +177,7 @@
 								<a href="#">主页</a>
 							</li>
 							<li class="active" id="title"></li>
+							<i class='icon-plus blue actionIcon pointer tooltip-warning' data-rel='tooltip' title='添加到首页' data-placement='right' onclick='addShortcut()' ></i>
 						</ul><!-- .breadcrumb -->
 					</div>
 
