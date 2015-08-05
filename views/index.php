@@ -3,7 +3,7 @@
 	//$pages=User::getShortCut();
 	$pages=User::getAccessShortCut();
 	if ($pages){		
-		$height=ceil(count($pages) / 5)*66+40;
+		$height=ceil(count($pages) / 5)*66+150;
 ?>
 <div class="col-xs-12 col-sm-12 widget-container-span ui-sortable" id="div_short_cut">
 	<div class="widget-box">

@@ -18,7 +18,7 @@ $(document).ready(function(){
   setTitle();
 })
 function addShortcut(){
-  alert(page_id);
+  //alert(page_id);
 
 }
 
