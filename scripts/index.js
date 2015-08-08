@@ -205,6 +205,18 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
+    .when('/views/stock/stock_bin_init', {
+      templateUrl: 'views/stock/stock_bin_init.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/stock/stock_bin', {
+      templateUrl: 'views/stock/stock_bin.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/purchase/new_purchase_order', {
       templateUrl: 'views/purchase/new_purchase_order.php',
       resolve: {

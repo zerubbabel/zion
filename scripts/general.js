@@ -381,6 +381,24 @@ function getGroups(){
      }   
 	return str;	
 }
+//获取库位
+function getBins(loc){
+	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
+	var str="";
+	var loc=$('#loc').val();
+	var para={'method':'getBins','loc':loc};
+	var data=exeJson(para);
+    var jsonobj=eval(data);    
+    var length=jsonobj.length;
+    for(var i=0;i<length;i++){  
+        if(i!=length-1){
+        	str+=jsonobj[i].id+":"+jsonobj[i].name+";";
+        }else{
+          	str+=jsonobj[i].id+":"+jsonobj[i].name;
+        }
+     }   
+	return str;	
+}
 
 //通用 产品选择
 //html:modal_products

@@ -18,14 +18,15 @@ class Stock extends Base {
 			LEFT JOIN products b on a.product_id=b.id 
 			where loc_id=$loc_id
 			order by b.id";	*/
-		$sql="select b.id,b.product_name as name,qty,b.min_stock,b.bin from products b 
+		$sql="select b.id,b.product_name as name,qty,b.min_stock,c.bin from products b 
 			LEFT JOIN stocks a on a.product_id=b.id 
-			where loc_id=$loc_id";	
+			left join location_bin c on c.id=a.bin_id 
+			where (a.loc_id=$loc_id or a.loc_id is null)";	
 		if($product_name!=""){
 			$sql.=" and b.product_name like '%".$product_name."%'";
 		}	
 		if($bin!=""){
-			$sql.=" and b.bin like '%".$bin."%'";
+			$sql.=" and c.bin like '%".$bin."%'";
 		}
 		$sql.=" order by b.id";
 
@@ -82,6 +83,61 @@ class Stock extends Base {
 		}	
 		else{
 			$data=array('qty'=>$qty,'product_id'=>$product_id,'loc_id'=>$loc_id);		
+			$id=$db->insert('stocks',$data);
+			if($id){
+				return array('status'=>true);
+			}else{
+				return array('status'=>false,'msg'=>$db->error());
+			}
+		}	
+	}
+
+	//基于库位更新库存
+	public static function updateStockByBin($product_id,$bin_id,$qty=0) {
+		$db=self::__instance();
+		$where=array('AND'=>array('product_id'=>$product_id,'bin_id'=>$bin_id));
+		$result=$db->has('stocks',$where);
+		if ($result){
+			$data=array('qty[+]'=>$qty);
+			$id=$db->update('stocks',$data,$where);
+			if($id){
+				return array('status'=>true);
+			}else{
+				return array('status'=>false,'msg'=>$db->error());
+			}
+		}	
+		else{
+			$data=array('qty'=>$qty,'product_id'=>$product_id,'bin_id'=>$bin_id);		
+			$id=$db->insert('stocks',$data);
+			if($id){
+				return array('status'=>true);
+			}else{
+				return array('status'=>false,'msg'=>$db->error());
+			}
+		}	
+	}
+
+
+	//期初物料库位管理
+	public static function updateStockBin($product_id,$bin_id,$qty=0) {
+		$db=self::__instance();
+		$result=$db->select('location_bin',['loc_id'],['id'=>$bin_id]);
+		if($result){
+			$loc_id=$result[0]['loc_id'];
+		}
+		$where=array('AND'=>array('product_id'=>$product_id,'loc_id'=>$loc_id));
+		$result=$db->has('stocks',$where);
+		if ($result){
+			$data=array('qty[+]'=>$qty,'bin_id'=>$bin_id);
+			$id=$db->update('stocks',$data,$where);
+			if($id){
+				return array('status'=>true);
+			}else{
+				return array('status'=>false,'msg'=>$db->error());
+			}
+		}	
+		else{
+			$data=array('qty'=>$qty,'product_id'=>$product_id,'bin_id'=>$bin_id,'loc_id'=>$loc_id);		
 			$id=$db->insert('stocks',$data);
 			if($id){
 				return array('status'=>true);

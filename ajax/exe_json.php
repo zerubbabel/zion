@@ -123,6 +123,10 @@
 			$data = Baseinfo::getSelect('user_group');
 			echo json_encode($data);
 			break;
+		case 'getBins':
+			$data = Baseinfo::getBins($para['loc']);
+			echo json_encode($data);
+			break;
 		case 'getStocks':
 			$data = Stock::getStocks($para['loc_id']);
 			echo json_encode($data);

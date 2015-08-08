@@ -1,5 +1,8 @@
 ﻿[2015-8-5]
-期初库位输入
+期初库位输入stock_bin_init
+新表location_bin 记录仓库-库位
+仓库库位维护 stock_bin
+
 后期库位维护
 [2015-8-3]
 增加库位：直接在products表里添加仓库，库位两属性location,bin（先期到处物料单excel表，直接添加库位，再导入）
