@@ -55,6 +55,12 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
   .config(function($routeProvider) {
 
     $routeProvider
+    .when('/views/report/r_work_in', {
+      templateUrl: 'views/report/r_work_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/sale/sale_order', {
       templateUrl: 'views/sale/sale_order.php',
       resolve: {
@@ -193,8 +199,8 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
         async: ['$q', '$location', auth]
       }
     })
-    .when('/views/stock/stocks', {
-      templateUrl: 'views/stock/stocks.php',
+    .when('/views/stock/bin_manage', {
+      templateUrl: 'views/stock/bin_manage.php',
       resolve: {
         async: ['$q', '$location', auth]
       }

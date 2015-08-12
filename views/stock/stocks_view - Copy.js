@@ -1,31 +1,35 @@
 ﻿jQuery(function($) {
-	
 	setTitle();
 	//仓库
 	loadLoc($('#loc'));
 	
-	loadDetail($("#loc").val());	
+	loadDetail($("#loc").val());
 
-	$("#btn_search").click(function(){
-		reLoad();
-	});
-	
 	//update validate
 	$('#loc').change(function(){
-		reLoad();
+		/*var loc_id=$('#loc').val();
+		jQuery('#tbl_dtl').jqGrid('setGridParam',{url:"views/stock/get_stocks.php?loc_id="+loc_id,page:1})
+		.trigger('reloadGrid');	
+		*/
 	});	
+	
+	
+	//产品过滤
+	/*$('#product_filter').keyup(function(){
+		doFilter(this.value);
+	})*/
 
+	$("#btn_search").click(function(){
+		var loc_id=$('#loc').val();
+		var product=$('#product').val();
+		var bin=$('#bin').val();
+		jQuery('#tbl_dtl').jqGrid('setGridParam',{url:"views/stock/get_stocks.php?loc_id="+loc_id
+			+"&product_name="+product+"&bin="+bin,page:1})
+		.trigger('reloadGrid');
+
+	});
+	
 });
-function reLoad(){
-	var loc_id=$('#loc').val();
-	var product_id=$('#product_id').val();
-	var product=$('#product').val();
-	var bin=$('#bin').val();
-	jQuery('#tbl_dtl').jqGrid('setGridParam',{url:"views/stock/get_stocks.php?loc_id="+loc_id
-		+"&product_id="+product_id+"&product_name="+product+"&bin="+bin,page:1})
-	.trigger('reloadGrid');
-	jQuery('#tbl_dtl').jqGrid('setColProp', 'bin', { editoptions: { value:getBins($('#loc').val())} });
-}
 
 function loadDetail(loc_id){	
 	var pager_selector='#pager';
@@ -33,17 +37,15 @@ function loadDetail(loc_id){
 		url:'views/stock/get_stocks.php?loc_id='+loc_id,
 		datatype: "json",
 		height: 200,
-		colNames:['产品代码','产品名称', '数量','最小库存','库位'],
+		colNames:['产品', '数量','最小库存','库位'],
 		colModel:[					
-			{name:'product_id',index:'product_id', width:60, sortable:true,editable: false},
 			{name:'name',index:'name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:60, sortable:false,editable: false},
-			{name:'min_stock',index:'min_stock', width:60, sortable:false,editable: false},
-			{name:'bin',index:'bin', width:90, sortable:false,editable: true,edittype:'select',editoptions:{value:getBins($('#loc').val())}},
-			
+			{name:'qty',index:'qty', width:90, sortable:false,editable: false},
+			{name:'min_stock',index:'min_stock', width:90, sortable:false,editable: false},
+			{name:'bin',index:'bin', width:90, sortable:false,editable: false},
 		], 
 		caption:'产品:',
-		rowNum:100,
+		rowNum:10,
 		rowList:[10,20,30],
 		pager : pager_selector,
 		altRows: true,	

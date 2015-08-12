@@ -11,9 +11,7 @@
 		<label for="loc" class="control-label no-padding-right">仓库:</label>
 		<select id='loc'>
 		</select>
-		<label for="product_id" class="control-label no-padding-right">产品代码:</label>
-		<input type="textbox" id="product_id"/>
-		<label for="product" class="control-label no-padding-right">产品名称:</label>
+		<label for="product" class="control-label no-padding-right">产品:</label>
 		<input type="textbox" id="product"/>
 		<label for="bin" class="control-label no-padding-right">库位:</label>
 		<input type="textbox" id="bin"/>
@@ -64,4 +62,4 @@
 
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
-<script src="views/stock/stock_bin_init.js"></script>
+<script src="views/stock/stocks_view.js"></script>

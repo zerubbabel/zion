@@ -143,6 +143,41 @@ class Work extends Base {
 		}
 		return array ();
 	}
+
+	public static function getWorkInMst($id=null,$date_start="",$date_end="") {
+		$db=self::__instance();
+		$sql="select a.id,a.workcenter_id,a.createday,a.op_id,
+			b.name as workcenter_name,c.user_name,d.name as loc_name 
+			from work_in_mst a 
+			left join workcenters b on a.workcenter_id=b.id 
+			left join users c on a.op_id=c.user_id 
+			left join locations d on a.loc_id=d.id ";
+
+		if($id!=null&&$id!=''){
+			$sql.=' where a.id='.$id;
+		}
+		if($date_start!=""&&$date_end!=""){
+			$sql.=' where a.createday>='.$date_start.' and a.createday<='.$date_end;
+		}
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function getWorkInDtlById($id) {
+		$db=self::__instance();		
+		$sql="select b.id,b.product_name,qty from dtl a 
+			left join products b on a.product_id=b.id 
+			where a.mst_id=".$id. " and a.mst_table='work_in' 
+			order by b.id";		
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
 	
 	public static function updateWorkDrawById($id,$status) {
 		$db=self::__instance();

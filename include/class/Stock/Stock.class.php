@@ -12,16 +12,19 @@ class Stock extends Base {
 		return array(0);//无库存返回0
 	}
 	
-	public static function getStocks($loc_id,$product_name="",$bin="") {
+	public static function getStocks($loc_id,$product_id="",$product_name="",$bin="") {
 		$db=self::__instance();
 		/*$sql="select b.id,b.product_name as name,qty,b.min_stock,b.bin from stocks a
 			LEFT JOIN products b on a.product_id=b.id 
 			where loc_id=$loc_id
 			order by b.id";	*/
-		$sql="select b.id,b.product_name as name,qty,b.min_stock,c.bin from products b 
+		$sql="select b.id,b.product_id,b.product_name as name,qty,b.min_stock,c.bin from products b 
 			LEFT JOIN stocks a on a.product_id=b.id 
 			left join location_bin c on c.id=a.bin_id 
 			where (a.loc_id=$loc_id or a.loc_id is null)";	
+		if($product_id!=""){
+			$sql.=" and b.product_id like '%".$product_id."%'";
+		}	
 		if($product_name!=""){
 			$sql.=" and b.product_name like '%".$product_name."%'";
 		}	
@@ -125,6 +128,7 @@ class Stock extends Base {
 		if($result){
 			$loc_id=$result[0]['loc_id'];
 		}
+		//return $result;
 		$where=array('AND'=>array('product_id'=>$product_id,'loc_id'=>$loc_id));
 		$result=$db->has('stocks',$where);
 		if ($result){

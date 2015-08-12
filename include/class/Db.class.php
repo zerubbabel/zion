@@ -54,6 +54,7 @@ class Db extends Base {
 
 	public static function insertRecord($table,$data){
 		$db=self::__instance();
+		
 		$result=$db->insert($table,$data);
 		if($result){
 			return array('status'=>true,'msg'=>'操作成功！');

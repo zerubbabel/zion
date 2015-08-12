@@ -13,7 +13,7 @@ define ( 'APP_TITLE' ,'锡安卫浴企业管理平台');
 define ( 'COMPANY_NAME' ,'锡安卫浴');
 define ( 'AUTHOR_NAME' ,'HCY');
 define ( 'VERSION' ,'1.01');
-
+define ( 'REPORT_DAYS' ,3);//默认报表查看时间
 //数据库设置
 $db_path=APP_ROOT.'/zion.db';
 define ( 'DB_NAME' ,$db_path);

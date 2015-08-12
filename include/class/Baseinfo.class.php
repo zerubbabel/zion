@@ -72,7 +72,7 @@ class Baseinfo extends Base {
 	public static function getSelect($table) {
 		$db=self::__instance();
 		$cols=array('id','name');
-		$where=array('status'=>1);
+		$where=array('status'=>1,'ORDER'=>'id');
 		$list = $db->select($table,$cols,$where);
 		//$list = $db->select($table,$cols);
 		if ($list) {			
@@ -91,9 +91,14 @@ class Baseinfo extends Base {
 		return array ();
 	}
 
-	public static function getBins($loc) {
+	public static function getBins($loc="") {
 		$db=self::__instance();
-		$sql="select id,bin as name from location_bin where loc_id=$loc";
+		$sql="select a.id,a.bin as name,a.loc_id,b.name as loc_name 
+			from location_bin a left join locations b on a.loc_id=b.id";
+		if ($loc!=""){
+			$sql.=" where a.loc_id=$loc";
+
+		}	
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;

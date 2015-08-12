@@ -11,7 +11,9 @@
 		<label for="loc" class="control-label no-padding-right">仓库:</label>
 		<select id='loc'>
 		</select>
-		<label for="product" class="control-label no-padding-right">产品:</label>
+		<label for="product_id" class="control-label no-padding-right">产品代码:</label>
+		<input type="textbox" id="product_id"/>
+		<label for="product" class="control-label no-padding-right">产品名称:</label>
 		<input type="textbox" id="product"/>
 		<label for="bin" class="control-label no-padding-right">库位:</label>
 		<input type="textbox" id="bin"/>
