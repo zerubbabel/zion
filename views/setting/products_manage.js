@@ -63,7 +63,7 @@ jQuery(function($) {
 		data: products_data,
 		datatype: "local",
 		height: 400,
-		colNames:['','操作','产品名称',],
+		colNames:['','操作','产品代码','产品名称','规格','最小库存','仓库','库位','库存数量'],
 		colModel:[	
 			{name:'myaction',index:'',width:20,
 				formatter:'actions', 
@@ -71,8 +71,15 @@ jQuery(function($) {
 					keys:true,	
 					delbutton:false,
 				}},	
-			{name:'act',index:'act',width:15}, 	
-			{name:'name',index:'name', width:90, editable: true} 
+			{name:'act',index:'act',width:20}, 	
+			{name:'product_id',index:'product_id', width:60,editable: true}, 
+			{name:'name',index:'name', width:100, editable: true},
+			{name:'gg',index:'gg', width:70, editable: true},
+			{name:'min_stock',index:'min_stock', width:30, editable: true},
+			//{name:'loc_name',index:'loc_name', width:40, editable: true,edittype:'select',editoptions:{value:"0:;"+getLocs()}},
+			{name:'loc_name',index:'loc_name', width:40},
+			{name:'bin',index:'bin', width:40,},
+			{name:'qty',index:'qty', width:30,},
 		], 
 
 		viewrecords : true,

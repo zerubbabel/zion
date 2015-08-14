@@ -17,14 +17,15 @@ jQuery(function($) {
 	
 	jQuery(grid_selector).jqGrid({
 		//data: grid_data,
-		//datatype: "local",
+		url:'',
+		datatype: "json",
 		height: 400,
-		colNames:['','车间','入库仓库','操作人员','入库时间'],
+		colNames:['车间','入库仓库','操作人员','入库时间'],
 		colModel:[
-			{name:'act',index:'', width:50, fixed:true, sortable:false, resize:false,},	
-			{name:'workcenter_name',index:'workcenter_name', width:90,editable: false},			
-			{name:'loc_name',index:'loc_name',width:90, editable:false},
-			{name:'user_name',index:'user_name', width:90, editable: false}, 
+			//{name:'act',index:'', width:50, fixed:true, sortable:false, resize:false,},	
+			{name:'workcenter_name',index:'workcenter_name', width:50,editable: false},			
+			{name:'loc_name',index:'loc_name',width:50, editable:false},
+			{name:'user_name',index:'user_name', width:40, editable: false}, 
 			{name:'createday',index:'createday', width:90, editable: false},
 		], 
 
@@ -76,9 +77,8 @@ jQuery(function($) {
 function reLoad(){
 	var date_start=$('#date_start').val();
 	var date_end=$('#date_end').val();
-	debugger
 	if(date_start!=""&&date_end!=""){
-		jQuery('#grid-table').jqGrid('setGridParam',{url:"views/report/data/get_report.php?report_type='work_in'"
+		jQuery('#grid-table').jqGrid('setGridParam',{url:"views/report/data/get_report.php?report_type=work_in"
 			+"&date_start="+date_start+"&date_end="+date_end,page:1})
 		.trigger('reloadGrid');
 	}
@@ -90,10 +90,12 @@ function loadDetail(id){
 		url:dtl_url+id,
 		datatype: "json",
 		height: 350,
-		colNames:['产品', '数量'],
+		colNames:['代码','产品','规格', '数量'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+			{name:'product_id',index:'product_id', width:40},
+			{name:'product_name',index:'product_name', width:110, sortable:true,editable: false},
+			{name:'gg',index:'gg', width:90},
+			{name:'qty',index:'qty', width:30, sortable:true,editable: false}
 		], 
 
 		viewrecords : true,

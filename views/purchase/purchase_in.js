@@ -88,12 +88,13 @@ function loadDtl(id){
 		data: dtl_data,
 		datatype: "local",
 		height: 300,
-		colNames:['产品', '订单数量','剩余数量','入库数量'],
+		colNames:['产品', '订单数量','剩余数量','入库数量','入库库位'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false},
-			{name:'left_qty',index:'left_qty', width:90, sortable:true,editable: false},
-			{name:'in_qty',index:'in_qty', width:90, sortable:true,editable: true},
+			{name:'product_name',index:'product_name', width:90},
+			{name:'qty',index:'qty', width:30},
+			{name:'left_qty',index:'left_qty', width:30},
+			{name:'in_qty',index:'in_qty', width:70, editable: true},
+			{name:'bin',index:'bin', width:70,editable: true},
 		], 
 		caption: "产品明细",
 		autowidth: true,
@@ -110,6 +111,8 @@ function loadDtl(id){
 		ele.width(Math.round(td_width/2));					
 		var v_class={required:true,digits:true,range:[0,parseInt(this.qty)]};
 		addValidate(input_id,v_class);	
+		//库位
+		addValidate(id+"_bin",{required:true});
 	});	
 }
 

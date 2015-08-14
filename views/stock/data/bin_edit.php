@@ -10,7 +10,7 @@
 			add();
 			break;
 		case 'del':
-			//stop();
+			del();
 			break;
 		default:
 			break;
@@ -21,7 +21,8 @@ function edit(){
 	$loc=$_POST['loc_name'];
 	$bin_name=$_POST['name'];
 	$table='location_bin';
-	$where=array('bin'=>$bin_name,'loc_id'=>$loc);
+	$where=array('id'=>$id);
+	$data=array('bin'=>$bin_name,'loc_id'=>$loc);
 	$result=Db::updateRecord($table,$data,$where);
 	echo json_encode($result); 	
 }
@@ -29,9 +30,15 @@ function edit(){
 function add()	{
 	$loc=$_POST['loc_name'];
 	$bin_name=$_POST['name'];
-	$table='location_bin';
 	$data=array('bin'=>$bin_name,'loc_id'=>$loc);
-	$result=Db::insertRecord($table,$data);	
+	$result=Stock::insertBin($data);	
 	echo json_encode($result); 
 }	
+function del(){	
+	$id=$_POST['id'];
+	//$table='location_bin';
+	//$where=array('id'=>$id);
+	$result=Stock::deleteBin($id);
+	echo json_encode($result); 	
+}
 ?>

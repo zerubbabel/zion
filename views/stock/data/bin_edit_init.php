@@ -20,7 +20,8 @@ function edit(){
 	if(isset($_POST['bin'])){
 		$bin=$_POST['bin'];
 		$product_id=$_POST['id'];	
-		$result=Stock::updateStockBin($product_id,$bin);
+		$qty=$_POST['qty'];
+		$result=Stock::updateStockBin($product_id,$bin,$qty);
 		echo json_encode($result); 
 	}
 }

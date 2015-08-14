@@ -7,19 +7,21 @@
 ?>
 <div class="row" id="tab_product">
 	<div class="col-xs-12">
-		筛选：<input type="text" id="product_filter"/>
+		产品名称：<input type="text" id="product_filter"/>
 	</div>
-	<div class="col-xs-8">
+
+	<div class="col-xs-12">
 		<!-- PAGE CONTENT BEGINS -->
 		<table id="grid-table"></table>
 
 		<div id="grid-pager"></div>
 		<!-- PAGE CONTENT ENDS -->
 	</div><!-- /.col -->
+	<!-- 2015-8-13
 	<div class="col-xs-4" id="div_dtl">
 		<table id="right_subpart"></table>
-		<!--<div id="pager_d"></div>-->
 	</div>
+	-->
 </div><!-- /.row -->
 <form id="sub_frm">
 <div class="row" id="tab_bom">
@@ -28,7 +30,6 @@
 	<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
 <!--	<h1>物料清单:<span id="product_span"></span></h1>-->
 	<table id="grid_subpart"></table>
-	
 </div>
 </form>
 

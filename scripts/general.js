@@ -403,6 +403,7 @@ function getBins(loc){
 function getLocs(){
 	//return "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX";
 	var str="";
+	//var str="0:;";
 	var para={'method':'getLocs'};
 	var data=exeJson(para);
     var jsonobj=eval(data);    

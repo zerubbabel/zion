@@ -157,8 +157,9 @@ class Work extends Base {
 			$sql.=' where a.id='.$id;
 		}
 		if($date_start!=""&&$date_end!=""){
-			$sql.=' where a.createday>='.$date_start.' and a.createday<='.$date_end;
+			$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
 		}
+		
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -168,7 +169,8 @@ class Work extends Base {
 
 	public static function getWorkInDtlById($id) {
 		$db=self::__instance();		
-		$sql="select b.id,b.product_name,qty from dtl a 
+		$sql="select b.id,b.product_name,b.product_id,b.gg,
+			qty from dtl a 
 			left join products b on a.product_id=b.id 
 			where a.mst_id=".$id. " and a.mst_table='work_in' 
 			order by b.id";		

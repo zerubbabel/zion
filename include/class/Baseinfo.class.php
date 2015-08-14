@@ -83,7 +83,11 @@ class Baseinfo extends Base {
 
 	public static function getProducts() {
 		$db=self::__instance();
-		$sql="select id,product_name as name from products";
+		$sql="select a.id,a.product_name as name,a.product_id,a.gg,
+			a.min_stock,b.qty,c.bin,d.name as loc_name,d.id as loc_id   
+			from products a left join stocks b on a.id=b.product_id 
+			left join location_bin c on c.id=b.bin_id 
+			left join locations d on c.loc_id=d.id";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
