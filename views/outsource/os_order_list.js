@@ -63,10 +63,12 @@ function loadDetail(id){
 		url:dtl_url+id,
 		datatype: "json",
 		height: 350,
-		colNames:['产品', '数量'],
+		colNames:['代码','名称','规格', '数量'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+			{name:'product_id',index:'product_id', width:90},
+			{name:'product_name',index:'product_name', width:90},
+			{name:'gg',index:'gg', width:90},
+			{name:'qty',index:'qty', width:40}
 		], 
 
 		viewrecords : true,

@@ -97,6 +97,8 @@ function loadCust(selector){
 
 //通用select内容loader
 function loadSelect(selector,table){	
+	//empty value:提醒用户选择
+	selector.append("<option value=0></option>");
 	var para={'method':'getSelect','table':table};
 	var data=exeJson(para);
 	
@@ -418,6 +420,29 @@ function getLocs(){
 	return str;	
 }
 
+//检查库位是否存在，存在返回id否则返回0
+function getBinId(loc_id,bin){
+	var para={'method':'getBinId','loc_id':loc_id,'bin':bin};
+	var data=exeJson(para);
+    if(data.length>0){
+    	return data[0].id
+    }
+    else{
+    	return 0;
+    }
+}
+//获取库存数量
+function getProductBinQty(bin_id,product_id){
+	var para={'method':'getProductBinQty','bin_id':bin_id,'product_id':product_id};
+	var data=exeJson(para);
+    if(data.length>0){
+    	return data[0].qty
+    }
+    else{
+    	return 0;
+    }
+}
+
 //通用 产品选择
 //html:modal_products
 //data:all products data
@@ -447,10 +472,11 @@ function loadModalProducts(data,dst_grid,input){
 	jQuery("#modal_grid").jqGrid({
 		data:data,
 		datatype: "local",
-		colNames:['产品代码', '产品名称'],
+		colNames:['产品代码', '产品名称','规格'],
 		colModel:[					
-			{name:'id',index:'id'},
-			{name:'name',index:'name'},			
+			{name:'product_id',index:'product_id'},
+			{name:'name',index:'name'},
+			{name:'gg',index:'gg'},				
 		], 
 		height:jqgrid_height,
 		rowNum:jqgrid_row_num,
@@ -526,9 +552,11 @@ function loadModalOsProducts(data,dst_grid,input){
 	jQuery("#modal_grid").jqGrid({
 		data:data,
 		datatype: "local",
-		colNames:['产品名称','数量'],
+		colNames:['代码','名称','规格','数量'],
 		colModel:[					
-			{name:'name',index:'name'},			
+			{name:'product_id',index:'product_id'},			
+			{name:'name',index:'name'},
+			{name:'gg',index:'gg'},
 			{name:'qty',index:'qty'},	
 		], 
 		height:jqgrid_height,

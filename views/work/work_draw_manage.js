@@ -21,9 +21,9 @@ jQuery(function($) {
 					keys:true,delbutton:false,
 				}
 			},	
-			{name:'workcenter_name',index:'workcenter_name', width:90,editable: false},			
-			{name:'status',index:'status',width:90, editable:true,edittype:'select',editoptions:{value:get_status()}},
-			{name:'user_name',index:'user_name', width:90, editable: false} 
+			{name:'workcenter_name',index:'workcenter_name', width:90},			
+			{name:'status',index:'status',width:60, editable:true,edittype:'select',editoptions:{value:get_status()}},
+			{name:'user_name',index:'user_name', width:60, editable: false} 
 		], 
 
 		viewrecords : true,
@@ -66,9 +66,11 @@ function loadDetail(id){
 		url:dtl_url+id,
 		datatype: "json",
 		height: 350,
-		colNames:['产品', '数量'],
+		colNames:['代码','产品','规格', '数量'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			{name:'product_id',index:'product_id', width:50},
+			{name:'product_name',index:'product_name', width:90},
+			{name:'gg',index:'gg', width:90},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
 		], 
 

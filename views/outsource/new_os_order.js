@@ -39,11 +39,24 @@ jQuery(function($) {
 });
 
 function saveOsOrder(){
+	//选择外协单位
+	var os_unit_id=$('#os_unit').val();
+	if (os_unit_id==0){
+		var result={'status':false,'msg':'请选择外协单位！'};
+		showMsg(result);
+		return false;
+	}
+
 	var para={'method':'insertOsOrder'};
 	var mst_data={'os_unit':$('#os_unit').val(),'deliveryday':$("#deliveryday").val()};
 	para['mst_data']=mst_data;
 	var dtl_data={};
 	var trs=$("#grid_dtl tr");
+	if(trs.length<=1){
+		var result={'status':false,'msg':'请选择外协产品！'};
+		showMsg(result);
+		return false;
+	}
 	for (var i=1;i<trs.length;i++){
 		dtl_data[i-1]={};		
 		dtl_data[i-1]['product_id']=trs[i].id;
@@ -64,7 +77,7 @@ function loadDetail(){
 		data: products,
 		datatype: "local",
 		height: 200,
-		colNames:[' ','产品', '数量','id'],
+		colNames:[' ','代码','名称','规格', '数量','id'],
 		colModel:[
 			{name:'myac',index:'', fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -74,7 +87,9 @@ function loadDetail(){
 					delOptions:{onclickSubmit:delProduct},	
 				}
 			},						
-			{name:'name',index:'name', width:90, sortable:true,editable: false},
+			{name:'product_id',index:'product_id', width:60},
+			{name:'name',index:'name', width:110},
+			{name:'gg',index:'gg', width:110},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: true,
 				editrules:{required:true,number:true}
 			},

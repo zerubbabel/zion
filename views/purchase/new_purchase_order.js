@@ -35,6 +35,14 @@ $(document).ready(function(){
 	
 })
 function savePurchaseOrder(){
+	//选择供应商
+	var supplier_id=$('#supplier').val();
+	if (supplier_id==0){
+		var result={'status':false,'msg':'请选择供应商'};
+		showMsg(result);
+		return false;
+	}
+
 	var para={'method':'insertPurchaseOrder'};
 	var mst_data={'sale_order_mst_id':select_obj['sale_order_id'],
 		'supplier_id':$('#supplier').val(),
@@ -42,6 +50,12 @@ function savePurchaseOrder(){
 	para['mst_data']=mst_data;
 	var dtl_data={};
 	var trs=$("#subpart_dtl tr");
+	if(trs.length<=1){
+		var result={'status':false,'msg':'请选择待采购的产品！'};
+		showMsg(result);
+		return false;
+	}
+	
 	for (var i=1;i<trs.length;i++){
 		dtl_data[i-1]={};		
 		dtl_data[i-1]['product_id']=trs[i].id;

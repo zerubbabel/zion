@@ -48,6 +48,13 @@ jQuery(function($) {
 });
 
 function newSaleOrderMst(){
+	//选择仓库
+	var importance=$('#importance').val();
+	if (importance==0){
+		var result={'status':false,'msg':'请选择订单重要性！'};
+		showMsg(result);
+		return false;
+	}
 	var cust_id=$('#cust').val();
 	var importance=$('#importance').val();
 	var deliveryday=$('#deliveryday').val();
@@ -88,7 +95,7 @@ function loadDetail(){
 		data: products,
 		datatype: "local",
 		height: 200,
-		colNames:[' ','产品', '数量','id'],
+		colNames:[' ','代码','名称','规格', '数量','id'],
 		colModel:[
 			{name:'myac',index:'', fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -98,8 +105,10 @@ function loadDetail(){
 					delOptions:{onclickSubmit:delProduct},	
 				}
 			},						
-			{name:'name',index:'name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: true,
+			{name:'product_id',index:'product_id', width:40,},
+			{name:'name',index:'name', width:90,},
+			{name:'gg',index:'gg', width:90,},
+			{name:'qty',index:'qty', width:40, sortable:true,editable: true,
 				editrules:{required:true,number:true}
 			},
 			{name:'id',index:'id', width:90,editable: false,hidden:true},

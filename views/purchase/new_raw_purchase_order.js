@@ -43,6 +43,13 @@ jQuery(function($) {
 
 
 function savePurchaseOrder(){
+	//选择供应商
+	var supplier_id=$('#supplier').val();
+	if (supplier_id==0){
+		var result={'status':false,'msg':'请选择供应商'};
+		showMsg(result);
+		return false;
+	}
 	var para={'method':'insertPurchaseOrder'};
 	var mst_data={'supplier_id':$('#supplier').val(),'status':3};
 	para['mst_data']=mst_data;
@@ -102,7 +109,7 @@ function loadDetail(){
 		data: products,
 		datatype: "local",
 		height: 300,
-		colNames:[' ','产品', '数量','id'],
+		colNames:[' ','代码','名称','规格', '数量','id'],
 		colModel:[
 			{name:'myac',index:'', fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -112,7 +119,9 @@ function loadDetail(){
 					delOptions:{onclickSubmit:delProduct},	
 				}
 			},						
-			{name:'name',index:'name', width:90, sortable:true,editable: false},
+			{name:'product_id',index:'product_id', width:60},
+			{name:'name',index:'name', width:110},
+			{name:'gg',index:'gg', width:110},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: true,
 				editrules:{required:true,number:true}
 			},

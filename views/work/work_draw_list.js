@@ -6,7 +6,7 @@ jQuery(function($) {
 	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
-	var para={'method':'getWorkDrawMst'};
+	var para={'method':'getPassedWorkDrawMst'};
 	var grid_data=exeJson(para);
 	
 	jQuery(grid_selector).jqGrid({
@@ -16,9 +16,9 @@ jQuery(function($) {
 		colNames:['','领料车间','状态','操作人员'],
 		colModel:[
 			{name:'act',index:'', width:50, fixed:true, sortable:false, resize:false,},	
-			{name:'workcenter_name',index:'workcenter_name', width:90,editable: false},			
-			{name:'status',index:'status',width:90, editable:false},
-			{name:'user_name',index:'user_name', width:90, editable: false} 
+			{name:'workcenter_name',index:'workcenter_name', width:60,editable: false},			
+			{name:'status',index:'status',width:40, editable:false},
+			{name:'user_name',index:'user_name', width:40, editable: false} 
 		], 
 
 		viewrecords : true,
@@ -70,12 +70,13 @@ function loadDetail(id){
 		url:dtl_url+id,
 		datatype: "json",
 		height: 350,
-		colNames:['产品', '数量'],
+		colNames:['代码','产品','规格', '数量'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+			{name:'product_id',index:'product_id', width:40},
+			{name:'product_name',index:'product_name', width:90},
+			{name:'gg',index:'gg', width:90},
+			{name:'qty',index:'qty', width:30}
 		], 
-
 		viewrecords : true,
 		rowNum:10,
 		rowList:[10,20,30],

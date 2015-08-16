@@ -13,13 +13,14 @@ jQuery(function($) {
 		data: grid_data,
 		datatype: "local",
 		height: 400,
-		colNames:['销售订单号','出库仓库','出库日期','客户', '操作人员'],
+		colNames:['出库仓库','出库日期','客户', '操作人员'],
 		colModel:[
-			{name:'sale_order_mst_id',index:'sale_order_mst_id',width:90, editable:false},	
+			//{name:'sale_order_mst_id',index:'sale_order_mst_id',width:90, editable:false},	
+			
+			{name:'loc_name',index:'loc_name',width:70, editable:false},
 			{name:'createday',index:'createday',width:90, editable:false},
-			{name:'loc_name',index:'loc_name',width:90, editable:false},
-			{name:'cust_name',index:'cust_name', width:90,editable: false},		
-			{name:'user_name',index:'user_name', width:90, editable: false} 
+			{name:'cust_name',index:'cust_name', width:60,editable: false},		
+			{name:'user_name',index:'user_name', width:60, editable: false} 
 		], 
 		rowNum:10,
 		rowList:[10,20,30],
@@ -60,9 +61,11 @@ function loadDetail(para){
 		datatype: "json",
 		postData:{'para':para},
 		height: 250,
-		colNames:['产品', '数量'],
+		colNames:['代码', '产品', '规格', '数量'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			{name:'product_id',index:'product_id', width:90},
+			{name:'product_name',index:'product_name', width:90},
+			{name:'gg',index:'gg', width:90},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
 		], 
 

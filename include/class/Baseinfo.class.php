@@ -136,19 +136,23 @@ class Baseinfo extends Base {
 	//$flag为入库出库标记1为入库,-1为出库，帮助更新库存数量
 	public static function insertDtl($dtl_data,$mst_table,$mst_id,$loc_id=null,$flag=1) {
 		//明细表有一条成功status就为true全失败为false
+		
 		$ans=array();
 		$status=false;
 		$db=self::__instance();
 		for($i=0;$i<count($dtl_data);$i++){
 			$data=array('product_id'=>$dtl_data[$i]['product_id'],
 				'qty'=>$dtl_data[$i]['qty'],
+				'bin_id'=>$dtl_data[$i]['bin_id'],
 				'mst_id'=>$mst_id,
 				'mst_table'=>$mst_table);
+			
 			$id=$db->insert('dtl',$data);
+			//return $id;
 			if($id){				
 				$status=true;
 				if ($loc_id!=null){//$loc_id==null表示无需更新stock
-					Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['qty'])*$flag,$loc_id);
+					Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['qty'])*$flag,$loc_id,$dtl_data[$i]['bin_id']);
 				}
 			}else{
 				$ans['msg']=$db->error();

@@ -27,6 +27,15 @@ $(document).ready(function(){
 	
 })
 function saveWorkDraw(){
+	//选择仓库
+
+	var wc=$('#workcenter').val();
+	if (wc==0){
+		var result={'status':false,'msg':'请选择领料车间'};
+		showMsg(result);
+		return false;
+	}
+
 	var para={'method':'insertWorkDraw'};
 	var mst_data={'sale_order_mst_id':select_obj['sale_order_id'],
 		'workcenter_id':$('#workcenter').val()};
@@ -67,10 +76,12 @@ function loadSubpart(){
 		data: data,
 		datatype: "local",
 		height: 300,
-		colNames:['','产品', '数量'],
+		colNames:['','代码','产品','规格', '数量'],
 		colModel:[
 			{name:'act',index:'',width:30},
-			{name:'name',index:'name', width:90, sortable:true,editable: false},			
+			{name:'product_id',index:'product_id', width:90},			
+			{name:'name',index:'name', width:90},
+			{name:'gg',index:'gg', width:90},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: true},
 		], 
 		caption: "领料产品明细  "+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning' data-rel='tooltip' title='添加产品'"+

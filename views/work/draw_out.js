@@ -27,19 +27,49 @@ $(document).ready(function(){
 	
 })
 function saveDrawOut(){
-	var para={'method':'insertDrawOutOrder'};
-	var mst_data={'work_draw_mst_id':select_obj['work_draw_id'],'loc_id':$('#loc').val()};
-	para['mst_data']=mst_data;
+	//选择仓库
+	var loc_id=$('#loc').val();
+	if (loc_id==0){
+		var result={'status':false,'msg':'请选择领料仓库'};
+		showMsg(result);
+		return false;
+	}
 	var dtl_data={};
 	var trs=$("#tbl_dtl tr");
 	for (var i=1;i<trs.length;i++){
+		var bin=$('#'+trs[i].id+'_bin').val();
+
+		var bin_id=getBinId(loc_id,bin);
+		if (bin_id==0){
+			var result={'status':false,'msg':'请检查！库位'+bin+'不存在！'};
+			showMsg(result);
+			return false;
+		}
+		var product_id=trs[i].id;
+		var bin_qty=getProductBinQty(bin_id,product_id);	
 		var qty=parseInt($('#'+trs[i].id+'_out_qty').val());
+		//验证库位数量是否够大
+		if (qty>bin_qty){
+			var td=$(trs[i]).find('td');
+			var error_product_id=td[0].title;
+			var error_product_name=td[1].title;
+			var result={'status':false,
+				'msg':'产品'+error_product_id+':'+error_product_name+'库位库存数量不足，无法出库！'};
+			showMsg(result);
+			return false;
+		}
 		if(qty>0){
 			dtl_data[i-1]={};		
-			dtl_data[i-1]['product_id']=trs[i].id;			
+			dtl_data[i-1]['product_id']=product_id;			
 			dtl_data[i-1]['qty']=qty;	
+			dtl_data[i-1]['bin_id']=bin_id;
 		}	
 	}
+
+	var para={'method':'insertDrawOutOrder'};
+	var mst_data={'work_draw_mst_id':select_obj['work_draw_id'],'loc_id':$('#loc').val()};
+	para['mst_data']=mst_data;
+	
 	para['dtl_data']=dtl_data;
 	var result=exeJson(para);	
 	showMsg(result);
@@ -90,12 +120,15 @@ function loadDtl(id){
 		data: dtl_data,
 		datatype: "local",
 		height: 300,
-		colNames:['产品', '订单数量','剩余数量','出库数量'],
+		colNames:['代码','产品','规格', '订单数量','剩余数量','出库数量','库位'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false},
-			{name:'left_qty',index:'left_qty', width:90, sortable:true,editable: false},
-			{name:'out_qty',index:'out_qty', width:90, sortable:true,editable: true},
+			{name:'product_id',index:'product_id', width:50},
+			{name:'product_name',index:'product_name', width:90},
+			{name:'gg',index:'gg', width:90},
+			{name:'qty',index:'qty', width:40, sortable:true,editable: false},
+			{name:'left_qty',index:'left_qty', width:40, sortable:true,editable: false},
+			{name:'out_qty',index:'out_qty', width:40, sortable:true,editable: true},
+			{name:'bin',index:'bin', width:40, editable: true},
 		], 
 		caption: "产品明细",
 		autowidth: true,

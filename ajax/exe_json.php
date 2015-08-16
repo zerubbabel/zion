@@ -31,6 +31,10 @@
 			$data = Work::getWorkDrawMst($para['id']);
 			echo json_encode($data);
 			break;
+		case 'getPassedWorkDrawMst':
+			$data = Work::getWorkDrawMst(null,3);
+			echo json_encode($data);
+			break;
 		case 'getWorkDrawDtlById':
 			$data = Work::getWorkDrawDtlById($para['id']);
 			echo json_encode($data);
@@ -129,6 +133,15 @@
 			break;
 		case 'getBins':
 			$data = Baseinfo::getBins($para['loc']);
+			echo json_encode($data);
+			break;
+		case 'getBinId':
+			$data = Stock::getBinId($para['loc_id'],$para['bin']);
+			echo json_encode($data);
+			break;
+			
+		case 'getProductBinQty':
+			$data = Stock::getProductBinQty($para['bin_id'],$para['product_id']);
 			echo json_encode($data);
 			break;
 		case 'getLocs':

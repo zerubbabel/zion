@@ -16,10 +16,10 @@ jQuery(function($) {
 		colNames:['','加工单位', '入库日期','入库仓库','操作人员'],
 		colModel:[
 			{name:'act',width:50},
-			{name:'os_unit_name',index:'o_unit_name', width:90,editable: false},	
+			{name:'os_unit_name',index:'o_unit_name', width:60,editable: false},	
 			{name:'createday',index:'crreateday',width:90, editable:true},			
 			{name:'loc_name',index:'loc_name',width:90, editable:false},
-			{name:'user_name',index:'user_name', width:90, editable: false} 
+			{name:'user_name',index:'user_name', width:50, editable: false} 
 		], 
 
 		viewrecords : true,
@@ -73,9 +73,11 @@ function loadDetail(id){
 		url:dtl_url+id,
 		datatype: "json",
 		height: 350,
-		colNames:['产品', '数量'],
+		colNames:['代码','名称','规格', '数量'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
+			{name:'product_id',index:'product_id', width:60},
+			{name:'product_name',index:'product_name', width:110},
+			{name:'gg',index:'gg', width:110},
 			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
 		], 
 

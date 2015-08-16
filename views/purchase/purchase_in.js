@@ -26,17 +26,34 @@ $(document).ready(function(){
 	
 })
 function savePurchaseIn(){
-	var para={'method':'insertPurchaseInOrder'};
-	var mst_data={'purchase_order_mst_id':select_obj['purchase_order_id'],'loc_id':$('#loc').val()};
-	para['mst_data']=mst_data;
-	var dtl_data={};
-	var trs=$("#tbl_dtl tr");
-	for (var i=1;i<trs.length;i++){
+	//选择仓库
+	var loc_id=$('#loc').val();
+	if (loc_id==0){
+		var result={'status':false,'msg':'请选择入库仓库'};
+		showMsg(result);
+		return false;
+	}
+	var trs=$("#tbl_dtl tr");	
+	//库位检查
+	var dtl_data={};	
+	for (var i=1;i<trs.length;i++){	
 		dtl_data[i-1]={};		
+		var bin=$('#'+trs[i].id+'_bin').val();
+		var bin_id=getBinId(loc_id,bin);
+		if (bin_id==0){
+			var result={'status':false,'msg':'请检查！库位'+bin+'不存在！'};
+			showMsg(result);
+			return false;
+		}
+		dtl_data[i-1]['bin_id']=bin_id;
 		dtl_data[i-1]['product_id']=trs[i].id;
 		var qty=$('#'+trs[i].id+'_in_qty').val();
 		dtl_data[i-1]['qty']=qty;		
 	}
+	var para={'method':'insertPurchaseInOrder'};
+	var mst_data={'purchase_order_mst_id':select_obj['purchase_order_id'],'loc_id':loc_id};
+	para['mst_data']=mst_data;
+	
 	para['dtl_data']=dtl_data;
 	var result=exeJson(para);
 	showMsg(result);
@@ -88,9 +105,11 @@ function loadDtl(id){
 		data: dtl_data,
 		datatype: "local",
 		height: 300,
-		colNames:['产品', '订单数量','剩余数量','入库数量','入库库位'],
+		colNames:['代码', '产品', '规格', '订单数量','剩余数量','入库数量','入库库位'],
 		colModel:[
+			{name:'product_id',index:'product_id', width:40},
 			{name:'product_name',index:'product_name', width:90},
+			{name:'gg',index:'gg', width:90},
 			{name:'qty',index:'qty', width:30},
 			{name:'left_qty',index:'left_qty', width:30},
 			{name:'in_qty',index:'in_qty', width:70, editable: true},

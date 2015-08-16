@@ -22,11 +22,11 @@ jQuery(function($) {
 		height: 400,
 		colNames:['客户', '交货日期','重要性','状态','操作人员'],
 		colModel:[	
-			{name:'cust_name',index:'cust_name', width:90,editable: false},	
+			{name:'cust_name',index:'cust_name', width:50},	
 			{name:'deliveryday',index:'deliveryday',width:90, editable:true},	
-			{name:'importance',index:'importance',width:90, editable:false},		
-			{name:'status',index:'status',width:90, editable:true,edittype:'select',editoptions:{value:get_status()}},
-			{name:'user_name',index:'user_name', width:90, editable: false} 
+			{name:'importance',index:'importance',width:40},		
+			{name:'status',index:'status',width:50, editable:true,edittype:'select',editoptions:{value:get_status()}},
+			{name:'user_name',index:'user_name', width:40} 
 		], 
 
 		viewrecords : true,
@@ -70,10 +70,12 @@ function loadDetail(id){
 		url:'views/sale/sale_order_data.php?q=del&id='+id,
 		datatype: "json",
 		height: 350,
-		colNames:['产品', '数量'],
+		colNames:['代码','产品','规格', '数量'],
 		colModel:[
-			{name:'product_name',index:'product_name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false}
+			{name:'product_id',index:'product_id', width:50},
+			{name:'product_name',index:'product_name', width:90},
+			{name:'gg',index:'gg', width:90},
+			{name:'qty',index:'qty', width:90}
 		], 
 
 		viewrecords : true,

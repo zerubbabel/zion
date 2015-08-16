@@ -23,6 +23,7 @@ $(document).ready(function(){
 	$("#loc").attr('disabled',true); 
 })
 function saveOsIn(){
+
 	var para={'method':'insertOsInOrder'};
 	var mst_data={'loc_id':$('#loc').val(),'os_unit':$("#os_unit").val()};
 	para['mst_data']=mst_data;
@@ -51,12 +52,15 @@ function loadDtl(){
 		data: dtl_data,
 		datatype: "local",
 		height: 300,
-		colNames:['','产品', '加工总数','入库数量'],
+		colNames:['','代码','名称','规格', '加工总数','入库数量','库位'],
 		colModel:[
 			{name:'act',width:40},
-			{name:'name',index:'name', width:90, sortable:true,editable: false},
-			{name:'qty',index:'qty', width:90, sortable:true,editable: false},
-			{name:'in_qty',index:'in_qty', width:90, sortable:true,editable: true},
+			{name:'product_id',index:'product_id', width:60},
+			{name:'name',index:'name', width:110},
+			{name:'gg',index:'gg', width:110},
+			{name:'qty',index:'qty', width:50, sortable:true,editable: false},
+			{name:'in_qty',index:'in_qty', width:50, sortable:true,editable: true},
+			{name:'bin',index:'bin', width:60,editable:true},
 		], 
 		caption: caption+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning'"+
 			" data-rel='tooltip' title='选择入库物品' data-placement='right' onclick=\"addProduct();\" ></i>",

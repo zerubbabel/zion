@@ -100,7 +100,8 @@ class Work extends Base {
 
 	public static function getWorkDrawDtlById($id) {
 		$db=self::__instance();		
-		$sql="select b.id,b.product_name,qty from dtl a 
+		$sql="select b.id,b.product_name,b.product_id,b.gg,
+			qty from dtl a 
 			left join products b on a.product_id=b.id 
 			where a.mst_id=".$id. " and a.mst_table='work_draw' 
 			order by b.id";		
@@ -125,7 +126,7 @@ class Work extends Base {
 		return array ();
 	}
 
-	public static function getWorkDrawMst($id=null) {
+	public static function getWorkDrawMst($id=null,$status=null) {
 		$db=self::__instance();
 		$sql="select a.id,a.workcenter_id,a.createday,a.op_id,
 			b.name as workcenter_name,c.user_name,d.name as status 
@@ -135,8 +136,17 @@ class Work extends Base {
 			left join order_status d on a.status=d.id ";
 
 		if($id!=null&&$id!=''){
-			$sql.=' where a.id='.$id;
+			$sql.=" where a.id=".$id;
 		}
+		if ($status!=null){
+			if($id==null){
+				$sql.=" where a.status=$status";
+			}
+			else{
+				$sql.=" and a.status=$status";
+			}
+		}
+		$sql.=" order by a.createday desc ";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -151,7 +161,8 @@ class Work extends Base {
 			from work_in_mst a 
 			left join workcenters b on a.workcenter_id=b.id 
 			left join users c on a.op_id=c.user_id 
-			left join locations d on a.loc_id=d.id ";
+			left join locations d on a.loc_id=d.id  
+			";
 
 		if($id!=null&&$id!=''){
 			$sql.=' where a.id='.$id;
@@ -159,7 +170,7 @@ class Work extends Base {
 		if($date_start!=""&&$date_end!=""){
 			$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
 		}
-		
+		$sql.=" order by a.createday desc ";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -226,6 +237,7 @@ class Work extends Base {
 			if($result['status']){
 				$mst_id=$result['id'];
 				$result=Baseinfo::insertDtl($dtl_data,'draw_out',$mst_id,$mst_data['loc_id'],-1);//插入明细表并更新库存
+				//return $result;
 				if($result['status']){//明细表有一条成功status就为true
 					Work::updateWorkDrawStatus($mst_id);//判断并更新销售单状态为完成
 					$ans['status']=true;

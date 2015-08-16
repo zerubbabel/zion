@@ -97,7 +97,8 @@ class Sale extends Base {
 	public static function getSaleOutDtlById($id) {
 		$db=self::__instance();
 		
-		$sql="select b.id,qty,b.product_name from sale_out_dtl a
+		$sql="select b.id,qty,b.product_id,b.gg,
+			b.product_name from sale_out_dtl a
 			LEFT JOIN products b on a.product_id=b.id
 			where mst_id=$id
 			ORDER BY b.id";
@@ -126,9 +127,10 @@ class Sale extends Base {
 	public static function getSaleOrderDtlById($id) {
 		$db=self::__instance();
 		
-		$sql="select product_id as id,product_name,qty from sale_order_dtl 
-			left join products on sale_order_dtl.product_id=products.id 
-			where sale_order_dtl.mst_id=".$id." order by product_id";
+		$sql="select b.id,b.product_id,b.product_name,b.gg,a.qty  
+			from sale_order_dtl a 
+			left join products b on a.product_id=b.id 
+			where a.mst_id=$id order by b.id";
 		
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
@@ -180,11 +182,11 @@ class Sale extends Base {
 		for($i=0;$i<count($dtl_data);$i++){
 			$data=array('product_id'=>$dtl_data[$i]['product_id'],
 				'qty'=>$dtl_data[$i]['qty'],
-				'mst_id'=>$mst_id);
+				'mst_id'=>$mst_id,'bin_id'=>$dtl_data[$i]['bin_id']);
 			$id=$db->insert('sale_out_dtl',$data);
 			if($id){
 				$status=true;
-				Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['qty'])*(-1),$loc_id);
+				Stock::updateStock($dtl_data[$i]['product_id'],((int)$dtl_data[$i]['qty'])*(-1),$loc_id,$dtl_data[$i]['bin_id']);
 			}else{
 				$ans['msg']=$db->error();
 			}

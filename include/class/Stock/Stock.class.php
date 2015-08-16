@@ -1,6 +1,19 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Stock extends Base {
+	public static function getBinId($loc_id,$bin) {
+		$db=self::__instance();
+		$sql="select id from location_bin where loc_id=$loc_id and bin='$bin'";
+		$list=$db->query($sql)->fetchAll();
+		return $list;
+	}
+
+	public static function getProductBinQty($bin_id,$product_id) {
+		$db=self::__instance();
+		$sql="select qty from stocks where bin_id=$bin_id and product_id=$product_id";
+		$list=$db->query($sql)->fetchAll();
+		return $list;
+	}
 
 	public static function getStockById($loc_id,$product_id) {
 		$db=self::__instance();
@@ -11,6 +24,7 @@ class Stock extends Base {
 		}
 		return array(0);//无库存返回0
 	}
+
 	
 	public static function getStocks($loc_id,$product_id="",$product_name="",$bin="") {
 		$db=self::__instance();
@@ -73,9 +87,9 @@ class Stock extends Base {
 		}		
 	}*/
 
-	public static function updateStock($product_id,$qty,$loc_id) {
+	public static function updateStock($product_id,$qty,$loc_id,$bin_id=null) {
 		$db=self::__instance();
-		$where=array('AND'=>array('product_id'=>$product_id,'loc_id'=>$loc_id));
+		$where=array('AND'=>array('product_id'=>$product_id,'loc_id'=>$loc_id,'bin_id'=>$bin_id));
 		$result=$db->has('stocks',$where);
 		if ($result){
 			$data=array('qty[+]'=>$qty);
@@ -87,7 +101,7 @@ class Stock extends Base {
 			}
 		}	
 		else{
-			$data=array('qty'=>$qty,'product_id'=>$product_id,'loc_id'=>$loc_id);		
+			$data=array('qty'=>$qty,'product_id'=>$product_id,'loc_id'=>$loc_id,'bin_id'=>$bin_id);		
 			$id=$db->insert('stocks',$data);
 			if($id){
 				return array('status'=>true);
