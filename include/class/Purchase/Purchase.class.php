@@ -178,6 +178,7 @@ class Purchase extends Base {
 		$op_id=$_SESSION['user_info']['user_id'];
 		$data=array('purchase_order_mst_id'=>$mst_data['purchase_order_mst_id'],
 			'loc_id'=>$mst_data['loc_id'],
+			'supplier_id'=>$mst_data['supplier_id'],
 			'createday'=>$createday,
 			'op_id'=>$op_id);
 		$ans=array();

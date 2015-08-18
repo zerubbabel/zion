@@ -1,31 +1,32 @@
-var go_url="#/";
-var select_url="index.php#/views/work/work_draw_list";
+var go_url="#/";//self
+var caption='入库产品明细  ';
+var dtl_data;
 $(document).ready(function(){
+	initialize();
+
+	//验证,submit
+	 $("#frm").validate({	 	
+        submitHandler:function(form){   
+        	var trs=$("#tbl_dtl tr");
+			if (trs.length>1){				
+				saveDrawOut();
+			}
+			else{
+				var result={'status':false,'msg':'请选择待入库的产品！'};
+				showMsg(result);
+			}
+			return false;         	
+        }    
+    });
+
+})
+
+function initialize(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
 	loadSelect($('#workcenter'),'workcenters');
-	//验证,submit
-	 $("#frm").validate({	 	
-        submitHandler:function(form){    
-        	saveDrawOut();
-        }    
-    });
-	if(select_obj['work_draw_id']){
-		loadMst(select_obj['work_draw_id']);		
-		loadDtl(select_obj['work_draw_id']);
-		toTabOut();
-	}else{
-		toTabSelect();	
-	}
-	
-	$("#btn_select").click(function(){
-		window.location.href=select_url;
-	});
-	$("#btn_reselect").click(function(){
-		window.location.href=select_url;
-	});
-	
-})
+	loadDtl();
+}
 function saveDrawOut(){
 	//选择仓库
 	var loc_id=$('#loc').val();
@@ -34,7 +35,14 @@ function saveDrawOut(){
 		showMsg(result);
 		return false;
 	}
-	var dtl_data={};
+	//选择仓库
+	var wc=$('#workcenter').val();
+	if (wc==0){
+		var result={'status':false,'msg':'请选择领料车间'};
+		showMsg(result);
+		return false;
+	}
+	dtl_data={};
 	var trs=$("#tbl_dtl tr");
 	for (var i=1;i<trs.length;i++){
 		var bin=$('#'+trs[i].id+'_bin').val();
@@ -47,7 +55,7 @@ function saveDrawOut(){
 		}
 		var product_id=trs[i].id;
 		var bin_qty=getProductBinQty(bin_id,product_id);	
-		var qty=parseInt($('#'+trs[i].id+'_out_qty').val());
+		var qty=parseInt($('#'+trs[i].id+'_qty').val());
 		//验证库位数量是否够大
 		if (qty>bin_qty){
 			var td=$(trs[i]).find('td');
@@ -67,84 +75,51 @@ function saveDrawOut(){
 	}
 
 	var para={'method':'insertDrawOutOrder'};
-	var mst_data={'work_draw_mst_id':select_obj['work_draw_id'],'loc_id':$('#loc').val()};
+	var mst_data={'loc_id':$('#loc').val(),
+		'workcenter_id':$('#workcenter').val(),
+		'work_draw_mst_id':null};
 	para['mst_data']=mst_data;
 	
 	para['dtl_data']=dtl_data;
 	var result=exeJson(para);	
 	showMsg(result);
 	if(result['status']){
-		select_obj['work_draw_id']=null;
 		window.location.href=go_url;
 	}
 }
 
-function toTabSelect(){
-	$("#tab_select").show();
-	$("#tab_out").hide();
-}
-
-function toTabOut(){
-	$("#tab_select").hide();
-	$("#tab_out").show();
-}
-
-function loadMst(id){
-	var para={'method':'getWorkDrawMst','id':id};
-	mst_data=exeJson(para);
-	$("#workcenter").text("领料车间:"+mst_data[0].workcenter_name);
-}
-
-function loadDtl(id){
-	var para={'method':'getWorkDrawDtlById','id':id};
-	dtl_data=exeJson(para);	
-	
-	var para={'method':'getDrawOutAllByWorkDrawId','id':id};
-	var out_data=exeJson(para);
-	
-	for (var i =0; i<dtl_data.length; i++) {
-		var product_id=dtl_data[i]['id'];
-		var qty=parseInt(dtl_data[i]['qty']);
-		dtl_data[i]['left_qty']=qty;
-		for(var j=0;j<out_data.length;j++){
-			var id=out_data[j]['id'];
-			var out_qty=parseInt(out_data[j]['qty']);
-			if (product_id==id){
-				dtl_data[i]['left_qty']-=out_qty;
-				break;
-			}
-		}
-	}
-
+function loadDtl(){
 	$("#tbl_dtl").jqGrid({
-		data: dtl_data,
 		datatype: "local",
 		height: 300,
-		colNames:['代码','产品','规格', '订单数量','剩余数量','出库数量','库位'],
+		colNames:['','代码','产品','规格', '出库数量','库位'],
 		colModel:[
+			{name:'act',width:40},
 			{name:'product_id',index:'product_id', width:50},
-			{name:'product_name',index:'product_name', width:90},
+			{name:'name',index:'name', width:90},
 			{name:'gg',index:'gg', width:90},
-			{name:'qty',index:'qty', width:40, sortable:true,editable: false},
-			{name:'left_qty',index:'left_qty', width:40, sortable:true,editable: false},
-			{name:'out_qty',index:'out_qty', width:40, sortable:true,editable: true},
+			{name:'qty',index:'qty', width:40, sortable:true,editable: true},
 			{name:'bin',index:'bin', width:40, editable: true},
 		], 
-		caption: "产品明细",
+		caption: caption+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning'"+
+			" data-rel='tooltip' title='选择入库物品' data-placement='right' onclick=\"addProduct();\" ></i>",
 		autowidth: true,
-	});	
-	//编辑模式
-	var validate_rule={};
-	$.each(dtl_data,function(){
-		$('#tbl_dtl').jqGrid('editRow',this.id);
-		var id=this.id;
-		var input_id=id+"_out_qty";
-		var ele=$("#"+input_id);
-		var width=ele.width();
-		var td_width=ele.parent().width();
-		ele.width(Math.round(td_width/2));					
-		var v_class={required:true,digits:true,range:[0,parseInt(this.left_qty)]};
-		addValidate(input_id,v_class);	
+		gridComplete:function(){
+			$('[data-rel=tooltip]').tooltip();
+			var ids = jQuery('#tbl_dtl').jqGrid('getDataIDs');
+			for(var i=0;i < ids.length;i++){
+				var cl = ids[i];
+				del = "<i class='icon-trash red pointer actionIcon ' onclick=\"delRow('#tbl_dtl',"+cl+");\" ></i>"; 				
+				jQuery('#tbl_dtl').jqGrid('setRowData',ids[i],{act:del});
+			}
+		},
 	});	
 }
 
+function addProduct(){
+	var para={'method':'getProducts'};
+	products_data=exeJson(para);
+	var dst_grid='#tbl_dtl';
+	var input='_qty';
+	openModalProducts(products_data,dst_grid,input)
+}

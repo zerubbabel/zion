@@ -214,6 +214,7 @@ class Work extends Base {
 		$op_id=$_SESSION['user_info']['user_id'];
 		$data=array('work_draw_mst_id'=>$mst_data['work_draw_mst_id'],
 			'loc_id'=>$mst_data['loc_id'],
+			'workcenter_id'=>$mst_data['lworkcenter_id'],
 			'createday'=>$createday,
 			'op_id'=>$op_id);
 		$ans=array();

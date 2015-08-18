@@ -80,13 +80,19 @@ class Sale extends Base {
 	public static function getSaleOutList() {
 		$db=self::__instance();
 		
-		$sql="select a.id,a.createday,c.user_name,d.cust_name,
+		/*$sql="select a.id,a.createday,c.user_name,d.cust_name,
 			e.name as loc_name,a.sale_order_mst_id from sale_out_mst a
 			LEFT JOIN sale_order_mst b on a.sale_order_mst_id=b.id
 			left JOIN users c on a.op_id=c.user_id
 			LEFT JOIN customers d on d.id=b.cust_id
 			LEFT JOIN locations e on e.id=a.loc_id 
-			order by a.createday desc";
+			order by a.createday desc";*/
+		$sql="select a.id,a.createday,c.user_name,d.cust_name,
+			e.name as loc_name  from sale_out_mst a
+			left JOIN users c on a.op_id=c.user_id
+			LEFT JOIN customers d on a.cust_id=d.id
+			LEFT JOIN locations e on e.id=a.loc_id 
+			order by a.createday desc";	
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -160,6 +166,7 @@ class Sale extends Base {
 		$op_id=$_SESSION['user_info']['user_id'];
 		$data=array('sale_order_mst_id'=>$mst_data['sale_order_mst_id'],
 			'loc_id'=>$mst_data['loc_id'],
+			'cust_id'=>$mst_data['cust_id'],
 			'createday'=>$createday,
 			'op_id'=>$op_id);
 		$ans=array();

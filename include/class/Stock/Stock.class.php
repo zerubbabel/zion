@@ -56,6 +56,32 @@ class Stock extends Base {
 		return array();
 	}
 
+	public static function viewStocks($loc_id,$product_id="",$product_name="",$bin="") {
+		$db=self::__instance();	
+		$sql="select b.id,b.product_id,b.product_name as name,b.gg,
+			qty,b.min_stock,c.bin 
+			from products b 
+			LEFT JOIN stocks a on a.product_id=b.id 
+			left join location_bin c on c.id=a.bin_id 
+			where (a.loc_id=$loc_id)";	
+		if($product_id!=""){
+			$sql.=" and b.product_id like '%".$product_id."%'";
+		}	
+		if($product_name!=""){
+			$sql.=" and b.product_name like '%".$product_name."%'";
+		}	
+		if($bin!=""){
+			$sql.=" and c.bin like '%".$bin."%'";
+		}
+		$sql.=" order by b.id";
+
+		$list=$db->query($sql)->fetchAll();
+		if($list){
+			return $list;
+		}
+		return array();
+	}
+
 	public static function checkStock($dtl_data,$loc_id) {
 		$ans=array();
 		$error_indexs=array();

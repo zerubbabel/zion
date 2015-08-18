@@ -86,6 +86,7 @@ function loadLoc(selector){
 }
 
 function loadCust(selector){
+	selector.append("<option value=0></option>");
 	var para={'method':'getCust'};
 	var data=getJsonData(para);
 	var jsonobj=eval(data);		        
@@ -548,6 +549,14 @@ function openModalOsProducts(data,dst_grid,input){
 		$(grid_selector).trigger('reloadGrid');
 	})
 }
+function addProduct(dst_grid,input){
+	var para={'method':'getProducts'};
+	products_data=exeJson(para);
+	//var dst_grid='#tbl_dtl';
+	//var input='_qty';
+	openModalProducts(products_data,dst_grid,input)
+}
+
 function loadModalOsProducts(data,dst_grid,input){
 	jQuery("#modal_grid").jqGrid({
 		data:data,
