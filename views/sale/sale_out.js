@@ -110,7 +110,7 @@ function loadSaleDtl(id){
 		data: dtl_data,
 		datatype: "local",
 		height: 300,
-		colNames:['代码','产品','产规格', '数量','出库数量','库位'],
+		colNames:['代码','产品','规格', '数量','出库数量','库位'],
 		colModel:[
 			{name:'product_id',index:'product_id', width:50},
 			{name:'product_name',index:'product_name', width:110},
