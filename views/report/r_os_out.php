@@ -27,4 +27,4 @@
 <!-- page specific plugin scripts -->
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
-<script src="views/report/r_work_in.js"></script>
+<script src="views/report/r_os_out.js"></script>

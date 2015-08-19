@@ -15,9 +15,12 @@ class Stock extends Base {
 		return $list;
 	}
 
-	public static function getStockById($loc_id,$product_id) {
+	public static function getStockById($loc_id,$product_id,$bin_id=null) {
 		$db=self::__instance();
 		$sql="select qty from stocks where loc_id=$loc_id and product_id=$product_id";
+		if ($bin_id!=null){
+			$sql.=" and bin_id=$bin_id";
+		}
 		$list=$db->query($sql)->fetchAll();
 		if($list){
 			return $list[0];
@@ -88,7 +91,7 @@ class Stock extends Base {
 		$status=true;
 		$j=0;
 		for($i=0;$i<count($dtl_data);$i++){
-			$stock_qty=Stock::getStockById($loc_id,$dtl_data[$i]['product_id']);
+			$stock_qty=Stock::getStockById($loc_id,$dtl_data[$i]['product_id'],$dtl_data[$i]['bin_id']);
 			
 			if (((int)$stock_qty['qty'])<((int)$dtl_data[$i]['qty'])){
 				$status=false;

@@ -7,12 +7,12 @@
 ?>
 <form id="frm">
 	<div class="row" style="height:50px">
-		<div class="col-xs-2">
+		<div class="col-xs-5">
 			领料车间:
 			<select id='workcenter'>
 			</select>
 		</div>	
-		<div class="col-xs-10">	
+		<div class="col-xs-7">	
 			领料仓库:
 			<select id='loc'>
 			</select>	

@@ -1,6 +1,35 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Outsource extends Base {
+	public static function getOsOutMst($id=null,$date_start,$date_end) {
+		$db=self::__instance();
+		$sql="select a.id,a.createday,d.name as loc_name,
+			b.name as os_unit_name,c.user_name  
+			from os_out_mst a 
+			left join os_units b on a.os_unit=b.id 
+			left join users c on a.op_id=c.user_id 
+			left join locations d on d.id=a.loc_id ";
+
+		if($id!=null&&$id!=''){
+			$sql.=" where a.id=".$id;
+		}
+		
+		if($date_start!=""&&$date_end!=""){
+			if($id==null){
+				$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+			else{
+				$sql.=' and a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+		}
+		$sql.=" order by a.createday desc ";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
 	public static function getosTypes() {		
 		$result=Baseinfo::getSelect('os_types');
 		if($result){
@@ -280,11 +309,12 @@ class Outsource extends Base {
 			(a.qty-ifnull(b.qty,0)) as qty FROM v_os_out_stocks a  
 			LEFT JOIN v_os_in_stocks b ON a.os_unit = b.os_unit AND a.id = b.id  
 			where a.os_unit='.$os_unit;*/
-		$sql='select a.os_unit,a.qty,b.name as os_unit_name,c.product_name as name,
+		$sql='select a.os_unit,a.qty,b.name as os_unit_name,
+			c.product_name as name,
 			c.product_id,c.gg,
 			c.id from os_stocks a
 			LEFT JOIN os_units b on a.os_unit=b.id
-			LEFT JOIN products c on a.product_id=c.id
+			LEFT JOIN products c on a.product_id=c.id 
 			where a.os_unit='.$os_unit;	
 		$data=$db->query($sql)->fetchAll();
 		return $data;

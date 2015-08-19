@@ -7,12 +7,12 @@
 ?>
 <form id="frm">
 	<div class="row" style="height:50px">
-		<div class="col-xs-2">
+		<div class="col-xs-5">
 			客户:
-			<select id='cust'>
+			<select id='cust' class='width-50 chosen-select' data-placeholder='选择客户...'>
 			</select>
 		</div>	
-		<div class="col-xs-10">	
+		<div class="col-xs-7">	
 			<label for="loc" class="control-label no-padding-right">出库仓库:</label>
 			<select id='loc'>
 			</select>	
@@ -28,4 +28,5 @@
 <?php include '../modal_products.php';?>
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
+<script src="assets/js/chosen.jquery.min.js"></script>
 <script src="views/sale/sale_out.js"></script>

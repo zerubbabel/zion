@@ -1,6 +1,6 @@
-﻿var mst_url='views/report/data/r_data.php?op=WorkInMst';
-var dtl_url='views/report/data/r_data.php?op=Dtl&mst_table=work_in&id=';
-var caption='生产入库单列表  ';
+﻿var mst_url='views/report/data/r_data.php?op=OsInMst';
+var dtl_url='views/report/data/r_data.php?op=Dtl&mst_table=os_in&id=';
+var caption='外协入库单列表  ';
 var dtl_caption='产品明细 ';
 jQuery(function($) {
 	setTitle();	
@@ -14,9 +14,9 @@ jQuery(function($) {
 	jQuery(grid_selector).jqGrid({
 		datatype: "json",
 		height: 400,
-		colNames:['车间','入库仓库','操作人员','入库时间'],
+		colNames:['供应商','仓库','操作人员','时间'],
 		colModel:[
-			{name:'workcenter_name',index:'workcenter_name', width:50},			
+			{name:'supplier_name',index:'supplier_name', width:50},			
 			{name:'loc_name',index:'loc_name',width:50},
 			{name:'user_name',index:'user_name', width:40}, 
 			{name:'createday',index:'createday', width:90},

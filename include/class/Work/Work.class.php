@@ -1,6 +1,64 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Work extends Base {
+	public static function getDrawOutMst($id=null,$date_start,$date_end) {
+		$db=self::__instance();
+		$sql="select a.id,a.workcenter_id,a.createday,a.op_id,d.name as loc_name,
+			b.name as workcenter_name,c.user_name  
+			from draw_out_mst a 
+			left join workcenters b on a.workcenter_id=b.id 
+			left join users c on a.op_id=c.user_id 
+			left join locations d on d.id=a.loc_id ";
+
+		if($id!=null&&$id!=''){
+			$sql.=" where a.id=".$id;
+		}
+		
+		if($date_start!=""&&$date_end!=""){
+			if($id==null){
+				$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+			else{
+				$sql.=' and a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+		}
+		$sql.=" order by a.createday desc ";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function getDrawOutDtlById($id) {
+		$db=self::__instance();		
+		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,
+			qty from dtl a 
+			left join products b on a.product_id=b.id 
+			left join location_bin c on c.id=a.bin_id 			
+			where a.mst_id=".$id. " and a.mst_table='draw_out' 
+			order by b.id";		
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+
+	public static function getWorkInList() {
+		$db=self::__instance();
+		$sql="select a.id,a.createday,b.user_name,c.name as wc_name,
+			d.name as loc_name from work_in_mst a
+			LEFT JOIN users b on a.op_id=b.user_id
+			left join workcenters c on c.id=a.workcenter_id
+			LEFT JOIN locations d on d.id=a.loc_id 
+			order by a.id desc";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
 
 	public static function insertWorkDrawMst($mst_data) {
 		$db=self::__instance();		
@@ -100,9 +158,10 @@ class Work extends Base {
 
 	public static function getWorkDrawDtlById($id) {
 		$db=self::__instance();		
-		$sql="select b.id,b.product_name,b.product_id,b.gg,
+		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,
 			qty from dtl a 
 			left join products b on a.product_id=b.id 
+			left join location_bin c on c.id=a.bin_id 			
 			where a.mst_id=".$id. " and a.mst_table='work_draw' 
 			order by b.id";		
 		$list = $db->query($sql)->fetchAll();
@@ -126,7 +185,7 @@ class Work extends Base {
 		return array ();
 	}
 
-	public static function getWorkDrawMst($id=null,$status=null) {
+	public static function getWorkDrawMst($id=null,$date_start,$date_end,$status=null) {
 		$db=self::__instance();
 		$sql="select a.id,a.workcenter_id,a.createday,a.op_id,
 			b.name as workcenter_name,c.user_name,d.name as status 
@@ -146,6 +205,14 @@ class Work extends Base {
 				$sql.=" and a.status=$status";
 			}
 		}
+		if($date_start!=""&&$date_end!=""){
+			if($id==null && $status==null){
+				$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+			else{
+				$sql.=' and a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+		}
 		$sql.=" order by a.createday desc ";
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
@@ -157,13 +224,11 @@ class Work extends Base {
 	public static function getWorkInMst($id=null,$date_start="",$date_end="") {
 		$db=self::__instance();
 		$sql="select a.id,a.workcenter_id,a.createday,a.op_id,
-			b.name as workcenter_name,c.user_name,d.name as loc_name 
-			from work_in_mst a 
-			left join workcenters b on a.workcenter_id=b.id 
-			left join users c on a.op_id=c.user_id 
-			left join locations d on a.loc_id=d.id  
-			";
-
+		b.name as workcenter_name,c.user_name,d.name as loc_name 
+		from work_in_mst a left join workcenters b on a.workcenter_id=b.id 
+		left join users c on a.op_id=c.user_id 
+		left join locations d on a.loc_id=d.id ";
+	
 		if($id!=null&&$id!=''){
 			$sql.=' where a.id='.$id;
 		}
@@ -171,6 +236,7 @@ class Work extends Base {
 			$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
 		}
 		$sql.=" order by a.createday desc ";
+		//return $sql;
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -180,9 +246,10 @@ class Work extends Base {
 
 	public static function getWorkInDtlById($id) {
 		$db=self::__instance();		
-		$sql="select b.id,b.product_name,b.product_id,b.gg,
+		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,
 			qty from dtl a 
 			left join products b on a.product_id=b.id 
+			left join location_bin c on a.bin_id=c.id 
 			where a.mst_id=".$id. " and a.mst_table='work_in' 
 			order by b.id";		
 		$list = $db->query($sql)->fetchAll();
@@ -214,7 +281,7 @@ class Work extends Base {
 		$op_id=$_SESSION['user_info']['user_id'];
 		$data=array('work_draw_mst_id'=>$mst_data['work_draw_mst_id'],
 			'loc_id'=>$mst_data['loc_id'],
-			'workcenter_id'=>$mst_data['lworkcenter_id'],
+			'workcenter_id'=>$mst_data['workcenter_id'],
 			'createday'=>$createday,
 			'op_id'=>$op_id);
 		$ans=array();

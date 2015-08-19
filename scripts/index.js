@@ -55,8 +55,38 @@ var indexApp=angular.module('indexApp', ['ngRoute'])
   .config(function($routeProvider) {
 
     $routeProvider
+    .when('/views/report/r_os_in', {
+      templateUrl: 'views/report/r_os_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/report/r_os_out', {
+      templateUrl: 'views/report/r_os_out.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/report/r_sale_out', {
+      templateUrl: 'views/report/r_sale_out.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/report/r_purchase_in', {
+      templateUrl: 'views/report/r_purchase_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
     .when('/views/report/r_work_in', {
       templateUrl: 'views/report/r_work_in.php',
+      resolve: {
+        async: ['$q', '$location', auth]
+      }
+    })
+    .when('/views/report/r_draw_out', {
+      templateUrl: 'views/report/r_draw_out.php',
       resolve: {
         async: ['$q', '$location', auth]
       }

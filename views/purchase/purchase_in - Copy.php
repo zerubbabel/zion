@@ -8,13 +8,12 @@
 
 <form id="frm">
 	<div class="row" style="height:50px">
-		<div class="col-xs-4">
+		<div class="col-xs-2">
 			供应商:
-			<select class="width-50 chosen-select" id="supplier" 
-				data-placeholder="选择供应商...">		
+			<select id='supplier'>
 			</select>
 		</div>	
-		<div class="col-xs-8">	
+		<div class="col-xs-10">	
 			入库仓库:
 			<select id='loc'>
 			</select>	
@@ -30,5 +29,4 @@
 <?php include '../modal_products.php';?>
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
-<script src="assets/js/chosen.jquery.min.js"></script>
 <script src="views/purchase/purchase_in.js"></script>

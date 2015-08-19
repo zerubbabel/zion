@@ -1,6 +1,50 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Purchase extends Base {
+	public static function getPurchaseInMst($id=null,$date_start,$date_end) {
+		$db=self::__instance();
+		$sql="select a.id,a.createday,d.name as loc_name,
+			b.name as supplier_name,c.user_name  
+			from purchase_in_mst a 
+			left join suppliers b on a.supplier_id=b.id 
+			left join users c on a.op_id=c.user_id 
+			left join locations d on d.id=a.loc_id ";
+
+		if($id!=null&&$id!=''){
+			$sql.=" where a.id=".$id;
+		}
+		
+		if($date_start!=""&&$date_end!=""){
+			if($id==null){
+				$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+			else{
+				$sql.=' and a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+		}
+		$sql.=" order by a.createday desc ";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
+	/*
+	public static function getPurchaseInDtlById($id) {
+		$db=self::__instance();		
+		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,
+			qty from dtl a 
+			left join products b on a.product_id=b.id 
+			left join location_bin c on c.id=a.bin_id 			
+			where a.mst_id=".$id. " and a.mst_table='purchase_in' 
+			order by b.id";		
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}*/
+
 
 	public static function getSuppliers() {
 		$db=self::__instance();

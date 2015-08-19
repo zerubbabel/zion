@@ -77,7 +77,7 @@ class Sale extends Base {
 		$filter='where sale_order_mst.status=3';
 		return self::getAllSaleOrderMst($filter);
 	}
-	public static function getSaleOutList() {
+	public static function getSaleOutList($id=null,$date_start="",$date_end="") {
 		$db=self::__instance();
 		
 		/*$sql="select a.id,a.createday,c.user_name,d.cust_name,
@@ -91,8 +91,16 @@ class Sale extends Base {
 			e.name as loc_name  from sale_out_mst a
 			left JOIN users c on a.op_id=c.user_id
 			LEFT JOIN customers d on a.cust_id=d.id
-			LEFT JOIN locations e on e.id=a.loc_id 
-			order by a.createday desc";	
+			LEFT JOIN locations e on e.id=a.loc_id ";	
+		if($date_start!=""&&$date_end!=""){
+			if($id==null){
+				$sql.=' where a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+			else{
+				$sql.=' and a.createday>="'.$date_start.'" and a.createday<="'.$date_end.'"';
+			}
+		}
+		$sql.=" order by a.createday desc ";	
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -228,7 +236,8 @@ class Sale extends Base {
 			$result=Sale::insertSaleOutMst($mst_data);//插入主表
 			if($result['status']){
 				$mst_id=$result['id'];
-				$result=Sale::insertSaleOutDtl($dtl_data,$mst_id,$mst_data['loc_id']);//插入明细表并更新库存
+				//$result=Sale::insertSaleOutDtl($dtl_data,$mst_id,$mst_data['loc_id']);//插入明细表并更新库存
+				$result=Baseinfo::insertDtl($dtl_data,'sale_out',$mst_id,$mst_data['loc_id'],-1);//插入明细表并更新库存
 				if($result['status']){//明细表有一条成功status就为true
 					Sale::updateSaleOrderStatus($mst_id);//判断并更新销售单状态为完成
 					$ans['status']=true;

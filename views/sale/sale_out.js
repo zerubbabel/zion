@@ -7,6 +7,9 @@ $(document).ready(function(){
 	setTitle();
 	loadSelect($('#loc'),'locations');
 	loadCust($('#cust'));
+	$('.chosen-select').chosen({
+		no_results_text: "找不到对应选项!",
+	});
 	loadSaleDtl();
 	//验证,submit
 	 $("#frm").validate({	 	
@@ -56,8 +59,9 @@ function saveSaleOut(){
 			return false;
 		}
 		var product_id=trs[i].id;
-		var bin_qty=getProductBinQty(bin_id,product_id);
+		var bin_qty=parseInt(getProductBinQty(bin_id,product_id));
 		var qty=parseInt($('#'+trs[i].id+'_qty').val());
+		
 		if (qty>bin_qty){
 			var td=$(trs[i]).find('td');
 			var product_id=td[0].title;

@@ -1,6 +1,21 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Baseinfo extends Base {
+	public static function getDtlById($id,$mst_table) {
+		$db=self::__instance();		
+		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,
+			qty from dtl a 
+			left join products b on a.product_id=b.id 
+			left join location_bin c on c.id=a.bin_id 			
+			where a.mst_id=".$id. " and a.mst_table='$mst_table'   
+			order by b.id";		
+			
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+	}
 	
 	//列表 
 	public static function getModules() {

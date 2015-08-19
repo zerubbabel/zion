@@ -6,7 +6,7 @@ jQuery(function($) {
 	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
-	var para={'method':'getSaleOutList'};
+	var para={'method':'getWorkInList'};
 	grid_data=exeJson(para);
 	
 	jQuery(grid_selector).jqGrid({
@@ -54,7 +54,6 @@ jQuery(function($) {
 	});
 	loadDetail();	
 });
-
 function loadDetail(para){
 	jQuery("#list_d").jqGrid({
 		url:'ajax/exe_json.php',

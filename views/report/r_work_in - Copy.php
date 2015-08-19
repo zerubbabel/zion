@@ -5,9 +5,7 @@
 		die();
 	}
 	$enddate=(strftime('%Y-%m-%d'));	
-
 	$startdate=date("Y-m-d",strtotime("$enddate -".REPORT_DAYS." day"));
-	$enddate=date("Y-m-d",strtotime("$enddate +1 day"));
 ?>
 <label for="date_start" class="control-label no-padding-right">开始时间:</label>
 <input type="textbox" id="date_start" VALUE="<?PHP echo $startdate ?>"/>

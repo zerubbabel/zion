@@ -1,4 +1,4 @@
-var caption='入库产品明细  ';
+﻿var caption='入库产品明细  ';
 var go_url="index.php#/views/outsource/os_in_list";
 var to_loc=7;//默认自动进入待检验仓库id=7
 var os_products_data;
@@ -6,6 +6,9 @@ $(document).ready(function(){
 	setTitle();	
 	loadSelect($('#loc'),'locations');
 	loadSelect($('#os_unit'),'os_units');
+	$('.chosen-select').chosen({
+		no_results_text: "找不到对应选项!",
+	});
 	loadDtl();
 	$('#os_unit').change(function(){
 		$("#tbl_dtl").clearGridData();				

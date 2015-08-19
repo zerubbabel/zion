@@ -84,7 +84,7 @@ function saveDrawOut(){
 	var result=exeJson(para);	
 	showMsg(result);
 	if(result['status']){
-		window.location.href=go_url;
+		//window.location.href=go_url;
 	}
 }
 

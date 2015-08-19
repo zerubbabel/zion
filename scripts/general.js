@@ -473,11 +473,12 @@ function loadModalProducts(data,dst_grid,input){
 	jQuery("#modal_grid").jqGrid({
 		data:data,
 		datatype: "local",
-		colNames:['产品代码', '产品名称','规格'],
+		colNames:['产品代码', '产品名称','规格','库位'],
 		colModel:[					
 			{name:'product_id',index:'product_id'},
 			{name:'name',index:'name'},
 			{name:'gg',index:'gg'},				
+			{name:'bin',index:'bin',hidden:true},
 		], 
 		height:jqgrid_height,
 		rowNum:jqgrid_row_num,
