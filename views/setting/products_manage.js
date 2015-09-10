@@ -9,6 +9,8 @@ jQuery(function($) {
 	var pager_selector = "#grid-pager";
 	setTitle();
 	toProduct();
+	loadSelect($('#loc'),'locations');
+	//setValidate();
 	//产品过滤
 	$('#product_filter').keyup(function(){
 		var keyword=this.value;
@@ -55,6 +57,20 @@ jQuery(function($) {
         	}
 		}
 	})
+
+	//新增产品验证
+	$("#new_frm").validate({
+		rules:{
+			product_name:{required:true},
+			bin:{required:true},
+			min_stock:{required:true,digits:true,min:0},
+			
+		},
+		submitHandler:function(form){			
+			saveNewProduct();
+		}
+	})
+
 	
 	var para={'method':'getProducts'};
 	products_data=exeJson(para);
@@ -328,4 +344,16 @@ function loadRightSubgrid(){
 		caption: '物料清单:',
 		autowidth: true,		
 	});
+}
+
+function setValidate(){
+	var v_class={required:true};
+	$("#product_name").rules("add",v_class);
+	$("#bin").rules("add",v_class);
+	var v_class={required:true,digits:true,min:0};
+	$("#min_stock").rules("add",v_class);
+}
+
+function saveNewProduct(){
+
 }

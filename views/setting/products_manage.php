@@ -5,12 +5,66 @@
 		die();
 	}
 ?>
-<div class="row" id="tab_product">
-	<div class="col-xs-12">
-		产品名称：<input type="text" id="product_filter"/>
-	</div>
 
-	<div class="col-xs-12">
+<div class="row" id="tab_product">	
+	<div class="col-xs-3">
+		<form class="form-horizontal" role="form" id="new_frm">
+            <fieldset>
+               <legend>新增产品</legend>
+               <div class="form-group">
+                  <label class="col-sm-4 control-label" for="product_id">产品代码</label>
+                  <div class="col-sm-8">
+                     <input class="form-control" id="product_id" type="text"/>
+                  </div>                   
+               </div>
+               <div class="form-group">
+                  <label class="col-sm-4 control-label" for="product_name">产品名称</label>
+                  <div class="col-sm-8">
+                     <input class="form-control" id="product_name" type="text" />
+                  </div>                   
+               </div>
+               <div class="form-group">
+                  <label class="col-sm-4 control-label" for="gg">规格</label>
+                  <div class="col-sm-8">
+                     <input class="form-control" id="gg" type="text" />
+                  </div>                   
+               </div>
+               <div class="form-group">
+                  <label class="col-sm-4 control-label" for="min_stock">最小库存</label>
+                  <div class="col-sm-8">
+                     <input class="form-control" id="min_stock" type="text" />
+                  </div>                   
+               </div>
+               <div class="form-group">
+                  <label class="col-sm-4 control-label" for="loc">仓库</label>
+                  <div class="col-sm-8">
+                     <select id="loc"></select>
+                  </div>                   
+               </div>
+               <div class="form-group">
+                  <label class="col-sm-4 control-label" for="bin">库位</label>
+                  <div class="col-sm-8">
+                     <input class="form-control" id="bin" type="text" />
+                  </div>                   
+               </div>
+               <div class="form-group">
+                  
+                  <div class="col-sm-8">
+                  	 <div class="col-sm-6">                     
+                     <input type="submit" class="btn btn-success icon-save" value="保存" id="btn_save"/>
+                     </div>
+
+                     <div class="col-sm-6">
+                     <button id='btn_cancel' class="btn btn-primary icon-reset" type="cancel">取消</button>
+                     </div>
+                  </div>                   
+               </div>
+            </fieldset>     
+        </form>                                 
+	</div>	
+	<div class="col-xs-9">
+		产品名称：<input type="text" id="product_filter"/>
+	
 		<!-- PAGE CONTENT BEGINS -->
 		<table id="grid-table"></table>
 
@@ -24,13 +78,13 @@
 	-->
 </div><!-- /.row -->
 <form id="sub_frm">
-<div class="row" id="tab_bom">
-	<button id="btn_back" class="icon-arrow-left btn btn-default">返回</button>
-	<button id='add_btn' class="btn btn-info icon-plus">添加子件</button>
-	<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
-<!--	<h1>物料清单:<span id="product_span"></span></h1>-->
-	<table id="grid_subpart"></table>
-</div>
+	<div class="row" id="tab_bom">
+		<button id="btn_back" class="icon-arrow-left btn btn-default">返回</button>
+		<button id='add_btn' class="btn btn-info icon-plus">添加子件</button>
+		<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
+	<!--	<h1>物料清单:<span id="product_span"></span></h1>-->
+		<table id="grid_subpart"></table>
+	</div>
 </form>
 
 <!--modal of products-->

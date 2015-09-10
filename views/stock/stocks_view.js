@@ -44,11 +44,11 @@ function loadDetail(loc_id){
 			
 		], 
 		caption:'产品:',
-		rowNum:100,
+		rowNum:4000,
 		rowList:[10,20,30],
 		pager : pager_selector,
 		altRows: true,	
-		height: 400,	
+		height: 4000,	
 		autowidth: true,
 		loadComplete : function() {			
 			var table = this;
