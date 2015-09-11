@@ -459,8 +459,10 @@ function openModalProducts(data,dst_grid,input){
 		var keyword=this.value;
 		grid_data=[];
 		for (var i=0;i<data.length;i++){
-			var pos=data[i]['name'].indexOf(keyword);
-		  	if (pos>=0){
+			var pos1=data[i]['name'].indexOf(keyword);
+			var pos2=data[i]['product_id'].indexOf(keyword);
+			var pos3=data[i]['gg'].indexOf(keyword);
+		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)){
 				grid_data.push(data[i]);
 			}
 		}
@@ -540,8 +542,10 @@ function openModalOsProducts(data,dst_grid,input){
 		var keyword=this.value;
 		grid_data=[];
 		for (var i=0;i<data.length;i++){
-			var pos=data[i]['name'].indexOf(keyword);
-		  	if (pos>=0){
+			var pos1=data[i]['name'].indexOf(keyword);
+			var pos2=data[i]['product_id'].indexOf(keyword);
+			var pos3=data[i]['gg'].indexOf(keyword);
+		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)){
 				grid_data.push(data[i]);
 			}
 		}
@@ -605,4 +609,41 @@ function loadModalOsProducts(data,dst_grid,input){
 			}
 		},	
 	});
+}
+
+function isSelected(ele){
+	if (ele.val()==0){
+		return false;
+	}
+	return true;
+}
+
+function isProductDuplicate(product){
+	var para={'method':'isProductDuplicate'};	
+	para['product']=product;
+	var result=exeJson(para);
+	return result['status'];
+}
+
+function addNewProduct(product){
+	var para={'method':'addNewProduct'};	
+	para['product']=product;
+	var result=exeJson(para);
+	return result;
+}
+
+//if bin exists then return bin_id else create a new bin
+function createBinId(loc_id,bin){
+	var para={'method':'createBinId'};	
+	para['loc_id']=loc_id;
+	para['bin']=bin;
+	var result=exeJson(para);
+	return result;
+}
+
+function addStockRecord(record){
+	var para={'method':'addStockRecord'};	
+	para['record']=record;
+	var result=exeJson(para);
+	return result['status'];
 }

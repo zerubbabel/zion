@@ -65,8 +65,8 @@ function colorRow(table){
 	var trs=table.find('tr');
 	for (var i=1;i<trs.length;i++){
 		var ele=$(trs[i]).find('td');
-		var qty=parseInt(ele[1].title);
-		var min_stock=parseInt(ele[2].title);
+		var qty=parseInt(ele[3].title);
+		var min_stock=parseInt(ele[4].title);
 		if (qty<min_stock){
 			$(trs[i]).addClass('danger');
 		}

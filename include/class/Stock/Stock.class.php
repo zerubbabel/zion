@@ -1,11 +1,45 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Stock extends Base {
+	public static function addStockRecord($record){
+		$db=self::__instance();
+		$data=array(
+			'product_id'=>$record['product_id'],
+			"loc_id"=>$record['loc_id'],
+			"bin_id"=>$record['bin_id'],
+			"qty"=>0,
+		);
+		$id=$db->insert('stocks',$data);
+		if($id){
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
 	public static function getBinId($loc_id,$bin) {
 		$db=self::__instance();
 		$sql="select id from location_bin where loc_id=$loc_id and bin='$bin'";
 		$list=$db->query($sql)->fetchAll();
 		return $list;
+	}
+
+	public static function createBinId($loc_id,$bin) {
+		$db=self::__instance();
+		$id=self::getBinId($loc_id,$bin);
+		if($id){
+			return $id[0]['id'];
+		}
+		else{
+			$data=array(
+				'loc_id'=>$loc_id,
+				'bin'=>$bin,
+			);
+			$id=$db->insert('location_bin',$data);
+			if($id){
+				return $id;
+			}
+		}
+		return null;
 	}
 
 	public static function getProductBinQty($bin_id,$product_id) {

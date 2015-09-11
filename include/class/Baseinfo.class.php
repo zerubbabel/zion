@@ -1,6 +1,41 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Baseinfo extends Base {
+	public static function addNewProduct($product){
+		$db=self::__instance();		
+		$data=array(
+			'product_id'=>$product['product_id'],
+			'product_name'=>$product['product_name'],
+			'gg'=>$product['gg'],
+			'min_stock'=>$product['min_stock'],
+			);
+		
+		$id=$db->insert('products',$data);
+		if ($id) {			
+			return $id;
+		}
+		return null;
+	}
+
+	public static function isProductDuplicate($product){
+		$db=self::__instance();		
+		$product_name=$product['product_name'];
+		$sql="select id from products where product_name='$product_name'
+			 and product_id='".$product['product_id']."' and gg='".$product['gg']."'";
+		/*if ($product['product_id']){
+			$sql.=" and product_id='".$product['product_id']."'";
+		}
+		if ($product['gg']){
+			$sql.=" and gg='".$product['gg']."'";
+		}	*/
+			
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return array('status'=>true);
+		}
+		return array('status'=>false);
+	}
+
 	public static function getDtlById($id,$mst_table) {
 		$db=self::__instance();		
 		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,

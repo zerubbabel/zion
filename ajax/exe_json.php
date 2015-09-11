@@ -224,6 +224,22 @@
 			$data = Baseinfo::getSubpart($para['id']);
 			echo json_encode($data);
 			break;
+		case 'isProductDuplicate':
+			$data = Baseinfo::isProductDuplicate($para['product']);
+			echo json_encode($data);
+			break;
+		case 'addNewProduct':
+			$data = Baseinfo::addNewProduct($para['product']);
+			echo json_encode($data);
+			break;	
+		case 'createBinId':
+			$data = Stock::createBinId($para['loc_id'],$para['bin']);
+			echo json_encode($data);
+			break;
+		case 'addStockRecord':
+			$data = Stock::addStockRecord($para['record']);
+			echo json_encode($data);
+			break;
 		default:
 			# code...
 			break;

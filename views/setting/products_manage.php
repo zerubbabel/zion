@@ -14,13 +14,13 @@
                <div class="form-group">
                   <label class="col-sm-4 control-label" for="product_id">产品代码</label>
                   <div class="col-sm-8">
-                     <input class="form-control" id="product_id" type="text"/>
+                     <input class="form-control" id="product_id" name="product_id" type="text"/>
                   </div>                   
                </div>
                <div class="form-group">
                   <label class="col-sm-4 control-label" for="product_name">产品名称</label>
                   <div class="col-sm-8">
-                     <input class="form-control" id="product_name" type="text" />
+                     <input class="form-control" id="product_name" name="product_name" type="text" />
                   </div>                   
                </div>
                <div class="form-group">
@@ -32,19 +32,19 @@
                <div class="form-group">
                   <label class="col-sm-4 control-label" for="min_stock">最小库存</label>
                   <div class="col-sm-8">
-                     <input class="form-control" id="min_stock" type="text" />
+                     <input class="form-control" value=0 id="min_stock" name="min_stock" type="text" />
                   </div>                   
                </div>
                <div class="form-group">
                   <label class="col-sm-4 control-label" for="loc">仓库</label>
                   <div class="col-sm-8">
-                     <select id="loc"></select>
+                     <select id="loc" name="loc"></select>
                   </div>                   
                </div>
                <div class="form-group">
                   <label class="col-sm-4 control-label" for="bin">库位</label>
                   <div class="col-sm-8">
-                     <input class="form-control" id="bin" type="text" />
+                     <input class="form-control" id="bin" name="bin" type="text" />
                   </div>                   
                </div>
                <div class="form-group">
@@ -63,7 +63,7 @@
         </form>                                 
 	</div>	
 	<div class="col-xs-9">
-		产品名称：<input type="text" id="product_filter"/>
+		产品(代码 或 名称 或 规格)：<input type="text" id="product_filter"/>
 	
 		<!-- PAGE CONTENT BEGINS -->
 		<table id="grid-table"></table>
@@ -78,13 +78,13 @@
 	-->
 </div><!-- /.row -->
 <form id="sub_frm">
-	<div class="row" id="tab_bom">
-		<button id="btn_back" class="icon-arrow-left btn btn-default">返回</button>
-		<button id='add_btn' class="btn btn-info icon-plus">添加子件</button>
-		<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
-	<!--	<h1>物料清单:<span id="product_span"></span></h1>-->
-		<table id="grid_subpart"></table>
-	</div>
+<div class="row" id="tab_bom">
+	<button id="btn_back" class="icon-arrow-left btn btn-default">返回</button>
+	<button id='add_btn' class="btn btn-info icon-plus">添加子件</button>
+	<button id='save_btn' class="btn btn-success icon-save" type="submit">保存</button>
+<!--	<h1>物料清单:<span id="product_span"></span></h1>-->
+	<table id="grid_subpart"></table>
+</div>
 </form>
 
 <!--modal of products-->

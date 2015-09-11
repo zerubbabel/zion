@@ -10,14 +10,16 @@ jQuery(function($) {
 	setTitle();
 	toProduct();
 	loadSelect($('#loc'),'locations');
-	//setValidate();
+	
 	//产品过滤
 	$('#product_filter').keyup(function(){
 		var keyword=this.value;
 		grid_data=[];
 		for (var i=0;i<sum;i++){
-			var pos=products_data[i]['name'].indexOf(keyword);
-		  	if (pos>=0){
+			var pos1=products_data[i]['name'].indexOf(keyword);
+			var pos2=products_data[i]['product_id'].indexOf(keyword);
+			var pos3=products_data[i]['gg'].indexOf(keyword);
+		  	if ((pos1>=0) || (pos2>=0)||(pos3>=0)){
 				grid_data.push(products_data[i]);
 			}
 		}
@@ -78,8 +80,8 @@ jQuery(function($) {
 	jQuery(grid_selector).jqGrid({
 		data: products_data,
 		datatype: "local",
-		height: 400,
-		colNames:['','操作','产品代码','产品名称','规格','最小库存','仓库','库位','库存数量'],
+		height: 4000,
+		colNames:['','操作','产品代码','产品名称','规格','最小库存','仓库','库位'],
 		colModel:[	
 			{name:'myaction',index:'',width:20,
 				formatter:'actions', 
@@ -88,18 +90,18 @@ jQuery(function($) {
 					delbutton:false,
 				}},	
 			{name:'act',index:'act',width:20}, 	
-			{name:'product_id',index:'product_id', width:60,editable: true}, 
+			{name:'product_id',index:'product_id', width:40,editable: true}, 
 			{name:'name',index:'name', width:100, editable: true},
 			{name:'gg',index:'gg', width:70, editable: true},
 			{name:'min_stock',index:'min_stock', width:30, editable: true},
 			//{name:'loc_name',index:'loc_name', width:40, editable: true,edittype:'select',editoptions:{value:"0:;"+getLocs()}},
 			{name:'loc_name',index:'loc_name', width:40},
 			{name:'bin',index:'bin', width:40,},
-			{name:'qty',index:'qty', width:30,},
+			//{name:'qty',index:'qty', width:30,},
 		], 
 
 		viewrecords : true,
-		rowNum:10,
+		rowNum:50,
 		rowList:[10,20,30],
 		pager : pager_selector,
 		altRows: true,		
@@ -135,7 +137,7 @@ jQuery(function($) {
 	
 	jQuery(grid_selector).jqGrid('navGrid',pager_selector,
 		{ 	//navbar options
-			add: true,
+			add: false,
 			addicon : 'icon-plus-sign purple',
 			edit: false,
 			del:false,
@@ -346,14 +348,48 @@ function loadRightSubgrid(){
 	});
 }
 
-function setValidate(){
-	var v_class={required:true};
-	$("#product_name").rules("add",v_class);
-	$("#bin").rules("add",v_class);
-	var v_class={required:true,digits:true,min:0};
-	$("#min_stock").rules("add",v_class);
-}
-
 function saveNewProduct(){
+	//
+	if (!isSelected($("#loc"))){		
+		var result={'status':false,'msg':'请选择仓库'};
+		showMsg(result);
+		return false;
+	}
 
+	var product={
+		product_id:$("#product_id").val(),
+		product_name:$("#product_name").val(),
+		gg:$("#gg").val(),
+		min_stock:$("#min_stock").val(),		
+	};
+	if(isProductDuplicate(product)){
+		var result={'status':false,'msg':'存在重复产品！'};
+		showMsg(result);
+		return false;
+	}
+
+	var product_id=addNewProduct(product);
+	if(!product_id){
+		var result={'status':false,'msg':'新增产品失败！'};
+		showMsg(result);
+		return false;
+	}
+	var loc_id=$("#loc").val();
+	var bin=$("#bin").val();
+	var bin_id=createBinId(loc_id,bin);
+	var record={
+		"product_id":product_id,
+		"loc_id":loc_id,
+		"bin_id":bin_id,
+		"qty":0,
+	};
+	if(addStockRecord(record)){
+		var result={'status':true,'msg':'操作成功！'};
+		showMsg(result);
+	}
+	else{
+		var result={'status':false,'msg':'添加库存记录失败！'};
+		showMsg(result);
+		return false;
+	}
 }
