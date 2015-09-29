@@ -309,13 +309,23 @@ class Outsource extends Base {
 			(a.qty-ifnull(b.qty,0)) as qty FROM v_os_out_stocks a  
 			LEFT JOIN v_os_in_stocks b ON a.os_unit = b.os_unit AND a.id = b.id  
 			where a.os_unit='.$os_unit;*/
-		$sql='select a.os_unit,a.qty,b.name as os_unit_name,
+		/*$sql='select a.os_unit,a.qty,b.name as os_unit_name,
 			c.product_name as name,
 			c.product_id,c.gg,
 			c.id from os_stocks a
 			LEFT JOIN os_units b on a.os_unit=b.id
 			LEFT JOIN products c on a.product_id=c.id 
+			where a.os_unit='.$os_unit;	*/
+		$sql='select a.os_unit,a.qty,b.name as os_unit_name,
+			c.product_name as name,
+			c.product_id,c.gg,e.bin,
+			c.id from os_stocks a
+			LEFT JOIN os_units b on a.os_unit=b.id
+			LEFT JOIN products c on a.product_id=c.id
+			left join stocks d on a.product_id=d.product_id 
+			left join location_bin e on e.id=d.bin_id 
 			where a.os_unit='.$os_unit;	
+
 		$data=$db->query($sql)->fetchAll();
 		return $data;
 	}

@@ -23,3 +23,6 @@ $ git diff 608e120 4abe32e --name-only | xargs zip ../update.zip
 
 branch
  git checkout -b newBranch
+
+pinyin
+https://github.com/hotoo/pinyin

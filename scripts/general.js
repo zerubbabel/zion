@@ -462,7 +462,13 @@ function openModalProducts(data,dst_grid,input){
 			var pos1=data[i]['name'].indexOf(keyword);
 			var pos2=data[i]['product_id'].indexOf(keyword);
 			var pos3=data[i]['gg'].indexOf(keyword);
-		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)){
+
+			var pos4;
+			if(data[i]['bin']){
+				pos4=data[i]['bin'].indexOf(keyword);
+			}
+			
+		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)||(pos4>=0)){
 				grid_data.push(data[i]);
 			}
 		}
@@ -480,7 +486,7 @@ function loadModalProducts(data,dst_grid,input){
 			{name:'product_id',index:'product_id'},
 			{name:'name',index:'name'},
 			{name:'gg',index:'gg'},				
-			{name:'bin',index:'bin',hidden:true},
+			{name:'bin',index:'bin'},
 		], 
 		height:jqgrid_height,
 		rowNum:jqgrid_row_num,
@@ -545,7 +551,11 @@ function openModalOsProducts(data,dst_grid,input){
 			var pos1=data[i]['name'].indexOf(keyword);
 			var pos2=data[i]['product_id'].indexOf(keyword);
 			var pos3=data[i]['gg'].indexOf(keyword);
-		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)){
+			var pos4;
+			if(data[i]['bin']){
+				pos4=data[i]['bin'].indexOf(keyword);
+			}
+		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)||(pos4>=0)){
 				grid_data.push(data[i]);
 			}
 		}
@@ -566,12 +576,13 @@ function loadModalOsProducts(data,dst_grid,input){
 	jQuery("#modal_grid").jqGrid({
 		data:data,
 		datatype: "local",
-		colNames:['代码','名称','规格','数量'],
+		colNames:['代码','名称','规格','数量','库位'],
 		colModel:[					
 			{name:'product_id',index:'product_id'},			
 			{name:'name',index:'name'},
 			{name:'gg',index:'gg'},
 			{name:'qty',index:'qty'},	
+			{name:'bin',index:'bin'},
 		], 
 		height:jqgrid_height,
 		rowNum:jqgrid_row_num,
