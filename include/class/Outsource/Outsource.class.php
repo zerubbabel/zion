@@ -90,6 +90,7 @@ class Outsource extends Base {
 		if ($id!=null){
 			$sql.=' where a.id='.$id;
 		}	
+
 		$result=$db->query($sql)->fetchAll();
 		return $result;		
 	}
@@ -437,9 +438,12 @@ class Outsource extends Base {
 	public static function getOsInDtlById($id) {
 		$db=self::__instance();		
 		$sql="select b.id,b.product_name,b.product_id,b.gg,
-			qty from os_in_dtl a 
+			a.qty from os_in_dtl a 
 			left join products b on a.product_id=b.id 
+
 			where a.mst_id=".$id. " order by b.id";	
+			//left join stocks c on c.product_id=a.product_id and c.bin
+			
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;

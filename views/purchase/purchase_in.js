@@ -10,6 +10,7 @@ $(document).ready(function(){
 
 	$('.chosen-select').chosen({
 		no_results_text: "找不到对应选项!",
+		
 	});
 	
 	//验证,submit

@@ -1,12 +1,21 @@
-﻿var mst_url='views/report/data/r_data.php?op=WorkInMst';
-var dtl_url='views/report/data/r_data.php?op=Dtl&mst_table=work_in&id=';
-var caption='生产入库单列表  ';
+﻿var mst_url='views/report/data/r_data.php?op=ProductMonthly';
+var dtl_url='views/report/data/r_data.php?op=Dtl&mst_table=purchase_in&id=';
+var caption='产品变动列表  ';
 var dtl_caption='产品明细 ';
 jQuery(function($) {
 	setTitle();	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
-	
+
+	loadProducts($('#product'));
+	$(".chosen-select").bind("chosen:activate", function () {
+		alert($("#product").val());
+	}); 
+	$('.chosen-select').chosen({
+		no_results_text: "找不到对应选项!",
+
+	});
+
 	$("#btn_search").click(function(){
 		reLoad();
 	});
@@ -14,36 +23,39 @@ jQuery(function($) {
 	jQuery(grid_selector).jqGrid({
 		datatype: "json",
 		height: 400,
-		colNames:['车间','入库仓库','操作人员','入库时间'],
+		colNames:['类型','时间','操作人员','仓库','库位','数量','单位'],
 		colModel:[
-			{name:'workcenter_name',index:'workcenter_name', width:50},			
-			{name:'loc_name',index:'loc_name',width:50},
+			{name:'type',index:'type', width:50},	
+			{name:'createday',index:'createday', width:90},					
 			{name:'user_name',index:'user_name', width:40}, 
-			{name:'createday',index:'createday', width:90},
+			{name:'loc_name',index:'loc_name',width:50},
+			{name:'bin',index:'bin', width:90},
+			{name:'qty',index:'qty',width:50},
+			{name:'units',index:'units',width:50},
 		], 
 		altRows: true,		
-        onSelectRow:function(id){      
+        /*onSelectRow:function(id){      
 			if(id!=null){
     			jQuery('#list_d').jqGrid('setGridParam',{url:dtl_url+id});
     			jQuery("#list_d").jqGrid('setCaption',dtl_caption)
     			.trigger('reloadGrid');	
     		}
-        },
+        },*/
 		caption: caption,
 		autowidth: true,
 	});
-	loadDetail();	
+	//loadDetail();	
 });
 
 function reLoad(){
-	var date_start=$('#date_start').val();
-	var date_end=$('#date_end').val();
-	if(date_start!=""&&date_end!=""){
+	var month=$('#month').val();
+	var product_id=$('#product').val();
+	if(month!=""){
 		jQuery('#grid-table').jqGrid('setGridParam',{url:mst_url
-			+"&date_start="+date_start+"&date_end="+date_end})
+			+"&month="+month+"&product_id="+product_id})
 		.trigger('reloadGrid');
 	}
-	else{alert('请输入开始时间，结束时间！')}
+	else{alert('请输入月份！')}
 }
 
 function loadDetail(id){

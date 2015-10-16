@@ -119,6 +119,10 @@
 			$data = Baseinfo::getSelect($para['table']);
 			echo json_encode($data);
 			break;	
+		case 'getProducts4Select':
+			$data = Baseinfo::getProducts4Select();
+			echo json_encode($data);
+			break;	
 		case 'changePassword':
 			$data = User::changePassword($para['old_password'],$para['new_password']);
 			echo json_encode($data);

@@ -8,6 +8,11 @@
 			$mst_table=$_GET['mst_table'];
 			Dtl($mst_table);
 			break;
+		case 'OsInDtl':
+			$id=$_GET['id'];
+			$datas=Outsource::getOsInDtlById($id);
+			echo json_encode($datas);
+			break;
 		case 'WorkInMst':
 			WorkInMst();
 			break;
@@ -26,9 +31,18 @@
 		case 'OsInMst':
 			OsInMst();
 			break;
+		case 'ProductMonthly':
+			ProductMonthly();
+			break;	
 		default:
 			# code...
 			break;
+	}
+	function ProductMonthly(){
+		$month=$_GET['month'];
+		$product_id=$_GET['product_id'];
+		$datas=Baseinfo::ProductMonthly($month,$product_id);
+		echo json_encode($datas);
 	}
 	function WorkInMst(){
 		$date_start=$_GET['date_start'];

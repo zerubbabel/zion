@@ -1,6 +1,93 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Baseinfo extends Base {
+	public static function ProductMonthly($month,$product_id){
+		$db=self::__instance();		
+		/*$sql="SELECT '生产入库' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.name as units 
+				from work_in_mst a
+				left join dtl b on a.id=b.mst_id				
+				LEFT JOIN users c on c.user_id=a.op_id 
+				LEFT JOIN locations d on a.loc_id=d.id
+				LEFT JOIN location_bin e on b.bin_id=e.id
+				LEFT JOIN workcenters f on f.id=a.workcenter_id
+				where a.createday like '$month%' 
+				and b.product_id=$product_id 
+				union 
+				SELECT '生产领料' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.name as units 
+				from draw_out_mst a
+				left join dtl b on a.id=b.mst_id				
+				LEFT JOIN users c on c.user_id=a.op_id 
+				LEFT JOIN locations d on a.loc_id=d.id
+				LEFT JOIN location_bin e on b.bin_id=e.id
+				LEFT JOIN workcenters f on f.id=a.workcenter_id
+				where a.createday like '$month%' 
+				and b.product_id=$product_id 
+				";*/	
+		$array_sql=array();			
+		$array_sql[]="SELECT '生产入库' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.name as units 
+			from work_in_mst a
+			left join dtl b on a.id=b.mst_id				
+			LEFT JOIN users c on c.user_id=a.op_id 
+			LEFT JOIN locations d on a.loc_id=d.id
+			LEFT JOIN location_bin e on b.bin_id=e.id
+			LEFT JOIN workcenters f on f.id=a.workcenter_id
+			where a.createday like '$month%' 
+			and b.product_id=$product_id ";
+		$array_sql[]="SELECT '生产领料' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.name as units 
+				from draw_out_mst a
+				left join dtl b on a.id=b.mst_id				
+				LEFT JOIN users c on c.user_id=a.op_id 
+				LEFT JOIN locations d on a.loc_id=d.id
+				LEFT JOIN location_bin e on b.bin_id=e.id
+				LEFT JOIN workcenters f on f.id=a.workcenter_id
+				where a.createday like '$month%' 
+				and b.product_id=$product_id ";
+		$array_sql[]="SELECT '销售出库' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.cust_name as units 
+				from sale_out_mst a
+				left join dtl b on a.id=b.mst_id				
+				LEFT JOIN users c on c.user_id=a.op_id 
+				LEFT JOIN locations d on a.loc_id=d.id
+				LEFT JOIN location_bin e on b.bin_id=e.id
+				LEFT JOIN customers f on f.id=a.cust_id
+				where a.createday like '$month%' 
+				and b.product_id=$product_id ";
+			$array_sql[]="SELECT '采购入库' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.name as units 
+				from purchase_in_mst a
+				left join dtl b on a.id=b.mst_id				
+				LEFT JOIN users c on c.user_id=a.op_id 
+				LEFT JOIN locations d on a.loc_id=d.id
+				LEFT JOIN location_bin e on b.bin_id=e.id
+				LEFT JOIN suppliers f on f.id=a.supplier_id
+				where a.createday like '$month%' 
+				and b.product_id=$product_id ";
+			$array_sql[]="SELECT '外协出库' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.name as units 
+				from os_out_mst a
+				left join dtl b on a.id=b.mst_id				
+				LEFT JOIN users c on c.user_id=a.op_id 
+				LEFT JOIN locations d on a.loc_id=d.id
+				LEFT JOIN location_bin e on b.bin_id=e.id
+				LEFT JOIN os_units f on f.id=a.os_unit
+				where a.createday like '$month%' 
+				and b.product_id=$product_id ";
+				 		
+		$ans=array();		
+		for($i=0;$i<count($array_sql);$i++){
+			$list = $db->query($array_sql[$i])->fetchAll();
+			if($list){
+				$ans=array_merge($ans,$list);
+			}
+
+		}		
+		return $ans;
+		/*
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {			
+			return $list;
+		}
+		return array ();
+		*/
+	}
+
 	public static function addNewProduct($product){
 		$db=self::__instance();		
 		$data=array(
@@ -38,13 +125,14 @@ class Baseinfo extends Base {
 
 	public static function getDtlById($id,$mst_table) {
 		$db=self::__instance();		
-		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,
-			qty from dtl a 
+		$sql="select b.id,b.product_name,b.product_id,b.gg,c.bin,d.qty as stock_qty,
+			a.qty from dtl a 
 			left join products b on a.product_id=b.id 
-			left join location_bin c on c.id=a.bin_id 			
+			left join location_bin c on c.id=a.bin_id
+			left join stocks d on d.product_id=b.id and d.bin_id=a.bin_id 			
 			where a.mst_id=".$id. " and a.mst_table='$mst_table'   
 			order by b.id";		
-			
+		
 		$list = $db->query($sql)->fetchAll();
 		if ($list) {			
 			return $list;
@@ -127,6 +215,28 @@ class Baseinfo extends Base {
 		//$list = $db->select($table,$cols);
 		if ($list) {			
 			return $list;
+		}
+		return array ();
+	}
+
+	public static function getProducts4Select() {
+		$db=self::__instance();
+		$sql="select a.id,a.product_name as name,a.product_id,a.gg,
+			c.bin     
+			from products a left join stocks b on a.id=b.product_id 
+			left join location_bin c on c.id=b.bin_id";
+		$list = $db->query($sql)->fetchAll();
+		if ($list) {		
+			$db=array();	
+			for($i=0;$i<count($list);$i++){
+				$db[]['id']=$list[$i]['id'];
+				$db[$i]['name']='';
+				for($j=1;$j<count($list[$i]);$j++){
+					$tmp=($list[$i][$j]==null)?'':'|'.$list[$i][$j];
+					$db[$i]['name'].=$tmp;
+				}
+			}
+			return $db;
 		}
 		return array ();
 	}

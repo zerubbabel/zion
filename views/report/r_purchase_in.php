@@ -15,11 +15,11 @@
 <input type="textbox" id="date_end" VALUE="<?PHP echo $enddate ?>"/>
 <button class="btn btn-success btn-sm icon-search" id="btn_search">查看</button>
 <div class="row">
-	<div class="col-xs-6">
+	<div class="col-xs-5">
 		<table id="grid-table"></table>
 		<div id="grid-pager"></div>
 	</div><!-- /.col -->
-	<div class="col-xs-6" id="div_dtl">
+	<div class="col-xs-7" id="div_dtl">
 		<table id="list_d"></table>
 	</div>
 </div><!-- /.row -->

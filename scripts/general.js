@@ -110,6 +110,21 @@ function loadSelect(selector,table){
     }
 }
 
+function loadProducts(selector,table){	
+	//empty value:提醒用户选择
+	selector.append("<option value=0></option>");
+	//debugger
+	//if(selector.val()!=0){
+		var para={'method':'getProducts4Select'};
+		var data=exeJson(para);	
+		var jsonobj=eval(data);		        
+	    var length=jsonobj.length;		      
+	    for(var i=0;i<length;i++){  		       
+	    	selector.append("<option value='"+jsonobj[i].id+"' >"+jsonobj[i].name+"</option>");
+	    }
+	//}
+}
+
 //显示jQuery 遮罩层
 function showLoading() {
     var bh = $("body").height();
@@ -459,14 +474,13 @@ function openModalProducts(data,dst_grid,input){
 		var keyword=this.value;
 		grid_data=[];
 		for (var i=0;i<data.length;i++){
+			
 			var pos1=data[i]['name'].indexOf(keyword);
-			var pos2=data[i]['product_id'].indexOf(keyword);
-			var pos3=data[i]['gg'].indexOf(keyword);
-
-			var pos4;
-			if(data[i]['bin']){
-				pos4=data[i]['bin'].indexOf(keyword);
-			}
+			
+			var pos2=(data[i]['product_id']==null)?-1:data[i]['product_id'].indexOf(keyword);
+			
+			var pos3=(data[i]['gg']==null)?-1:data[i]['gg'].indexOf(keyword);
+			var pos4=(data[i]['bin']==null)?-1:data[i]['bin'].indexOf(keyword);			
 			
 		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)||(pos4>=0)){
 				grid_data.push(data[i]);
@@ -548,13 +562,10 @@ function openModalOsProducts(data,dst_grid,input){
 		var keyword=this.value;
 		grid_data=[];
 		for (var i=0;i<data.length;i++){
-			var pos1=data[i]['name'].indexOf(keyword);
-			var pos2=data[i]['product_id'].indexOf(keyword);
-			var pos3=data[i]['gg'].indexOf(keyword);
-			var pos4;
-			if(data[i]['bin']){
-				pos4=data[i]['bin'].indexOf(keyword);
-			}
+			var pos1=(data[i]['name']==null)?-1:data[i]['name'].indexOf(keyword);
+			var pos2=(data[i]['product_id']==null)?-1:data[i]['product_id'].indexOf(keyword);
+			var pos3=(data[i]['gg']==null)?-1:data[i]['gg'].indexOf(keyword);
+			var pos4=(data[i]['bin']==null)?-1:data[i]['bin'].indexOf(keyword);
 		  	if ((pos1>=0)||(pos2>=0)||(pos3>=0)||(pos4>=0)){
 				grid_data.push(data[i]);
 			}
