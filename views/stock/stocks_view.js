@@ -15,6 +15,14 @@
 		reLoad();
 	});	
 
+	$('#btn_exportExcel').click(function(){
+		var loc_id=$('#loc').val();
+		var product_id=$('#product_id').val();
+		var product=$('#product').val();
+		var bin=$('#bin').val();
+		window.open ("excel/exportStockExcel.php?loc_id="+loc_id
+		+"&product_id="+product_id+"&product_name="+product+"&bin="+bin,'newwindow');
+	});
 });
 function reLoad(){
 	var loc_id=$('#loc').val();

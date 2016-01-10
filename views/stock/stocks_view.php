@@ -18,6 +18,9 @@
 		<label for="bin" class="control-label no-padding-right">库位:</label>
 		<input type="textbox" id="bin"/>
 		<button class="btn btn-success" id="btn_search">查看</button>
+		<button class="btn btn-primary" id="btn_exportExcel">
+			导出库存excel
+		</button>
 		<table id="tbl_dtl" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
 		</table>		
 		<div id="pager"></div>											
