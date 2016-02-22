@@ -1,7 +1,0 @@
-os_in_dtl:add a new col 'bin_id'
-new function:r_monthly.php 产品月报表
-table 'pages' add a new record
-table 'access'
-
-月报表：
-类型，时间，操作人，仓库，库位，数量，（车间，供应商，外协单位,客户）
