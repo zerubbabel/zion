@@ -16,7 +16,8 @@
 			echo json_encode($data);
 			break;
 		case 'getSaleOutDtlById':
-			$data = Sale::getSaleOutDtlById($para['id']);
+			//$data = Sale::getSaleOutDtlById($para['id']);
+			$data = Baseinfo::getDtlById($para['id'],'sale_out');
 			echo json_encode($data);
 			break;
 		case 'getStockById':

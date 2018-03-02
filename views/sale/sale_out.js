@@ -19,7 +19,7 @@ $(document).ready(function(){
 					saveSaleOut();
 				}
 				else{
-					var result={'status':false,'msg':'请选择待入库的产品！'};
+					var result={'status':false,'msg':'请选择待出库的产品！'};
 					showMsg(result);
 				}
 				return false;   
@@ -103,7 +103,7 @@ function loadSaleDtl(){
 			{name:'bin',index:'bin', width:60, sortable:true,editable: true},
 		], 
 		caption: caption+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning'"+
-			" data-rel='tooltip' title='选择入库物品' data-placement='right' onclick=\"addProduct('#tbl_dtl','_qty');\" ></i>",
+			" data-rel='tooltip' title='选择出库物品' data-placement='right' onclick=\"addProduct('#tbl_dtl','_qty');\" ></i>",
 		autowidth: true,
 		gridComplete:function(){
 			$('[data-rel=tooltip]').tooltip();

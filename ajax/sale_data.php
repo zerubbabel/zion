@@ -23,6 +23,10 @@
 			$data = Baseinfo::getCust();
 			echo json_encode($data);
 			break;	
+		/*case 'getSaleOutDtlById':
+			$data = Baseinfo::getDtlById($para['id'],'sale_out');
+			echo json_encode($data);
+			break;	*/
 		default:
 			# code...
 			break;
