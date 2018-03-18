@@ -7,9 +7,23 @@ class Sale extends Base {
 		if($result){
 			return $result;
 		}
+		return array();
+	}
+	public static function custProduct($cust_id){
+		$db=self::__instance();
+		$sql='select (b.qty-b.out) as qty,b.box,b.memo,c.product_id,c.product_name as name,c.gg 
+			from sale_order_mst a 
+			left join sale_order_dtl b 
+			on a.id=b.mst_id 
+			left join products c 
+			on b.product_id=c.id 
+			where a.done=0 and a.cust_id='.$cust_id;
+		$result = $db->query($sql)->fetchAll();
+		if($result){
+			return $result;
+		}
 		return false;
 	}
-
 	public static function getCustomers() {
 		$db=self::__instance();
 		$sql='select a.id,a.cust_name,a.type_id,b.name as type_name from customers a 
