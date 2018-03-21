@@ -3,6 +3,10 @@
 	require ('../include/init.inc.php');
 	$para=$_POST['para'];
 	switch ($para['method']) {
+		case 'workTask':
+			$data=Work::workTask();
+			echo json_encode($data);
+			break;
 		case 'insertCustomerOrderOut':
 			$data = Sale::insertCustomerOrderOut($para['mst_data'],$para['dtl_data']);
 			echo json_encode($data);

@@ -1,6 +1,18 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Work extends Base {
+	public static function workTask() {
+		$db=self::__instance();
+		$sql='select b.product_id,b.product_name,b.gg,(a.qty-a.out) as qty,
+			a.jh,a.box,a.memo   
+			from sale_order_dtl a 
+			left join products b 
+			on a.product_id=b.id 
+			where a.qty>a.out 
+			order by a.jh asc';
+		$list = $db->query($sql)->fetchAll();
+		return $list;	
+	}
 	public static function getDrawOutMst($id=null,$date_start,$date_end) {
 		$db=self::__instance();
 		$sql="select a.id,a.workcenter_id,a.createday,a.op_id,d.name as loc_name,
