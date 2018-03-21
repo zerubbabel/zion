@@ -1,4 +1,4 @@
-## new_client_order
+## new_customer_order
 add order:
 	add:sale_order_mst,sale_order_dtl
 delete order: 仅当该单还未产生任何相关业务(没有对应的出库单)
@@ -6,7 +6,7 @@ delete order: 仅当该单还未产生任何相关业务(没有对应的出库�
 update order: 仅当该单还未产生任何相关业务(没有对应的出库单)
 	del & insert:sale_order_mst,sale_order_dtl
 
-## client_order_out
+## customer_order_out
 add out:	
 	add:customer_order_out_mst,customer_order_out_dtl
 	update:sale_order_dtl(out+=qty),sale_order_mst(DONE)

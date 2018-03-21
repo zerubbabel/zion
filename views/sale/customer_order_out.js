@@ -28,8 +28,7 @@ $(document).ready(function(){
 					var result={'status':false,'msg':'请选择待出库的产品！'};
 					showMsg(result);
 				}
-				return false;   
-        	
+				return false;           	
         }    
     });		
 })
@@ -47,58 +46,46 @@ function saveSaleOut(){
 		showMsg(result);
 		return false;
 	}
-	var para={'method':'insertSaleOutOrder'};
-	var mst_data={'sale_order_mst_id':null,'loc_id':$('#loc').val(),'cust_id':$('#cust').val()};
+	//var para={'method':'insertSaleOutOrder'};
+	var para={'method':'insertCustomerOrderOut'};
+	var mst_data={'cust_id':$('#cust').val()};
 	para['mst_data']=mst_data;
 	var dtl_data={};
 	var trs=$("#tbl_dtl tr");
+	var k=0;
 	for (var i=1;i<trs.length;i++){
-		var bin=$('#'+trs[i].id+'_bin').val();
+		//var product_id=trs[i].id;		
+		var out=parseInt($('#'+trs[i].id+'_out').val());	
+		if (isNaN(out)) {out=0;}	
+		var qty=parseInt($("#tbl_dtl").getCell(trs[i].id,'qty'));
+		if (qty<out){			
+			var result={'status':false,'msg':'出库数量不能大于订单剩余数量!'};
+			showMsg(result);
+			return false;
+		}
+		if(out>0){
 
-		var bin_id=getBinId(loc_id,bin);
-		if (bin_id==0){
-			var result={'status':false,'msg':'请检查！库位'+bin+'不存在！'};
-			showMsg(result);
-			return false;
-		}
-		var product_id=trs[i].id;
-		var bin_qty=parseInt(getProductBinQty(bin_id,product_id));
-		var qty=parseInt($('#'+trs[i].id+'_qty').val());
-		
-		if (qty>bin_qty){
-			var td=$(trs[i]).find('td');
-			var product_id=td[0].title;
-			var product_name=td[1].title;
-			var result={'status':false,
-				'msg':'产品'+product_id+':'+product_name+'库位库存数量不足，无法出库！'};
-			showMsg(result);
-			return false;
-		}
-		if(qty>0){
-			dtl_data[i-1]={};		
-			dtl_data[i-1]['product_id']=trs[i].id;			
-			dtl_data[i-1]['qty']=qty;
-			dtl_data[i-1]['bin_id']=bin_id;
-		}
-				
+			dtl_data[k]={};		
+			dtl_data[k]['product_id']=parseInt($("#tbl_dtl").getCell(trs[i].id,'p_id'));//trs[i].id;			
+			dtl_data[k]['out']=out;
+			dtl_data[k]['dtl_id']=parseInt($("#tbl_dtl").getCell(trs[i].id,'dtl_id'));			
+			dtl_data[k]['mst_id']=parseInt($("#tbl_dtl").getCell(trs[i].id,'mst_id'));
+			k++;
+		}				
 	}
 	para['dtl_data']=dtl_data;
 	var result=exeJson(para);
 	showMsg(result);
-	if(result['status']){
-		//跳转到出库单列表
-		//select_obj['sale_order_id']=null;
-		window.location.href=go_url;
+	if(result['status']){		
+		//window.location.href=go_url;
 	}
 }
 
 function loadSaleDtl(){
 	$("#tbl_dtl").jqGrid({
-		//url:"views/sale/sale_order_data.php?q=custProduct&cust_id="+cust_id,
-		datatype: "json",
-		//datatype: "local",
+		datatype: "json",		
 		height: 300,
-		colNames:['','代码','产品','规格', '装箱', '备注','剩余数量', '出库数量'],
+		colNames:['','代码','产品','规格', '装箱', '备注','剩余数量', '出库数量','dtl_id','mst_id','id'],
 		colModel:[
 			{name:'act',width:40},
 			{name:'product_id',index:'product_id', width:50},
@@ -109,14 +96,15 @@ function loadSaleDtl(){
 			{name:'qty',index:'qty', width:60},
 			{name:'out',index:'out', width:60,editable: true,
 				editrules:{required:true,number:true}},
-			
+			{name:'dtl_id',index:'dtl_id',editable: false,hidden:true},	
+			{name:'mst_id',index:'mst_id',editable: false,hidden:true},	
+			{name:'p_id',index:'p_id',editable: false,hidden:true},	
 		], 
-		caption: caption+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning'"+
-			" data-rel='tooltip' title='选择出库物品' data-placement='right' onclick=\"addProduct('#tbl_dtl','_qty');\" ></i>",
+		//caption: caption+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning'"+
+		//	" data-rel='tooltip' title='选择出库物品' data-placement='right' onclick=\"addProduct('#tbl_dtl','_qty');\" ></i>",
 		autowidth: true,
-		editurl: 'empty.php',
 		gridComplete:function(){
-			$('[data-rel=tooltip]').tooltip();
+			//$('[data-rel=tooltip]').tooltip();
 			var ids = jQuery('#tbl_dtl').jqGrid('getDataIDs');
 			for(var i=0;i < ids.length;i++){
 				var cl = ids[i];
@@ -128,5 +116,3 @@ function loadSaleDtl(){
 	});	
 	
 }
-
-

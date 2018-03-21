@@ -26,4 +26,4 @@
 <script src="assets/js/jqGrid/jquery.jqGrid.min.js"></script>
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 <script src="assets/js/chosen.jquery.min.js"></script>
-<script src="views/sale/client_order_out.js"></script>
+<script src="views/sale/customer_order_out.js"></script>
