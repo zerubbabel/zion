@@ -3,7 +3,7 @@
 
 	$op=$_GET['op'];
 
-	switch ($op) {
+	switch ($op) {		
 		case 'Dtl':
 			$mst_table=$_GET['mst_table'];
 			Dtl($mst_table);

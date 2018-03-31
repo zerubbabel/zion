@@ -1,15 +1,17 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Work extends Base {
-	public static function workTask() {
+	public static function workTask($cust_id) {
 		$db=self::__instance();
 		$sql='select b.product_id,b.product_name,b.gg,(a.qty-a.out) as qty,
 			a.jh,a.box,a.memo   
 			from sale_order_dtl a 
 			left join products b 
 			on a.product_id=b.id 
-			where a.qty>a.out 
+			left join sale_order_mst c on a.mst_id=c.id 
+			where a.qty>a.out and c.cust_id='.$cust_id.' 
 			order by a.jh asc';
+		
 		$list = $db->query($sql)->fetchAll();
 		return $list;	
 	}

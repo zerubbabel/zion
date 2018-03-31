@@ -24,6 +24,7 @@
 	function custProduct($cust_id){
 		$cust_id=$_GET['cust_id'];
 		$datas=Sale::custProduct($cust_id);
+		
 		echo json_encode($datas);
 	}
 ?>

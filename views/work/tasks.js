@@ -1,23 +1,44 @@
-﻿var grid_data=[];
+﻿var mst_url='views/work/data/r_data.php?op=workTask';
+var grid_data=[];
 var detail_data=[];
 var days=7;
 jQuery(function($) {
 	setTitle();	
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
-	$.ajax({
-        url: "ajax/exe_json.php",
-        async:false,
-        type:'post',
-		data:{'para':{'method':'workTask'}},
-        success: function(data){
-        	grid_data=jQuery.parseJSON(data);
-        }
-    });
+
+	loadCust($('#cust'));
+	$('.chosen-select').chosen({
+		no_results_text: "找不到对应选项!",
+	});
 	
+	$('.chosen-select').change(function(e){
+		var cust_id=$(this).val();
+		//alert(cust_id);
+		//loadCustProduct(cust_id);
+		jQuery(grid_selector).jqGrid('setGridParam',{url:mst_url
+			+"&cust_id="+cust_id})
+		.trigger('reloadGrid');
+
+		/*
+		$.ajax({
+	        url: "ajax/exe_json.php",
+	        async:false,
+	        type:'post',
+			data:{'para':{'method':'workTask','cust_id':cust_id}},
+	        success: function(data){
+	        	grid_data=jQuery.parseJSON(data);
+	        }
+	    });
+
+	    */
+	});	
+
 	jQuery(grid_selector).jqGrid({
-		data: grid_data,
-		datatype: "local",
+		//data: grid_data,
+		//datatype: "local",
+		url:mst_url,		
+		datatype: "json",
 		height: 400,
 		colNames:['产品代码', '产品名称','规格','数量','装箱','备注','交货日期'],
 		colModel:[

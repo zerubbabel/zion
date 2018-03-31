@@ -4,7 +4,7 @@
 	$para=$_POST['para'];
 	switch ($para['method']) {
 		case 'workTask':
-			$data=Work::workTask();
+			$data=Work::workTask($para['cust_id']);
 			echo json_encode($data);
 			break;
 		case 'insertCustomerOrderOut':

@@ -4,6 +4,11 @@
 	$op=$_GET['op'];
 
 	switch ($op) {
+		case 'workTask':
+			$cust_id=$_GET['cust_id'];
+			$datas=Work::workTask($cust_id);
+			echo json_encode($datas);
+			break;
 		case 'Dtl':
 			$mst_table=$_GET['mst_table'];
 			Dtl($mst_table);

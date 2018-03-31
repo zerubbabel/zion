@@ -26,3 +26,7 @@ view：
 查看待生产的产品，依交货日期升序排列(一周以内红色)
 
 
+## 2018.3.31
+### todo
+1.customer_order print
+2.tasks by customer
