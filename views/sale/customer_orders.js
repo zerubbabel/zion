@@ -1,7 +1,17 @@
 ﻿var grid_data=[];
 var detail_data=[];
+var order_id=0;
 jQuery(function($) {
 	setTitle();	
+	$('#print_btn').click(function(){
+		if(order_id===0){
+			var result={'status':false,'msg':'请先选择要打印的订单！'}
+			showMsg(result);
+		}else{
+			var printDiv="#div_dtl"
+			$(printDiv).jqprint();
+		}
+	})
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
 	$.ajax({
@@ -43,16 +53,20 @@ jQuery(function($) {
         	if(id==null){
         		id=0;
         		if(jQuery("#list_d").jqGrid('getGridParam','record')>0){
-        			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1});
-        			jQuery("#list_d").jqGrid('setCaption','订单明细:'+id)
+        			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1})
+        			//jQuery("#list_d").jqGrid('setCaption','订单明细:'+id)
         			.trigger('reloadGrid');
         		}
         	}
     		else{
     			//select_obj['sale_order_id']=id;
     			//showToolbar();
-    			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1});
-    			jQuery("#list_d").jqGrid('setCaption','订单明细:'+id)
+    			order_id=id;
+    			var rowData = $(grid_selector).jqGrid('getRowData',id);
+    			var cust_name=rowData.cust_name;    			
+    			$('#cust_name').html(cust_name);
+    			jQuery('#list_d').jqGrid('setGridParam',{url:"views/sale/sale_order_data.php?q=dtl&id="+id,page:1})
+    			//jQuery("#list_d").jqGrid('setCaption','订单明细:'+id)
     			.trigger('reloadGrid');	
     		}
         },
@@ -74,12 +88,12 @@ function loadDetail(id){
 		url:'views/sale/sale_order_data.php?q=del&id='+id,
 		datatype: "json",
 		height: 350,
-		colNames:['代码','产品','规格', '数量'],
+		colNames:['产品','规格', '数量'],
 		colModel:[
-			{name:'product_id',index:'product_id', width:50,},
-			{name:'product_name',index:'product_name', width:90,},
-			{name:'gg',index:'gg', width:90,},
-			{name:'qty',index:'qty', width:40,}
+			//{name:'product_id',index:'product_id', width:50,},
+			{name:'product_name',index:'product_name'},
+			{name:'gg',index:'gg'},
+			{name:'qty',index:'qty'}
 		], 
 
 		viewrecords : true,
@@ -89,7 +103,7 @@ function loadDetail(id){
 		sortname:'item',
 		viewrecords:true,
 		sortorder:'asc',
-		caption:'订单明细',	
+		//caption:'订单明细',	
 		autowidth: true,		
 	});
 }
