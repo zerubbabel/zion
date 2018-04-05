@@ -270,7 +270,7 @@ class Sale extends Base {
 	public static function getSaleOrderDtlById($id) {
 		$db=self::__instance();
 		
-		$sql="select b.id,b.product_id,b.product_name,b.gg,a.qty  
+		$sql="select b.id,b.product_id,b.product_name,b.gg,a.qty,a.memo   
 			from sale_order_dtl a 
 			left join products b on a.product_id=b.id 
 			where a.mst_id=$id order by b.id";

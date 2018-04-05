@@ -26,7 +26,7 @@ jQuery(function($) {
 		data: grid_data,
 		datatype: "local",
 		height: 400,
-		colNames:['客户', '订单日期','操作人员'],
+		colNames:['客户', '订单日期'],
 		colModel:[
 			/*{name:'myac',index:'', width:40, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -39,7 +39,7 @@ jQuery(function($) {
 			{name:'createday',index:'createday',width:60, editable:true},	
 			//{name:'importance',index:'importance',width:40, editable:false},		
 			//{name:'status',index:'status',width:50, editable:true,edittype:'select',editoptions:{value:get_status()}},
-			{name:'user_name',index:'user_name', width:50, editable: false} 
+			//{name:'user_name',index:'user_name', width:50, editable: false} 
 		], 
 
 		viewrecords : true,
@@ -85,15 +85,16 @@ jQuery(function($) {
 });
 function loadDetail(id){
 	jQuery("#list_d").jqGrid({
-		url:'views/sale/sale_order_data.php?q=del&id='+id,
+		//url:'views/sale/sale_order_data.php?q=del&id='+id,
 		datatype: "json",
 		height: 350,
-		colNames:['产品','规格', '数量'],
+		colNames:['产品','规格', '数量','备注'],
 		colModel:[
 			//{name:'product_id',index:'product_id', width:50,},
 			{name:'product_name',index:'product_name'},
 			{name:'gg',index:'gg'},
-			{name:'qty',index:'qty'}
+			{name:'qty',index:'qty'},
+			{name:'memo',index:'memo'}
 		], 
 
 		viewrecords : true,

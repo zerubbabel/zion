@@ -11,11 +11,11 @@
 <div class="row">
 	<div class="col-xs-12" id="toolbar">		
 	</div>
-	<div class="col-xs-4">
+	<div class="col-xs-3">
 		<table id="grid-table"></table>
 		<div id="grid-pager"></div>
 	</div><!-- /.col -->
-	<div class="col-xs-8" id="div_dtl">
+	<div class="col-xs-9" id="div_dtl">
 		<span id="cust_name"></span>
 		<table id="list_d"></table>
 	</div>
