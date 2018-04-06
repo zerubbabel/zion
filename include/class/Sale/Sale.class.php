@@ -1,6 +1,27 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Sale extends Base {
+	public static function isOrderUsed($id) {
+		$db=self::__instance();	
+		$sql='select out from sale_order_dtl  
+			where mst_id='.$id;
+		$result = $db->query($sql)->fetchAll();
+		for($i=0;$i<count($result);$i++){
+			if ($result[$i]['out']<>0){
+				return true;
+			}
+		}
+		return false;
+	}
+	public static function delSaleOrder($id) {
+		$db=self::__instance();	
+		if(!Sale::isOrderUsed($id)){
+			return Baseinfo::deleteOrder($id,'sale_order_mst','sale_order_dtl');
+		}else{
+			return array('status' =>false,'msg'=>'订单已发生业务，不能删除！');
+		}	
+	}
+
 	public static function insertCustomerOrderOutDtl($dtl_data,$customer_order_out_id) {
 		//明细表有一条成功status就为true全失败为false
 		

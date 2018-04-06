@@ -25,4 +25,4 @@
 <script src="assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
 <script src="assets/js/jquery.jqprint-0.3.js"></script>
-<script src="views/sale/customer_orders.js"></script>
+<script src="views/sale/customer_orders_manage.js"></script>

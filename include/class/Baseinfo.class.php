@@ -1,6 +1,20 @@
 <?php
 //if(!defined('ACCESS')) {exit('Access denied.');}
 class Baseinfo extends Base {
+	//通用order deletion(mst & del)
+	public static function deleteOrder($mst_id,$mst,$dtl) {
+		$db=self::__instance();
+		$mstwhere=array('id'=>$mst_id);
+		$dtlwhere=array('mst_id'=>$mst_id);
+		$mstid=$db->delete($mst,$mstwhere);
+		$dtlid=$db->delete($dtl,$dtlwhere);
+		if($mstid && $dtlid){
+			return array('status' =>true);
+		}else{
+			return array('status' =>false,'msg'=>$db->error());
+		}
+	}
+
 	public static function ProductMonthly($month,$product_id){
 		$db=self::__instance();		
 		/*$sql="SELECT '生产入库' as type,a.createday,c.user_name,d.name as loc_name ,e.bin,b.qty,f.name as units 

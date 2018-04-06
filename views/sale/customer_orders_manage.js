@@ -1,4 +1,5 @@
-﻿var grid_data=[];
+﻿var edit_url="views/sale/edit.php";
+var grid_data=[];
 var detail_data=[];
 var order_id=0;
 jQuery(function($) {
@@ -26,7 +27,7 @@ jQuery(function($) {
 		data: grid_data,
 		datatype: "local",
 		height: 400,
-		colNames:['客户', '订单日期'],
+		colNames:['','客户', '订单日期'],
 		colModel:[
 			/*{name:'myac',index:'', width:40, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -35,7 +36,13 @@ jQuery(function($) {
 					delbutton:false,
 				}
 			},	*/
-			
+			{name:'myac',index:'',width:40,
+				formatter:'actions', 
+				formatoptions:{ 
+					keys:true,					
+					//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+				}
+			},
 			{name:'cust_name',index:'cust_name', width:50,editable: false},	
 			{name:'createday',index:'createday',width:60, editable:true},	
 			//{name:'importance',index:'importance',width:40, editable:false},		
@@ -78,7 +85,7 @@ jQuery(function($) {
 				enableTooltips(table);
 			}, 0);
 		},*/
-		//editurl:'views/sale/edit.php',
+		editurl:'views/sale/edit.php',
 		caption: "订单列表",
 		autowidth: true,
 	});

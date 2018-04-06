@@ -1,6 +1,6 @@
 var products=[];
 var lastsel;
-var go_url="index.php#/views/sale/sale_order_manage";
+var go_url="index.php#/views/sale/customer_orders";
 var products_data;
 jQuery(function($) {
 	setTitle();
