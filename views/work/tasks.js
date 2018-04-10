@@ -40,7 +40,7 @@ jQuery(function($) {
 		url:mst_url,		
 		datatype: "json",
 		height: 400,
-		colNames:['产品代码', '产品名称','规格','数量','装箱','备注','交货日期'],
+		colNames:['产品代码', '产品名称','规格','数量','装箱','备注','下单日期','交货日期'],
 		colModel:[
 			{name:'product_id',index:'product_id'},	
 			{name:'product_name',index:'product_name',width:300},
@@ -48,6 +48,7 @@ jQuery(function($) {
 			{name:'qty',index:'qty'},
 			{name:'box',index:'box'},
 			{name:'memo',index:'memo'},
+			{name:'createday',index:'createday'},
 			{name:'jh',index:'jh'}
 		], 
 		viewrecords : true,
