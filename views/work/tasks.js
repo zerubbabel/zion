@@ -17,7 +17,7 @@ jQuery(function($) {
 		//alert(cust_id);
 		//loadCustProduct(cust_id);
 		jQuery(grid_selector).jqGrid('setGridParam',{url:mst_url
-			+"&cust_id="+cust_id})
+			+"&cust_id="+cust_id,page:1})
 		.trigger('reloadGrid');
 
 		/*
@@ -52,14 +52,21 @@ jQuery(function($) {
 			{name:'jh',index:'jh'}
 		], 
 		viewrecords : true,
-		rowNum:10,
-		rowList:[10,20,30],
+		rowNum:20,
+		rowList:[20,100,200],
 		pager : pager_selector,
 		altRows: true,		
 		caption: "待生产产品列表",
 		autowidth: true,
 		gridComplete:function(){
 			highlight(grid_selector,days);
+		},
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				updatePagerIcons(table);	
+				enableTooltips(table);		
+			}, 0);
 		},
 	});
 });
@@ -83,3 +90,20 @@ function inRush(days,jh){
 	var delta = (s1.getTime() - s2.getTime()) / (1000 * 60 * 60 * 24);
 	return !(delta>days);
 }
+
+//replace icons with FontAwesome icons like above
+	function updatePagerIcons(table) {
+		var replacement = 
+		{
+			'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
+			'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
+			'ui-icon-seek-next' : 'icon-angle-right bigger-140',
+			'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
+		};
+		$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+			var icon = $(this);
+			var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+			
+			if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+		})
+	}
