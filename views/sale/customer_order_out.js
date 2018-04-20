@@ -84,7 +84,7 @@ function saveSaleOut(){
 function loadSaleDtl(){
 	$("#tbl_dtl").jqGrid({
 		datatype: "json",		
-		height: 300,
+		height: 700,
 		colNames:['','代码','产品','规格', '装箱', '备注','剩余数量', '出库数量','dtl_id','mst_id','id'],
 		colModel:[
 			{name:'act',width:40},
@@ -103,6 +103,7 @@ function loadSaleDtl(){
 		//caption: caption+"<i class='icon-plus-sign red actionIcon pointer tooltip-warning'"+
 		//	" data-rel='tooltip' title='选择出库物品' data-placement='right' onclick=\"addProduct('#tbl_dtl','_qty');\" ></i>",
 		autowidth: true,
+		rowNum:100,
 		gridComplete:function(){
 			//$('[data-rel=tooltip]').tooltip();
 			var ids = jQuery('#tbl_dtl').jqGrid('getDataIDs');
